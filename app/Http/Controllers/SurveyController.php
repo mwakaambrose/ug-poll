@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use App\Survey;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreSurvey;
 
 class SurveyController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +21,8 @@ class SurveyController extends Controller
      */
     public function index()
     {
-        //
+        $surveys = Survey::all();
+        return view('surveys.index', compact('surveys'));
     }
 
     /**
@@ -23,7 +32,8 @@ class SurveyController extends Controller
      */
     public function create()
     {
-        //
+        $survey = new Survey;
+        return view('surveys.create', compact('survey'));
     }
 
     /**
@@ -32,29 +42,36 @@ class SurveyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreSurvey $request)
     {
-        //
+        $survey = new Survey($request->all());
+        $survey->user_id = Auth::user()->id;
+        if (!$survey->save()) {
+            flash('Something went wrong')->error();
+            return back();
+        }
+        flash('Survey created successfully')->success();
+        return redirect("/surveys/{$survey->id}");
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $survey
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Survey $survey)
     {
-        //
+        return view('surveys.show', compact('survey'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $survey
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Survey $survey)
     {
         //
     }
@@ -63,10 +80,10 @@ class SurveyController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $survey
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreSurvey $request, Survey $survey)
     {
         //
     }
@@ -74,10 +91,10 @@ class SurveyController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $survey
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Survey $survey)
     {
         //
     }

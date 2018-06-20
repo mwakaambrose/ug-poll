@@ -36,9 +36,9 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <!-- <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link" href="/surveys">Surveys</a>
-                        </li> -->
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/respondents">Respondents</a>
                         </li>
@@ -91,6 +91,20 @@
         </nav>
 
         <main class="py-4">
+            <div class="container">
+                @include('flash::message')
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <strong>Error! </strong><span>Please attend to it.</span>
+                        <hr>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+            </div>
             @yield('content')
         </main>
     </div>
