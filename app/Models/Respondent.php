@@ -6,16 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Respondent extends Model
 {
-    //
-    public function district($value='')
+    public function district()
     {
-        # code...
-        return $this->belongsTo('App\District');
+        return $this->belongsTo(District::class);
     }
 
-    public function group($value='')
+    public function groups()
     {
-        # code...
-        return $this->belongsToMany('App\Group');
+        return $this->belongsToMany(Group::class);
     }
 }

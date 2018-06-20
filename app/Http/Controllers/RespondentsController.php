@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Respondent;
 use Illuminate\Http\Request;
-use App\Group;
 
-class GroupCOntroller extends Controller
+class RespondentsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,8 @@ class GroupCOntroller extends Controller
      */
     public function index()
     {
-        return view('group.list')->with(['groups'=>Group::all()]);
+        $respondents = Respondent::all();
+        return view('respondents.index', compact('respondents'));
     }
 
     /**
@@ -24,9 +25,7 @@ class GroupCOntroller extends Controller
      */
     public function create()
     {
-        //
-        return view('group.create');
-
+        return view('respondents.create');
     }
 
     /**
@@ -37,16 +36,31 @@ class GroupCOntroller extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $save_Group=new Group();
-        $save_Group->name=$request->name;
-        try {
-            $save_Group->save();
-            $status="Operation successfull.";
-        } catch (\Exception $e) {
-            $status=$e->getMessage();
+        $respondent = new Respondant($request->all());
+
+        $phone = $request->phone_number;
+
+        if ($phone[0] == "+") {
+            $phone_number = str_replace("+", "", $phone);
+        } elseif ($phone[0] == "0") {
+            $core_contact = ltrim($phone, "0");
+            $phone_number = "256".$core_contact;
+        } else {
+            $phone_number = $phone;
         }
-        return redirect()->back()->with(['status'=>$status]);
+        $respondent->phone_number=$phone_number;
+
+        if (!$respondent->save()) {
+            //todo return error
+            return back();
+        }
+
+        //link the respondent with a group
+        if (isset($request->group_id)) {
+            $respondent->groups()->attach($request->group_id);
+        }
+
+        return redirect()->back();
     }
 
     /**
@@ -68,8 +82,7 @@ class GroupCOntroller extends Controller
      */
     public function edit($id)
     {
-       
-     
+        //
     }
 
     /**

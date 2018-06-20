@@ -14,24 +14,18 @@ class CreaterespondentsTable extends Migration
     public function up()
     {
         Schema::create('respondents', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+            $table->bigIncrements('id');
+            $table->integer('district_id')->unsigned();
             $table->string('name');
             $table->string('phone_number')->unique();
             $table->string('address');
-            $table->string('gender');
-            $table->string('email_adress')->nullable();
-            $table->integer('district_id')->unsigned();
-            $table->foreign('district_id')->references('id')->on('districts')->onUpdate('cascade')->onDelete('cascade');
-        });
+            $table->enum('gender', ['Male', 'Female']);
+            $table->string('email')->nullable();
 
-        Schema::create('group_respondant', function (Blueprint $table) {
             $table->timestamps();
-            $table->integer('respondant_id')->unsigned();
-            $table->integer('group_id')->unsigned();
-            $table->foreign('respondant_id')->references('id')->on('respondents')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('group_id')->references('id')->on('groups')->onUpdate('cascade')->onDelete('cascade');
-            $table->primary(['group_id','respondant_id']);
+
+            $table->foreign('district_id')->references('id')
+                ->on('districts')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

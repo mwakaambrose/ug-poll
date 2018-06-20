@@ -23,5 +23,5 @@ Route::resource('region', 'RegionController');
 Route::resource('district', 'DistrictController');
 
 //Survey Groups & Respondents
-Route::resource('groups', 'GroupController');
-Route::resource('respondents', 'RespondentController');
+Route::resource('groups', 'GroupsController');
+Route::resource('respondents', 'RespondentsController');
