@@ -18,23 +18,23 @@
                     <table class="table">
                         <th>Name</th> <th>Phone Number</th> <th>Address</th> <th>Gender</th> <th>Email</th> <th>District</th> <th>Groups</th>   <th>Actions</th>
 
-                        @foreach($respondant as $respondants)
+                        @foreach($respondant as $respondents)
                             <tr>
-                                <td>{{$respondants->name}}</td>
-                                <td>{{$respondants->phone_number}}</td>
-                                <td>{{$respondants->address}}</td>
-                                <td>{{$respondants->gender}}</td>
-                                <td>{{$respondants->email_address}}</td>
-                                <td>{{$respondants->district->name}}</td>
+                                <td>{{$respondents->name}}</td>
+                                <td>{{$respondents->phone_number}}</td>
+                                <td>{{$respondents->address}}</td>
+                                <td>{{$respondents->gender}}</td>
+                                <td>{{$respondents->email_address}}</td>
+                                <td>{{$respondents->district->name}}</td>
                                 <td>
-                                    @foreach($respondants->group as $groups)
+                                    @foreach($respondents->group as $groups)
                                       {{$groups->name}}
                                     @endforeach
                                 </td>
                                 <td></td>
-                            </tr>                         
+                            </tr>
                         @endforeach
-                    </table>           
+                    </table>
                 </div>
             </div>
         </div>

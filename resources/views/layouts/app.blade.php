@@ -39,20 +39,15 @@
                         <!-- <li class="nav-item">
                             <a class="nav-link" href="/surveys">Surveys</a>
                         </li> -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="/respondents">Respondents</a>
-                        </li>
-
                          <li class="nav-item">
                             <a class="nav-link" href="{{route('region.index')}}">Regions</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('group.index')}}">Survey Groups</a>
+                            <a class="nav-link" href="/groups">Survey Groups</a>
                         </li>
-
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('respondent.index')}}">Respondent</a>
+                            <a class="nav-link" href="/respondents">Respondents</a>
                         </li>
                     </ul>
 

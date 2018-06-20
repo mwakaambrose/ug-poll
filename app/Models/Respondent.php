@@ -1,16 +1,16 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Respondant extends Model
+class Respondent extends Model
 {
     //
     public function district($value='')
     {
-    	# code...
-    	return $this->belongsTo('App\District');
+        # code...
+        return $this->belongsTo('App\District');
     }
 
     public function group($value='')

@@ -19,8 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('survey', 'SurveyController');
-Route::resource('respondents', 'RespondentController');
 Route::resource('region', 'RegionController');
 Route::resource('district', 'DistrictController');
-Route::resource('group', 'GroupCOntroller');
-Route::resource('respondent', 'RespondentController');
+
+//Survey Groups & Respondents
+Route::resource('groups', 'GroupController');
+Route::resource('respondents', 'RespondentController');
