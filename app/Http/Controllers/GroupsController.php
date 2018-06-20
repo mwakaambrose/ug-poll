@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Models\Group;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class GroupsController extends Controller
      */
     public function index()
     {
-        return view('group.list')->with(['groups'=>Group::all()]);
+        $groups = Group::where('user_id', Auth::user()->id)->withCount('respondents')->get();
+        return view('groups.index', compact('groups'));
     }
 
     /**
@@ -24,8 +26,7 @@ class GroupsController extends Controller
      */
     public function create()
     {
-        //
-        return view('group.create');
+        return view('groups.create');
     }
 
     /**
@@ -36,16 +37,16 @@ class GroupsController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $save_Group=new Group();
-        $save_Group->name=$request->name;
-        try {
-            $save_Group->save();
-            $status="Operation successfull.";
-        } catch (\Exception $e) {
-            $status=$e->getMessage();
+        $group = new Group($request->all());
+        $group->user_id = Auth::user()->id;
+
+        if (!$group->save()) {
+            $status = "Failed to save group. Please check the error messages.";
+        } else {
+            $status = "Successfully created new survey group called $request->name.";
         }
-        return redirect()->back()->with(['status'=>$status]);
+
+        return redirect()->back()->with(['status' => $status]);
     }
 
     /**
@@ -56,7 +57,12 @@ class GroupsController extends Controller
      */
     public function show($id)
     {
-        //
+        $group = Group::findOrFail($id)->load('respondents');
+        if ($group) {
+            return view('groups.show', compact('group'));
+        }
+
+        return redirect()->back()->with(['status' => "That survey group doesn't exist"]);
     }
 
     /**
@@ -67,6 +73,12 @@ class GroupsController extends Controller
      */
     public function edit($id)
     {
+        $group = Group::findOrFail($id)->load('respondents');
+        if ($group) {
+            return view('groups.edit', compact('group'));
+        }
+
+        return redirect()->back()->with(['status' => "That survey group doesn't exist"]);
     }
 
     /**
@@ -89,6 +101,7 @@ class GroupsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Group::destroy($id);
+        return redirect('/groups')->with(['status' => 'Group has been Successfully deleted.']);
     }
 }

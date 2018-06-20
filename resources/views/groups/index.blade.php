@@ -1,38 +1,38 @@
 @extends('layouts.app')
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">List of groups</div>
 
-                <a href="{{route('group.create')}}">Add group</a>
+    <div class="row col-md-12">
+        <div class="col-sm-6 pull-left">
+            <h4>List of Groups</h4>
+        </div>
+        <div class="col-sm-6 text-right pb-2">
+            <a href="/groups/create" class="btn btn-success">+ Add New Group</a>
+        </div>
+    </div>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-condensed table-striped">
+                    <tr>
+                        <th>Name</th>
+                        <th>Respondents</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
 
-                    <table class="table">
-                        <th>Name</th><th>Actions</th>
-
-                         @foreach($groups as $group)
+                     @foreach($groups as $group)
                          <tr>
-                             <td><a href="{{route('group.show',$group->id)}}">{{$group->name}}</a></td>
-                             
-                             <td>
-                                 <!-- <a href="{{route('group.edit',$group->id)}}">Add Members</a> -->
-                                 <!-- <a href="{{route('group.show',$group->id)}}">View Members</a> -->
+                             <td><a href="/groups/{{ $group->id }}">{{ $group->name }}</a></td>
+                             <td>{{ $group->respondents_count }}</td>
+                             <td class="text-center">
+                                 <a href="/groups/{{ $group->id }}/edit" class="text-info mx-3">Edit Members</a>
+                                 <a href="/groups/{{ $group->id }}" class="text-success mx-3">View Details</a>
                              </td>
                          </tr>
-                          
-                        @endforeach
-                    </table>           
-                </div>
+                    @endforeach
+                </table>
             </div>
         </div>
     </div>
-</div>
+
 @endsection

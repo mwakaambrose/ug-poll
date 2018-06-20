@@ -23,7 +23,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+        <nav class="navbar fixed-top navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img src="/favicon.png" width="27px" />
@@ -85,8 +85,19 @@
             </div>
         </nav>
 
-        <main class="py-4">
-            @yield('content')
+        <main class="py-4" style="margin-top: 80px;">
+            <div class="container">
+                <div class="row"> {{-- justify-content-center --}}
+                    @if (session('status'))
+                        <div class="col-sm-12 alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+
+                    @yield('content')
+
+                </div>
+            </div>
         </main>
     </div>
 </body>

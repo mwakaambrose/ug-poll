@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use App\Models\Group;
+use App\Models\District;
 use App\Models\Respondent;
 use Illuminate\Http\Request;
 
@@ -25,7 +28,9 @@ class RespondentsController extends Controller
      */
     public function create()
     {
-        return view('respondents.create');
+        $districts = District::all();
+        $groups = Group::where('user_id', Auth::user()->id)->get();
+        return view('respondents.create', compact('districts', 'groups'));
     }
 
     /**
@@ -36,7 +41,7 @@ class RespondentsController extends Controller
      */
     public function store(Request $request)
     {
-        $respondent = new Respondant($request->all());
+        $respondent = new Respondent($request->all());
 
         $phone = $request->phone_number;
 

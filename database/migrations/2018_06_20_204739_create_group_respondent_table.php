@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class GroupRespondent extends Migration
+class CreateGroupRespondentTable extends Migration
 {
     /**
      * Run the migrations.
@@ -19,7 +19,7 @@ class GroupRespondent extends Migration
             $table->integer('group_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('repondent_id')->references('id')->on('respondents')->onDelete('cascade');
+            $table->foreign('respondent_id')->references('id')->on('respondents')->onDelete('cascade');
             $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
         });
     }

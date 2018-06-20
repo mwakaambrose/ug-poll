@@ -1,30 +1,23 @@
 @extends('layouts.app')
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">Create Survey group</div>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+    <div class="col-sm-12">
 
-                    <form method="POST" action="{{route('group.store')}}">
-                        @csrf
-                        <label>Name</label>
+        <h4>Create New Survey Group</h4>
+
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" action="/groups">
+                    @csrf
+                    <div class="form-group">
+                        <label for="name">Name</label>
                         <input type="text" name="name" class="form-control">
-                        <br>
-                        <button id="save_region">Save</button>
-                    </form>
+                    </div>
 
-                    
-                </div>
+                    <button class="btn btn-success">Save</button>
+                </form>
             </div>
         </div>
     </div>
-</div>
+
 @endsection

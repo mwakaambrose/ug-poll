@@ -17,7 +17,7 @@ class CreateOutboxesTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->integer('question_id')->unsigned();
-            $table->integer('respondent_id')->unsigned();
+            $table->bigInteger('respondent_id')->unsigned();
             $table->string('phone_number');
             $table->string('status');
             $table->string('cost');
