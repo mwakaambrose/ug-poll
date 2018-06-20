@@ -18,7 +18,7 @@ class CreateInboxesTable extends Migration
             $table->timestamps();
             $table->string('response')->nullable();
             $table->string('phone_number');//This is the only way we can tell what user thread this is
-            $table->integer('outbox_id')->unsigned();//the number that has responded, what is its last id in the outbox table. and then read the next question after that one at the outbox_id
+            $table->integer('outbox_id')->unsigned();//the phone number that has responded, what is its last id in the outbox table, it is the outbox_id here. and then read the next question on the stack after that one at the outbox_id's question_id. [Put the login bit in mind]
             $table->foreign('outbox_id')->references('id')->on('outboxes')->onUpdate('cascade')->onDelete('cascade'); 
         });
     }

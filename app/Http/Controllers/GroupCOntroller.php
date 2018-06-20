@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Respondant;
+use App\Group;
 
-class RespondentController extends Controller
+class GroupCOntroller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class RespondentController extends Controller
      */
     public function index()
     {
-        return view('group.members_list')->with(['respondant'=>Respondant::all()]);
+        return view('group.list')->with(['groups'=>Group::all()]);
     }
 
     /**
@@ -24,7 +24,9 @@ class RespondentController extends Controller
      */
     public function create()
     {
-        return view('group.create_members');
+        //
+        return view('group.create');
+
     }
 
     /**
@@ -36,47 +38,15 @@ class RespondentController extends Controller
     public function store(Request $request)
     {
         //
-        $save_Respondant=new Respondant();
-        $save_Respondant->name=$request->name;
-     
-        $phone=$request->phone_number;
-
-          if ($phone[0]=="+") {
-            $phone_number=str_replace("+", "", $phone);
-          }
-
-          elseif ($phone[0]=="0") {
-            $out = ltrim($phone, "0");
-            $phone_number="256".$out;
-          } 
-
-          else{
-            $phone_number=$phone;
-          }
-
-        $save_Respondant->phone_number=$phone_number;
-        $save_Respondant->address=$request->address;
-        $save_Respondant->gender=$request->gender;
-        $save_Respondant->email_adress=$request->email_adress;
-        $save_Respondant->district_id=$request->district_id;
+        $save_Group=new Group();
+        $save_Group->name=$request->name;
         try {
-            $save_Respondant->save();
-
-            foreach ($request->group as $group_id) {
-                # code...
-                try {
-                   \DB::table('group_respondant')->insert([['respondant_id' => $save_Respondant->id, 'group_id' => $group_id],]);  
-                } catch (\Exception $e) {
-                    
-                }
-                           
-
-            }
+            $save_Group->save();
+            $status="Operation successfull.";
         } catch (\Exception $e) {
-            
+            $status=$e->getMessage();
         }
-
-        return redirect()->back();
+        return redirect()->back()->with(['status'=>$status]);
     }
 
     /**
@@ -98,7 +68,8 @@ class RespondentController extends Controller
      */
     public function edit($id)
     {
-        //
+       
+     
     }
 
     /**

@@ -36,11 +36,23 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="/surveys">Surveys</a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
                             <a class="nav-link" href="/respondents">Respondents</a>
+                        </li>
+
+                         <li class="nav-item">
+                            <a class="nav-link" href="{{route('region.index')}}">Regions</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('group.index')}}">Survey Groups</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('respondent.index')}}">Respondent</a>
                         </li>
                     </ul>
 

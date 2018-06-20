@@ -21,6 +21,8 @@ class CreateRespondantsTable extends Migration
             $table->string('address');
             $table->string('gender');
             $table->string('email_adress')->nullable();
+            $table->integer('district_id')->unsigned();
+            $table->foreign('district_id')->references('id')->on('districts')->onUpdate('cascade')->onDelete('cascade');
         });
 
         Schema::create('group_respondant', function (Blueprint $table) {

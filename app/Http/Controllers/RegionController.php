@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Region;
 
 class RegionController extends Controller
 {
@@ -14,6 +15,7 @@ class RegionController extends Controller
     public function index()
     {
         //
+        return view("region.list")->with(['regions'=>Region::all()]);
     }
 
     /**
@@ -24,6 +26,7 @@ class RegionController extends Controller
     public function create()
     {
         //
+        return view("region.create");
     }
 
     /**
@@ -35,6 +38,17 @@ class RegionController extends Controller
     public function store(Request $request)
     {
         //
+
+        $save_Region=new Region();
+        $save_Region->name=$request->region;
+        try {
+            $save_Region->save();
+            echo "Saved";
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
+
+        return redirect()->route('region.index')->with(['status'=>'region created successfully']);
     }
 
     /**
@@ -57,6 +71,14 @@ class RegionController extends Controller
     public function edit($id)
     {
         //
+        $save_Region=Region::find($id);
+        $save_Region->name=$request->name;
+        try {
+            $save_Region->save();
+            echo "Updated";
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
     }
 
     /**
