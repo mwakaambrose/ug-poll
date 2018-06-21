@@ -16,11 +16,14 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('surveys', 'SurveyController');
-Route::resource('respondents', 'RespondentController');
-Route::resource('region', 'RegionController');
-Route::resource('district', 'DistrictController');
-Route::resource('group', 'GroupCOntroller');
-Route::resource('respondent', 'RespondentController');
+Route::group(['middleware' => 'auth'], function () {
+	Route::get('/home', 'HomeController@index')->name('home');
+	Route::resource('surveys', 'SurveyController');
+	Route::resource('respondents', 'RespondentController');
+	Route::resource('region', 'RegionController');
+	Route::resource('district', 'DistrictController');
+	Route::resource('group', 'GroupCOntroller');
+	Route::resource('respondent', 'RespondentController');
+	Route::resource('questions', 'QuestionController');
+	Route::resource('outbox', 'OutboxController');
+});//middleware

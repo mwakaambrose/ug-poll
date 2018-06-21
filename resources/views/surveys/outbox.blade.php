@@ -4,9 +4,9 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">List of groups</div>
+                <div class="card-header">Out Box for {{$survey->name}}</div>
 
-                <a href="{{route('group.create')}}">Add group</a>
+                <a href="{{route('surveys.show',$survey->id)}}">Back</a>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -16,11 +16,15 @@
                     @endif
 
                     <table class="table">
-                        <th>Name</th> 
+                       <th>Date</th> <th>phone number</th> <th>Question</th> <th>Status</th> <th>Cost</th>
 
-                         @foreach($groups as $group)
+                         @foreach($my_out_box as $outbox)
                          <tr>
-                             <td>{{$group->name}}</td>
+                             <td>{{$outbox->created_at}}</td>
+                             <td>{{$outbox->phone_number}}</td>
+                             <td>{{$outbox->description}}</td>
+                             <td>{{$outbox->status}}</td>
+                             <td>{{$outbox->cost}}</td>
                              
                             
                          </tr>

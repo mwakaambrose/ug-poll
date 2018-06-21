@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Respondant extends Model
+class Respondent extends Model
 {
     //
-    public function district($value='')
+     public function district($value='')
     {
     	# code...
     	return $this->belongsTo('App\District');

@@ -17,13 +17,13 @@ class CreateOutboxesTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->integer('question_id')->unsigned();
-            $table->integer('respondant_id')->unsigned();
+            $table->integer('respondent_id')->unsigned();
             $table->string('phone_number');
             $table->string('status');
             $table->string('cost');
 
             $table->foreign('question_id')->references('id')->on('questions')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('respondant_id')->references('id')->on('respondants')->onUpdate('cascade')->onDelete('cascade');       
+            $table->foreign('respondent_id')->references('id')->on('respondents')->onUpdate('cascade')->onDelete('cascade');       
 
         });
     }

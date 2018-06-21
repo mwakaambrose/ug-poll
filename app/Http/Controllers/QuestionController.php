@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Respondent;
-use App\Group;
+use App\Question;
 
-class GroupCOntroller extends Controller
+class QuestionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +14,7 @@ class GroupCOntroller extends Controller
      */
     public function index()
     {
-        return view('group.list')->with(['groups'=>Group::all()]);
+        //
     }
 
     /**
@@ -26,8 +25,6 @@ class GroupCOntroller extends Controller
     public function create()
     {
         //
-        return view('group.create');
-
     }
 
     /**
@@ -39,15 +36,20 @@ class GroupCOntroller extends Controller
     public function store(Request $request)
     {
         //
-        $save_Group=new Group();
-        $save_Group->name=$request->name;
+        // dd($request);
+        $save_Question=new Question();
+        $save_Question->survey_id=$request->survey_id;
+        $save_Question->description=$request->description;
+        $save_Question->answer_type=$request->answer_type;
+        $save_Question->posible_answers=$request->answers;
         try {
-            $save_Group->save();
-            $status="Operation successfull.";
+            $save_Question->save();
+            $status="Question Created successfully";
         } catch (\Exception $e) {
-            $status=$e->getMessage();
+             $status=$e->getMessage();
         }
-        return redirect()->back()->with(['status'=>$status]);
+
+        return redirect()->back()->with(["status"=>$status]);
     }
 
     /**
@@ -58,7 +60,7 @@ class GroupCOntroller extends Controller
      */
     public function show($id)
     {
-         
+        //
     }
 
     /**
@@ -69,8 +71,7 @@ class GroupCOntroller extends Controller
      */
     public function edit($id)
     {
-       
-     
+        //
     }
 
     /**

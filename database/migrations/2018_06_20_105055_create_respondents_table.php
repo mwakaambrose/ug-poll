@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRespondantsTable extends Migration
+class CreateRespondentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateRespondantsTable extends Migration
      */
     public function up()
     {
-        Schema::create('respondants', function (Blueprint $table) {
+        Schema::create('respondents', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
             $table->string('name');
@@ -24,15 +24,6 @@ class CreateRespondantsTable extends Migration
             $table->integer('district_id')->unsigned();
             $table->foreign('district_id')->references('id')->on('districts')->onUpdate('cascade')->onDelete('cascade');
         });
-
-        Schema::create('group_respondant', function (Blueprint $table) {
-            $table->timestamps();
-            $table->integer('respondant_id')->unsigned();
-            $table->integer('group_id')->unsigned();
-            $table->foreign('respondant_id')->references('id')->on('respondants')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('group_id')->references('id')->on('groups')->onUpdate('cascade')->onDelete('cascade');
-            $table->primary(['group_id','respondant_id']);    
-        });
     }
 
     /**
@@ -42,6 +33,6 @@ class CreateRespondantsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('respondants');
+        Schema::dropIfExists('respondents');
     }
 }

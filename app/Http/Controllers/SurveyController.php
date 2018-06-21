@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Survey;
+use App\Outbox;
+use App\Group;
+use App\Question;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreSurvey;
 
@@ -33,7 +36,8 @@ class SurveyController extends Controller
     public function create()
     {
         $survey = new Survey;
-        return view('surveys.create', compact('survey'));
+        $group=Group::all();
+        return view('surveys.create', compact('survey','group'));
     }
 
     /**
@@ -44,14 +48,20 @@ class SurveyController extends Controller
      */
     public function store(StoreSurvey $request)
     {
+        $this->validate($request,["name"=>"required","description"=>"required","group_id"=>"required"]);
         $survey = new Survey($request->all());
+        $survey->group_id=$request->group_id;
         $survey->user_id = Auth::user()->id;
-        if (!$survey->save()) {
+        try {
+            $survey->save();
+            flash('Survey created successfully')->success();
+            return redirect("/surveys/{$survey->id}");
+            
+        } catch (\Exception $e) {
             flash('Something went wrong')->error();
-            return back();
-        }
-        flash('Survey created successfully')->success();
-        return redirect("/surveys/{$survey->id}");
+            return back();           
+        } 
+        
     }
 
     /**
@@ -62,7 +72,11 @@ class SurveyController extends Controller
      */
     public function show(Survey $survey)
     {
-        return view('surveys.show', compact('survey'));
+        // dd($survey);
+        $read_Question=Question::all()->where('survey_id',$survey->id);
+
+
+        return view('surveys.show', compact('survey','read_Question'));
     }
 
     /**
@@ -73,7 +87,13 @@ class SurveyController extends Controller
      */
     public function edit(Survey $survey)
     {
-        //
+        // dd($survey);
+        // read for me outboxes of questions that belong to this survey
+        // $read_outboxes=Survey::find($survey->id)->questions()->get();
+      
+        $my_out_box=Outbox::select('phone_number','status','cost','questions.description','questions.created_at')->join('questions','outboxes.question_id','questions.id')->join('surveys','questions.survey_id','surveys.id')->where('surveys.id',$survey->id)->get();
+
+        return view('surveys.outbox')->with(compact('my_out_box','survey'));      
     }
 
     /**

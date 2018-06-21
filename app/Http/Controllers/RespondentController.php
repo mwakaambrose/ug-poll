@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Respondant;
+use App\Respondent;
 
 class RespondentController extends Controller
 {
@@ -14,7 +14,7 @@ class RespondentController extends Controller
      */
     public function index()
     {
-        return view('group.members_list')->with(['respondant'=>Respondant::all()]);
+        return view('group.members_list')->with(['respondant'=>Respondent::all()]);
     }
 
     /**
@@ -36,18 +36,18 @@ class RespondentController extends Controller
     public function store(Request $request)
     {
         //
-        $save_Respondant=new Respondant();
+        $save_Respondant=new Respondent();
         $save_Respondant->name=$request->name;
      
         $phone=$request->phone_number;
 
           if ($phone[0]=="+") {
-            $phone_number=str_replace("+", "", $phone);
+            $phone_number=$phone;
           }
 
           elseif ($phone[0]=="0") {
             $out = ltrim($phone, "0");
-            $phone_number="256".$out;
+            $phone_number="+256".$out;
           } 
 
           else{
@@ -65,7 +65,7 @@ class RespondentController extends Controller
             foreach ($request->group as $group_id) {
                 # code...
                 try {
-                   \DB::table('group_respondant')->insert([['respondant_id' => $save_Respondant->id, 'group_id' => $group_id],]);  
+                   \DB::table('group_respondent')->insert([['respondent_id' => $save_Respondant->id, 'group_id' => $group_id],]);  
                 } catch (\Exception $e) {
                     
                 }
