@@ -12,7 +12,6 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-
     <link rel="shortcut icon" href="/favicon.png" />
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -20,7 +19,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-</head>
+ </head>
 <body>
     <div id="app">
         <nav class="navbar fixed-top navbar-expand-md navbar-light navbar-laravel">
@@ -114,5 +113,7 @@
             </div>
         </main>
     </div>
+    @stack('scripts')
 </body>
+
 </html>

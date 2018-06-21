@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreaterespondentsTable extends Migration
+class CreateRespondentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,18 +14,16 @@ class CreaterespondentsTable extends Migration
     public function up()
     {
         Schema::create('respondents', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('district_id')->unsigned()->nullable();
+            $table->increments('id');
             $table->string('name');
-            $table->string('phone_number')->unique();
+            $table->integer('district_id')->unsigned();
+            $table->string('gender');
             $table->string('address');
-            $table->enum('gender', ['Male', 'Female']);
-            $table->string('email')->nullable();
-
+            $table->string('phone_number')->unique();
+            $table->string('email_address')->nullable();
             $table->timestamps();
 
-            $table->foreign('district_id')->references('id')
-                ->on('districts')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('district_id')->references('id')->on('districts')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
