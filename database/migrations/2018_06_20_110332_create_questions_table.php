@@ -15,12 +15,12 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
-            $table->text('description');//this is the question itsself            
-            $table->integer('survey_id')->unsigned();
             $table->integer('group_id')->unsigned();
+            $table->integer('survey_id')->unsigned();
+            $table->text('description'); //this is the question itsself            
+            $table->timestamps();
+            $table->foreign('group_id')->references('id')->on('groups')->onUpdate('cascade');
             $table->foreign('survey_id')->references('id')->on('surveys')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('group_id')->references('id')->on('groups')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
