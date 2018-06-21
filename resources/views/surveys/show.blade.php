@@ -14,12 +14,23 @@
 	    		<h5>{{ $survey->name }}</h5>
 	    		<p class="text-muted">{{ $survey->description }}</p>
 	    		<hr>
-	    		<h5>Survey Questions</h5>
+	    		<h5>Survey Questions <a href="#" data-toggle="modal" data-target="#questions">Add</a></h5>
+	    		<hr>
 	    		@if($survey->questions->count() == 0)
 		    		<div class="alert alert-info">
 		    			<strong>No questions added.</strong> <a href="#" data-toggle="modal" data-target="#questions">Add</a>
 		    		</div>
 	    		@endif
+	    		@foreach($survey->questions as $question)
+	    			<h6>{{ $question->description }} <span class="text-muted small">
+	    					{{ $question->answer_type }}
+	    					<a href="/questions/{{$question->id}}/delete" class="text-danger">(Delete)</a>
+	    				</span>
+	    			</h6>
+	    			@foreach($question->responses as $response)
+	    				<li>{{ $response->answer }}</li>
+	    			@endforeach
+	    		@endforeach
 	    	</div>
 	    </div>
 
@@ -35,7 +46,7 @@
 		          			<span aria-hidden="true">&times;</span>
 		        		</button>
 		      		</div>
-		      		<form action="/questions" method="POST">
+		      		<form action="/surveys/{{$survey->id}}/questions" method="POST">
 		      			@csrf
 			      		<div class="modal-body">
 		      				<div class="form-group">

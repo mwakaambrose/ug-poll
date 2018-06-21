@@ -24,3 +24,5 @@ Route::resource('region', 'RegionController');
 Route::resource('district', 'DistrictController');
 Route::resource('group', 'GroupCOntroller');
 Route::resource('respondent', 'RespondentController');
+Route::resource('surveys.questions', 'QuestionController');
+Route::get('/questions/{question}/delete', 'QuestionController@destroy');
