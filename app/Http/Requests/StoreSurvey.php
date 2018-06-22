@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Survey;
+use App\Models\Survey;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreSurvey extends FormRequest

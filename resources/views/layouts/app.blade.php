@@ -34,21 +34,23 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/surveys">Surveys</a>
-                        </li>
-                         <li class="nav-item">
-                            <a class="nav-link" href="/regions">Regions</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/groups">Survey Groups</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/respondents">Respondents</a>
-                        </li>
-                    </ul>
+                    @auth
+                        <!-- Left Side Of Navbar -->
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/surveys">Surveys</a>
+                            </li>
+                             <li class="nav-item">
+                                <a class="nav-link" href="/regions">Regions</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/groups">Survey Groups</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/respondents">Respondents</a>
+                            </li>
+                        </ul>
+                    @endauth
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -86,10 +88,10 @@
 
         <main class="py-4" style="margin-top: 80px;">
             <div class="container">
-
-                @include('flash::message')
-
                 <div class="row"> {{-- justify-content-center --}}
+
+                    @include('flash::message')
+
                     @if (session('status'))
                         <div class="col-sm-12 alert alert-success" role="alert">
                             {{ session('status') }}

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Survey;
-use App\Question;
+use App\Models\Survey;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreQuestion;
 
@@ -39,7 +39,7 @@ class QuestionController extends Controller
     {
         $question = new Question($request->all());
         if ($request->answer_type == 'objective_type') {
-            if(strlen($request->answers) == 0) {
+            if (strlen($request->answers) == 0) {
                 flash('You need to provide atleast one answer option')->error();
                 return back();
             }
@@ -50,7 +50,7 @@ class QuestionController extends Controller
             return back();
         }
         if ($request->answer_type == 'objective_type') {
-            if(strlen($request->answers) > 0) {
+            if (strlen($request->answers) > 0) {
                 $question->storeAnswers($request->answers, $question->id);
             }
         }
