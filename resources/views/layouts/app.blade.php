@@ -36,13 +36,12 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <!-- <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link" href="/surveys">Surveys</a>
-                        </li> -->
+                        </li>
                          <li class="nav-item">
                             <a class="nav-link" href="/regions">Regions</a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link" href="/groups">Survey Groups</a>
                         </li>
@@ -87,6 +86,9 @@
 
         <main class="py-4" style="margin-top: 80px;">
             <div class="container">
+
+                @include('flash::message')
+
                 <div class="row"> {{-- justify-content-center --}}
                     @if (session('status'))
                         <div class="col-sm-12 alert alert-success" role="alert">

@@ -15,13 +15,14 @@ class CreateSurveysTable extends Migration
     {
         Schema::create('surveys', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
-            $table->string('name');
-            $table->enum('is_completed',['Complete','Incomplete'])->default('Incomplete');
-            $table->text('description');
-            $table->string('send_time');//this is the period the survey will start to trigure
             $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('name');
+            $table->boolean('is_completed')->default(false);
+            $table->text('description');
+            $table->date('send_time')->nullable(); //this is the period the survey will start to trigure
+
+            $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade');
         });
     }
 
