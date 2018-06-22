@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\District;
 use Illuminate\Http\Request;
-use App\District;
-use App\Region;
 
 class DistrictController extends Controller
 {
@@ -26,7 +25,6 @@ class DistrictController extends Controller
     public function create()
     {
         //
-
     }
 
     /**
@@ -37,19 +35,16 @@ class DistrictController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $save_District=new District();
-        $save_District->name=$request->name;
-        $save_District->region_id=$request->region_id;
+        $district = new District($request->all());
+
         try {
-            $save_District->save();
-            $status="Operation successfull";
+            $district->save();
+            $status = "Successfully added a new district called $district->name";
         } catch (\Exception $e) {
             $status=$e->getMessage();
         }
 
-        return redirect()->back()->with(['status'=>$status]);
-
+        return redirect()->back()->with(['status' => $status]);
     }
 
     /**
@@ -72,8 +67,6 @@ class DistrictController extends Controller
     public function edit($id)
     {
         //
-        $region=Region::find($id);
-         return view('district.create')->with(['regions'=>$region]);
     }
 
     /**
@@ -96,6 +89,7 @@ class DistrictController extends Controller
      */
     public function destroy($id)
     {
-        //
+        District::destroy($id);
+        return redirect()->back()->with(['status' => 'District Successfully Deleted.']);
     }
 }

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use App\Models\Group;
 use Illuminate\Http\Request;
-use App\Region;
 
-class RegionController extends Controller
+class GroupsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +15,8 @@ class RegionController extends Controller
      */
     public function index()
     {
-        //
-        return view("region.list")->with(['regions'=>Region::all()]);
+        $groups = Group::where('user_id', Auth::user()->id)->withCount('respondents')->get();
+        return view('groups.index', compact('groups'));
     }
 
     /**
@@ -25,8 +26,7 @@ class RegionController extends Controller
      */
     public function create()
     {
-        //
-        return view("region.create");
+        return view('groups.create');
     }
 
     /**
@@ -37,18 +37,16 @@ class RegionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $group = new Group($request->all());
+        $group->user_id = Auth::user()->id;
 
-        $save_Region=new Region();
-        $save_Region->name=$request->region;
-        try {
-            $save_Region->save();
-            echo "Saved";
-        } catch (\Exception $e) {
-            echo $e->getMessage();
+        if (!$group->save()) {
+            $status = "Failed to save group. Please check the error messages.";
+        } else {
+            $status = "Successfully created new survey group called $request->name.";
         }
 
-        return redirect()->route('region.index')->with(['status'=>'region created successfully']);
+        return redirect()->back()->with(['status' => $status]);
     }
 
     /**
@@ -59,7 +57,12 @@ class RegionController extends Controller
      */
     public function show($id)
     {
-        //
+        $group = Group::findOrFail($id)->load('respondents');
+        if ($group) {
+            return view('groups.show', compact('group'));
+        }
+
+        return redirect()->back()->with(['status' => "That survey group doesn't exist"]);
     }
 
     /**
@@ -70,15 +73,12 @@ class RegionController extends Controller
      */
     public function edit($id)
     {
-        //
-        $save_Region=Region::find($id);
-        $save_Region->name=$request->name;
-        try {
-            $save_Region->save();
-            echo "Updated";
-        } catch (\Exception $e) {
-            echo $e->getMessage();
+        $group = Group::findOrFail($id)->load('respondents');
+        if ($group) {
+            return view('groups.edit', compact('group'));
         }
+
+        return redirect()->back()->with(['status' => "That survey group doesn't exist"]);
     }
 
     /**
@@ -101,6 +101,7 @@ class RegionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Group::destroy($id);
+        return redirect('/groups')->with(['status' => 'Group has been Successfully deleted.']);
     }
 }

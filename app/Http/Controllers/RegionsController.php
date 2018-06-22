@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Region;
 use Illuminate\Http\Request;
-use App\Group;
 
-class GroupCOntroller extends Controller
+class RegionsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,8 @@ class GroupCOntroller extends Controller
      */
     public function index()
     {
-        return view('group.list')->with(['groups'=>Group::all()]);
+        $regions = Region::with('districts')->get();
+        return view('regions.index', compact('regions'));
     }
 
     /**
@@ -24,9 +25,7 @@ class GroupCOntroller extends Controller
      */
     public function create()
     {
-        //
-        return view('group.create');
-
+        return view('regions.create');
     }
 
     /**
@@ -37,27 +36,13 @@ class GroupCOntroller extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $save_Group=new Group();
-        $save_Group->name=$request->name;
-        try {
-            $save_Group->save();
-            $status="Operation successfull.";
-        } catch (\Exception $e) {
-            $status=$e->getMessage();
-        }
-        return redirect()->back()->with(['status'=>$status]);
-    }
+        $region = new Region($request->all());
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        if (!$region->save()) {
+            return back()->withErrors()->withInput();
+        }
+
+        return redirect('/regions')->with(['status' => 'New Region created successfully.']);
     }
 
     /**
@@ -68,8 +53,12 @@ class GroupCOntroller extends Controller
      */
     public function edit($id)
     {
-       
-     
+        $region = Region::find($id)->load('districts.respondents');
+        $total_respondents = 0;
+        foreach ($region->districts as $district) {
+            $total_respondents += $district->respondents()->count();
+        }
+        return view('regions.edit', compact('region', 'total_respondents'));
     }
 
     /**
@@ -81,7 +70,15 @@ class GroupCOntroller extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $region         = Region::find($id);
+        $region->name   = $request->name;
+
+        try {
+            $region->save();
+            echo "Updated";
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
     }
 
     /**
@@ -92,6 +89,7 @@ class GroupCOntroller extends Controller
      */
     public function destroy($id)
     {
-        //
+        Region::destroy($id);
+        return redirect('/regions')->with(['status' => 'Region Successfully Deleted.']);
     }
 }
