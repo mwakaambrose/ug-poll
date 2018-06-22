@@ -12,7 +12,8 @@ class Communication extends Model
 
     public function send_SMS($phone_number,$sms,$question_id,$respondent_id)
      {
-        $gateway = new AfricasTalkingGateway(env("API_USERNAME"),env("API_KEY"),"sandbox");
+
+        $gateway = new AfricasTalkingGateway(env("API_USERNAME"),env("API_KEY"),"agripoll");
     	try {
 
             if (Outbox::all()->where('question_id',$question_id)->where('respondent_id',$respondent_id)->count()==0) {
@@ -40,13 +41,11 @@ class Communication extends Model
 
     public function fetch_SMS()
     {
-         $gateway = new AfricasTalkingGateway(env("API_USERNAME"),env("API_KEY"),"sandbox");
+        $gateway = new AfricasTalkingGateway(env("API_USERNAME"),env("API_KEY"),"agripoll");
          try {
             $lastReceivedId = 0;
             $results = $gateway->fetchMessages($lastReceivedId);
-
-            return $results;
-               
+            return $results;               
          } catch (AfricasTalkingGatewayException $e) {
              
          }

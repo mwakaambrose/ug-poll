@@ -108,7 +108,7 @@
 	$(document).ready(function() {
       setInterval(function() {
         verify_response()
-      }, 5000);
+      }, 10000);
     });
 
     function verify_response() {

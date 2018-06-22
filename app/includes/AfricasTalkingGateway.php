@@ -1,7 +1,6 @@
 <?php
-
 namespace App\includes;
-use Exception;
+use \Exception;
  
 
 /*
