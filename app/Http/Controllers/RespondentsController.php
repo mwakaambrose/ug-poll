@@ -7,6 +7,7 @@ use App\Models\Group;
 use App\Models\District;
 use App\Models\Respondent;
 use Illuminate\Http\Request;
+use App\Http\Requests\RespondentStoreRequest;
 
 class RespondentsController extends Controller
 {
@@ -17,7 +18,7 @@ class RespondentsController extends Controller
      */
     public function index()
     {
-        $respondents = Respondent::all();
+        $respondents = Respondent::with('groups')->get();
         return view('respondents.index', compact('respondents'));
     }
 
@@ -36,10 +37,10 @@ class RespondentsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\RespondentStoreRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RespondentStoreRequest $request)
     {
         $respondent = new Respondent($request->all());
 
@@ -56,16 +57,15 @@ class RespondentsController extends Controller
         $respondent->phone_number=$phone_number;
 
         if (!$respondent->save()) {
-            //todo return error
-            return back();
+            return back()->withErrors()->withInput();
         }
 
         //link the respondent with a group
-        if (isset($request->group_id)) {
-            $respondent->groups()->attach($request->group_id);
+        foreach ($request->group as $key => $group_id) {
+            $respondent->groups()->attach($group_id);
         }
 
-        return redirect()->back();
+        return redirect()->back()->with(['status' => 'New Respondent successfully saved.']);
     }
 
     /**
@@ -93,11 +93,11 @@ class RespondentsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\RespondentStoreRequest $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(RespondentStoreRequest $request, $id)
     {
         //
     }

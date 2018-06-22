@@ -15,7 +15,7 @@ class CreaterespondentsTable extends Migration
     {
         Schema::create('respondents', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('district_id')->unsigned();
+            $table->integer('district_id')->unsigned()->nullable();
             $table->string('name');
             $table->string('phone_number')->unique();
             $table->string('address');

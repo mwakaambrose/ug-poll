@@ -31,10 +31,10 @@
                             <td>{{ $respondent->address }}</td>
                             <td>{{ $respondent->gender }}</td>
                             <td>{{ $respondent->email_address }}</td>
-                            <td>{{ $respondent->district->name }}</td>
+                            <td>{{ isset($respondent->district) ? $respondent->district->name : '' }}</td>
                             <td>
-                                @foreach($respondent->group as $groups)
-                                  {{ $groups->name }}
+                                @foreach($respondent->groups as $group)
+                                    <a href="/groups/{{ $group->id }}">{{ $group->name }}</a>
                                 @endforeach
                             </td>
                         </tr>

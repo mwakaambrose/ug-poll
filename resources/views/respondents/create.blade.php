@@ -9,21 +9,21 @@
                 <form method="POST" action="/respondents">
                     @csrf
                     <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" name="name" class="form-control">
+                        <label>Name <span class="text-danger">(Required)</span></label>
+                        <input type="text" name="name" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label>Phone number</label>
-                        <input type="text" name="phone_number" class="form-control">
+                        <label>Phone Number <span class="text-danger">(Required)</span></label>
+                        <input type="text" name="phone_number" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label>Address</label>
-                        <input type="text" name="address" class="form-control">
+                        <label>Address <span class="text-danger">(Required)</span></label>
+                        <input type="text" name="address" class="form-control" required>
                     </div>
 
                     <div class="form-group">
-                        <label>Gender</label>
-                        <select name="gender" class="form-control">
+                        <label>Gender <span class="text-danger">(Required)</span></label>
+                        <select name="gender" class="form-control" required>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
@@ -36,7 +36,7 @@
                         <label>District</label>
                         <select name="district_id" class="form-control">
                             @foreach($districts as $district)
-                              <option value="{{$district->id}}">{{$district->name}}</option>
+                              <option value="{{ $district->id }}">{{ $district->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -45,7 +45,7 @@
                         <label>Choose the group</label>
                         <select name="group[]" class="form-control" multiple="multiple">
                             @foreach($groups as $group)
-                              <option value="{{$group->id}}">{{$group->name}}</option>
+                              <option value="{{ $group->id }}">{{ $group->name }}</option>
                             @endforeach
                         </select>
                     </div>

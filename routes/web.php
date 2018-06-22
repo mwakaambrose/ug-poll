@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('survey', 'SurveyController');
-Route::resource('region', 'RegionController');
+Route::resource('regions', 'RegionsController')->except(['show']);
 Route::resource('district', 'DistrictController');
 
 //Survey Groups & Respondents

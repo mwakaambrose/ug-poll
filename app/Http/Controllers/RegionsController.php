@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Region;
 use Illuminate\Http\Request;
-use App\Region;
 
-class RegionController extends Controller
+class RegionsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class RegionController extends Controller
      */
     public function index()
     {
-        //
-        return view("region.list")->with(['regions'=>Region::all()]);
+        $regions = Region::with('districts')->get();
+        return view('regions.index', compact('regions'));
     }
 
     /**
@@ -25,8 +25,7 @@ class RegionController extends Controller
      */
     public function create()
     {
-        //
-        return view("region.create");
+        return view('regions.create');
     }
 
     /**
@@ -37,29 +36,13 @@ class RegionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $region = new Region($request->all());
 
-        $save_Region=new Region();
-        $save_Region->name=$request->region;
-        try {
-            $save_Region->save();
-            echo "Saved";
-        } catch (\Exception $e) {
-            echo $e->getMessage();
+        if (!$region->save()) {
+            return back()->withErrors()->withInput();
         }
 
-        return redirect()->route('region.index')->with(['status'=>'region created successfully']);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return redirect('/regions')->with(['status' => 'New Region created successfully.']);
     }
 
     /**
@@ -70,15 +53,12 @@ class RegionController extends Controller
      */
     public function edit($id)
     {
-        //
-        $save_Region=Region::find($id);
-        $save_Region->name=$request->name;
-        try {
-            $save_Region->save();
-            echo "Updated";
-        } catch (\Exception $e) {
-            echo $e->getMessage();
+        $region = Region::find($id)->load('districts.respondents');
+        $total_respondents = 0;
+        foreach ($region->districts as $district) {
+            $total_respondents += $district->respondents()->count();
         }
+        return view('regions.edit', compact('region', 'total_respondents'));
     }
 
     /**
@@ -90,7 +70,15 @@ class RegionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $region         = Region::find($id);
+        $region->name   = $request->name;
+
+        try {
+            $region->save();
+            echo "Updated";
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
     }
 
     /**
@@ -101,6 +89,7 @@ class RegionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Region::destroy($id);
+        return redirect('/regions')->with(['status' => 'Region Successfully Deleted.']);
     }
 }

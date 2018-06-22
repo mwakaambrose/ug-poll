@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Region extends Model
 {
-    //
-    public function district($value='')
+    protected $fillable = ['name'];
+
+    public function districts()
     {
-        # code...
-        return $this->hasMany('App\District');
+        return $this->hasMany(District::class);
     }
 }
