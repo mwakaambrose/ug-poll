@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
     @include('shared._heading', [
         'heading' => 'Surveys',
         'should_show_action' => true,
@@ -17,5 +16,4 @@
             ])
         </div>
     </div>
-</div>
 @endsection

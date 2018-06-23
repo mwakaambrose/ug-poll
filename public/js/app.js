@@ -47925,10 +47925,6 @@ var render = function() {
           }
         },
         [
-          _c("option", { attrs: { value: "open_ended" } }, [
-            _vm._v("Open Ended")
-          ]),
-          _vm._v(" "),
           _c("option", { attrs: { value: "objective_type" } }, [
             _vm._v("Objective Type")
           ])
@@ -47954,7 +47950,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _vm._l(_vm.answers, function(answer) {
-              return _c("div", [
+              return _c("div", { key: answer }, [
                 _c("span", { staticClass: "text-success" }, [
                   _vm._v("- " + _vm._s(answer))
                 ]),
