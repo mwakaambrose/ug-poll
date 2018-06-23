@@ -8,6 +8,6 @@ $factory->define(App\Models\Respondent::class, function ($faker) {
         'phone_number'  => $faker->unique()->phoneNumber,
         'address'       => $faker->address,
         'gender'        => $faker->randomElement(['Male', 'Female']),
-        'email'         => $faker->email,
+        'email_address'         => $faker->email,
     ];
 });

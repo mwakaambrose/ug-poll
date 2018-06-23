@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Models\Group;
+use App\Models\Outbox;
 use App\Models\Survey;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreSurvey;
 
@@ -32,8 +35,9 @@ class SurveyController extends Controller
      */
     public function create()
     {
+        $group = Group::all();
         $survey = new Survey;
-        return view('surveys.create', compact('survey'));
+        return view('surveys.create', compact('survey', 'group'));
     }
 
     /**
@@ -45,10 +49,12 @@ class SurveyController extends Controller
     public function store(StoreSurvey $request)
     {
         $survey = new Survey($request->all());
+        $survey->group_id = $request->group_id;
         $survey->user_id = Auth::user()->id;
-        if (!$survey->save()) {
-            flash('Something went wrong')->error();
-            return back();
+        if(!$survey->save()){
+            flash('Something went wrong. Failed to create survey, Please try again.')->error();
+            return back();           
+
         }
         flash('Survey created successfully')->success();
         return redirect("/surveys/{$survey->id}");
@@ -62,7 +68,8 @@ class SurveyController extends Controller
      */
     public function show(Survey $survey)
     {
-        return view('surveys.show', compact('survey'));
+        $read_question = Question::where('survey_id', $survey->id)->get();
+        return view('surveys.show', compact('survey','read_question'));
     }
 
     /**
@@ -73,7 +80,17 @@ class SurveyController extends Controller
      */
     public function edit(Survey $survey)
     {
-        //
+        $my_out_box=Outbox::select('phone_number', 
+            'status', 
+            'cost', 
+            'questions.description', 
+            'questions.created_at'
+            )->join('questions','outboxes.question_id','questions.id')
+             ->join('surveys','questions.survey_id','surveys.id')
+             ->where('surveys.id', $survey->id)
+             ->get();
+
+        return view('surveys.outbox')->with(compact('my_out_box','survey'));      
     }
 
     /**

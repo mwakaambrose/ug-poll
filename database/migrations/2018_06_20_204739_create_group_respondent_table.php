@@ -15,7 +15,7 @@ class CreateGroupRespondentTable extends Migration
     {
         Schema::create('group_respondent', function (Blueprint $table) {
             $table->increments('id');
-            $table->bigInteger('respondent_id')->unsigned();
+            $table->integer('respondent_id')->unsigned();
             $table->integer('group_id')->unsigned();
             $table->timestamps();
 

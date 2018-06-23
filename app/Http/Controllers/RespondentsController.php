@@ -64,7 +64,6 @@ class RespondentsController extends Controller
         foreach ($request->group as $key => $group_id) {
             $respondent->groups()->attach($group_id);
         }
-
         return redirect()->back()->with(['status' => 'New Respondent successfully saved.']);
     }
 
@@ -75,9 +74,7 @@ class RespondentsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
-    }
+    {}
 
     /**
      * Show the form for editing the specified resource.
@@ -86,9 +83,7 @@ class RespondentsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        //
-    }
+    {}
 
     /**
      * Update the specified resource in storage.
@@ -98,9 +93,7 @@ class RespondentsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(RespondentStoreRequest $request, $id)
-    {
-        //
-    }
+    {}
 
     /**
      * Remove the specified resource from storage.
@@ -109,7 +102,5 @@ class RespondentsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        //
-    }
+    {}
 }

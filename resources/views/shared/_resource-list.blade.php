@@ -9,6 +9,8 @@
 					<div class="list-group-item">
 						<a href="/{{$route_name}}/{{$resource->id}}"><h5>{{ $resource->name }}</h5></a>
 						<p>{{ $resource->description }}</p>
+						<p>Send time: {{ $resource->send_time }}</p>
+						 
 					</div>
 				@endforeach
 			{{-- </div> --}}

@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Group;
-use App\Models\District;
 use App\Models\Respondent;
 use Illuminate\Http\Request;
 
-class DistrictController extends Controller
+class RespondentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +14,7 @@ class DistrictController extends Controller
      */
     public function index()
     {
-        //
+        return view('group.members_list')->with(['respondant' => Respondent::all()]);
     }
 
     /**
@@ -26,7 +24,7 @@ class DistrictController extends Controller
      */
     public function create()
     {
-        //
+        return view('group.create_members');
     }
 
     /**
@@ -37,16 +35,35 @@ class DistrictController extends Controller
      */
     public function store(Request $request)
     {
-        $district = new District($request->all());
+        $save_respondant = new Respondent();
+        $save_respondant->name = $request->name;
+     
+        $phone = $request->phone_number;
 
-        try {
-            $district->save();
-            $status = "Successfully added a new district called $district->name";
-        } catch (\Exception $e) {
-            $status=$e->getMessage();
+        if ($phone[0] == "+") {
+            $phone_number = $phone;
+        } else if ($phone[0] == "0") {
+            $out = ltrim($phone, "0");
+            $phone_number = "+256".$out;
+        } else {
+            $phone_number=$phone;
         }
 
-        return redirect()->back()->with(['status' => $status]);
+        $save_respondant->phone_number = $phone_number;
+        $save_respondant->address = $request->address;
+        $save_respondant->gender = $request->gender;
+        $save_respondant->email_adress = $request->email_adress;
+        $save_respondant->district_id = $request->district_id;
+        
+        try {
+            $save_respondant->save();
+            foreach ($request->group as $group_id) {
+                try {
+                   \DB::table('group_respondent')->insert([['respondent_id' => $save_respondant->id, 'group_id' => $group_id],]);  
+                } catch (\Exception $e) {}
+            }
+        } catch (\Exception $e) {}
+        return redirect()->back();
     }
 
     /**
@@ -56,9 +73,7 @@ class DistrictController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-         
-    }
+    {}
 
     /**
      * Show the form for editing the specified resource.
@@ -67,9 +82,7 @@ class DistrictController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        //
-    }
+    {}
 
     /**
      * Update the specified resource in storage.
@@ -79,9 +92,7 @@ class DistrictController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
-    }
+    {}
 
     /**
      * Remove the specified resource from storage.
@@ -90,8 +101,5 @@ class DistrictController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        District::destroy($id);
-        return redirect()->back()->with(['status' => 'District Successfully Deleted.']);
-    }
+    {}
 }
