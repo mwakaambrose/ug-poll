@@ -11,7 +11,7 @@
 	<div class="btn-group" role="group">
 		<a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#questions">Add survey question</a>
 		<a class="btn btn-secondary" id="process_survey" href="#">Send survey now</a> 
-		<a class="btn btn-secondary"  href="{{route('surveys.edit',$survey->id)}}">View outBox</a>
+		<a class="btn btn-secondary"  href="{{route('surveys.edit',$survey->id)}}">View outbox</a>
 	</div>
 
 	<div class="card mt-3">
@@ -74,6 +74,7 @@
 @endsection
 
 @push('scripts')
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script>  
 		$(document).ready(function(){
 			$("#process_survey").click(function(){
