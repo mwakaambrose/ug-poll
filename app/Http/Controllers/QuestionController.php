@@ -6,8 +6,6 @@ use App\Models\Survey;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreQuestion;
-use Illuminate\Http\Request;
-use App\Models\Question;
 
 class QuestionController extends Controller
 {
@@ -17,9 +15,7 @@ class QuestionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
-    }
+    {}
 
     /**
      * Show the form for creating a new resource.
@@ -27,9 +23,7 @@ class QuestionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        //
-    }
+    {}
 
     /**
      * Store a newly created resource in storage.
@@ -67,9 +61,7 @@ class QuestionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Question $question)
-    {
-        //
-    }
+    {}
 
     /**
      * Show the form for editing the specified resource.
@@ -78,9 +70,7 @@ class QuestionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Question $question)
-    {
-        //
-    }
+    {}
 
     /**
      * Update the specified resource in storage.
@@ -90,9 +80,7 @@ class QuestionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(StoreQuestion $request, Question $question)
-    {
-        //
-    }
+    {}
 
     /**
      * Remove the specified resource from storage.
