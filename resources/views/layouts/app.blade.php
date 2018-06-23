@@ -87,29 +87,23 @@
 
         <main class="py-4" style="margin-top: 80px;">
             <div class="container">
-                <div class="row"> {{-- justify-content-center --}}
+                @include('flash::message')
+                @if (session('status'))
+                    <div class="col-sm-12 alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
+                @endif
 
-                    @include('flash::message')
-
-                    @if (session('status'))
-                        <div class="col-sm-12 alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
-                    @yield('content')
-
-                </div>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                @yield('content')
             </div>
         </main>
     </div>
