@@ -32,58 +32,61 @@ class OutboxController extends Controller
         $send_sms = new Communication();
 
         foreach ($send_sms->fetch_SMS() as $inbox_content) {
+            
             $check_in_outbox = Outbox::all()->where('phone_number', $inbox_content->from)->last();
-            // echo json_encode($check_in_outbox);
 
             if (isset($check_in_outbox)) {
-               
+            
                 if (Inbox::all()->where('outbox_id', $check_in_outbox->id)->count() == 0) {
                     $save_inbox = new Inbox();
                     $save_inbox->answer = $inbox_content->text;
                     $save_inbox->phone_number = $inbox_content->from;
                     $save_inbox->outbox_id = $check_in_outbox->id;
+                    $save_inbox->question_id = $check_in_outbox->question_id;
                     $save_inbox->save();
-                }
-
-                else{
+                } else {
                     #send next question
                     $survey = $check_in_outbox->questions->survey;
                     $previous_question_id = Question::where('survey_id', $survey->id)->where('id', '<', $check_in_outbox->question_id)->max('id');
-                    $next_question_id = Question::where('survey_id',$survey->id)->where('id', '>', $check_in_outbox->question_id)->min('id');
-                    // echo "Preve ID: ".$previous_question_id." Current: ".$check_in_outbox->question_id." Next: ".$next_question_id;                   
+                    $next_question_id = Question::where('survey_id', $survey->id)->where('id', '>', $check_in_outbox->question_id)->min('id');
 
                     if (empty($next_question_id)) {
-                        # No more question, send the Airtime
-                        // echo "No more qns";
+                        // No more question, send the Airtime
+                        // Send them ssm to thank them for paticipating
+                        // and ask them to paticipate more.
                         if (Reward::all()->where('phone_number', $inbox_content->from)->where('survey_id', $survey->id)->count() == 0) {
-
                             $recipients = array(array("phoneNumber" => $inbox_content->from, "amount" => "UGX 100"));
-
                             $recipientStringFormat = json_encode($recipients);
                             $gateway = new AfricasTalkingGateway(env("API_USERNAME"), env("API_KEY"));
                             $results = $gateway->sendAirtime($recipientStringFormat);
-                                   foreach($results as $result) {
-                                        $save_reward = new Reward();
-                                        $save_reward->phone_number = $result->phoneNumber;
-                                        $save_reward->survey_id = $survey->id;
-                                        $save_reward->amount = $result->amount;
-                                        $save_reward->error_message = $result->errorMessage;
-                                        $save_reward->requestId = $result->requestId;
-                                        $save_reward->save();                                      
-                                    }
-                                }
+                            foreach($results as $result) {
+                                $save_reward = new Reward();
+                                $save_reward->phone_number = $result->phoneNumber;
+                                $save_reward->survey_id = $survey->id;
+                                $save_reward->amount = $result->amount;
+                                $save_reward->error_message = $result->errorMessage;
+                                $save_reward->requestId = $result->requestId;
+                                $save_reward->save();                                      
                             }
-
-                    elseif (!empty($next_question_id)) {                       
-                        if (Inbox::all()->where('outbox_id',$check_in_outbox->id)->count() == 1) {
+                        }
+                    } else if (!empty($next_question_id)) {  
+                        $options = '';
+                        $inbox = Inbox::where('outbox_id', $check_in_outbox->id)
+                            ->where('question_id', $check_in_outbox->question_id)
+                            ->where('phone_number', $check_in_outbox->phone_number)
+                            ->get();
+                        
+                        if ($inbox->count() > 0) {
                             $next_question = Question::find($next_question_id);
-                            $sms = $next_question->description." [".str_replace(',', ' OR ',$next_question->posible_answers)."]";
-                            $send_sms->send_SMS($inbox_content->from, $sms, $next_question->id, $check_in_outbox->respondent_id); 
+                            foreach ($next_question->responses as $response) {
+                                $options .= "\n- ".$response->answer;
+                            }
+                            $questions = $next_question->description ."{$options}";
+                            $send_sms->send_SMS($inbox_content->from, $questions, $next_question->id, $check_in_outbox->respondent_id); 
                         }  
                     }                
                 }
-            }
-            
+            } 
         }
     }
 
