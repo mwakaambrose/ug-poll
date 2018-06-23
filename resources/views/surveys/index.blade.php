@@ -9,9 +9,13 @@
         'action_name' => 'New Survey'
     ])
 
-    @include('shared._resource-list', [
-        'resources' => $surveys,
-        'route_name' => 'surveys'
-    ])
+    <div class="card mt-3">
+        <div class="card-body">
+            @include('shared._resource-list', [
+                'resources' => $surveys,
+                'route_name' => 'surveys'
+            ])
+        </div>
+    </div>
 </div>
 @endsection
