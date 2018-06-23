@@ -37,16 +37,16 @@
                         <!-- Left Side Of Navbar -->
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="/surveys">Surveys</a>
-                            </li>
-                             <li class="nav-item">
-                                <a class="nav-link" href="/regions">Regions</a>
+                                <a class="nav-link" href="/regions">1-Regions</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/groups">Survey Groups</a>
+                                <a class="nav-link" href="/groups">2-Groups</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/respondents">Respondents</a>
+                                <a class="nav-link" href="/respondents">3-Respondents</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/surveys">4-Surveys</a>
                             </li>
                         </ul>
                     @endauth

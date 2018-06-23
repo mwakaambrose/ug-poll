@@ -32,12 +32,10 @@ class OutboxController extends Controller
         $send_sms = new Communication();
 
         foreach ($send_sms->fetch_SMS() as $inbox_content) {
+            $check_in_outbox = Outbox::all()->where('phone_number', $inbox_content->from)->last();
+            // echo json_encode($check_in_outbox);
 
-            $check_in_outbox=Outbox::all()->where('phone_number', $inbox_content->from)->last();
-
-            echo json_encode($check_in_outbox);
-           
-            if (json_encode($check_in_outbox) != "null") {
+            if (isset($check_in_outbox)) {
                
                 if (Inbox::all()->where('outbox_id', $check_in_outbox->id)->count() == 0) {
                     $save_inbox = new Inbox();
@@ -80,7 +78,7 @@ class OutboxController extends Controller
                         if (Inbox::all()->where('outbox_id',$check_in_outbox->id)->count() == 1) {
                             $next_question = Question::find($next_question_id);
                             $sms = $next_question->description." [".str_replace(',', ' OR ',$next_question->posible_answers)."]";
-                            $send_sms->send_SMS($inbox_content->from,$sms,$next_question->id,$check_in_outbox->respondent_id); 
+                            $send_sms->send_SMS($inbox_content->from, $sms, $next_question->id, $check_in_outbox->respondent_id); 
                         }  
                     }                
                 }
@@ -101,13 +99,15 @@ class OutboxController extends Controller
         $survey = Survey::find($request->survey_id);
         $first_question = $survey->questions()->first(); 
         $group = Group::find($survey->group_id);
-        foreach ($group->respondent as $respondent_value) {
+        $options = '';
+        foreach ($group->respondents as $respondent_value) {
             $phone_number = $respondent_value->phone_number;
-            $questions = $first_question->description." [".str_replace(",", " OR ", $first_question->posible_answers."]");
-
+            foreach ($first_question->responses as $response) {
+                $options .= "\n- ".$response->answer;
+            }
+            $questions = $first_question->description ."{$options}";
             $send_sms = new Communication();
-            $send_sms->send_SMS($phone_number,$questions,$first_question->id,$respondent_value->id);
-          
+            $send_sms->send_SMS($phone_number, $questions, $first_question->id, $respondent_value->id);
         }
     }
 
