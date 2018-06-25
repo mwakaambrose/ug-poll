@@ -6,13 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Outbox extends Model
 {
-    public function questions()
+    public function question()
     {
-    	return $this->belongsTo('App\Models\Question','question_id');
+        return $this->belongsTo(Question::class);
     }
 
     public function inbox()
     {
-    	return $this->hasOne('App\Models\Inbox');
+        return $this->hasOne(Inbox::class);
+    }
+
+    public function respondent()
+    {
+        return $this->belongsTo(Respondent::class);
     }
 }

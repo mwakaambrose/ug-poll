@@ -9,6 +9,11 @@ class Inbox extends Model
 {
     public function respondent()
     {
-    	return $this->belongsToMany(Respondent::class, 'group_respondent');
+        return $this->belongsToMany(Respondent::class, 'group_respondent');
+    }
+
+    public function outbox()
+    {
+        return $this->belongsTo(Outbox::class);
     }
 }

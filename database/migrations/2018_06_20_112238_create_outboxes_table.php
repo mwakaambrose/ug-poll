@@ -15,12 +15,12 @@ class CreateOutboxesTable extends Migration
     {
         Schema::create('outboxes', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
             $table->integer('question_id')->unsigned();
             $table->integer('respondent_id')->unsigned();
             $table->string('phone_number');
             $table->string('status');
             $table->string('cost');
+            $table->timestamps();
 
             $table->foreign('question_id')->references('id')->on('questions')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('respondent_id')->references('id')->on('respondents')->onUpdate('cascade')->onDelete('cascade');

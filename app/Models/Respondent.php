@@ -36,4 +36,9 @@ class Respondent extends Model
     {
         return $this->belongsToMany(Group::class);
     }
+
+    public function outboxes()
+    {
+        return $this->hasMany(Outbox::class);
+    }
 }
