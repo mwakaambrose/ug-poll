@@ -27,6 +27,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function surveys()
+    {
+        return $this->hasMany(Survey::class);
+    }
+
     public function groups()
     {
         return $this->hasMany(Group::class);

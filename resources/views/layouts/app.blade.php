@@ -37,16 +37,19 @@
                         <!-- Left Side Of Navbar -->
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="/regions">1-Regions</a>
+                                <a class="nav-link" href="/home">1-Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/groups">2-Groups</a>
+                                <a class="nav-link" href="/regions">2-Regions</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/respondents">3-Respondents</a>
+                                <a class="nav-link" href="/groups">3-Groups</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/surveys">4-Surveys</a>
+                                <a class="nav-link" href="/respondents">4-Respondents</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/surveys">5-Surveys</a>
                             </li>
                         </ul>
                     @endauth
@@ -103,6 +106,7 @@
                         </ul>
                     </div>
                 @endif
+
                 @yield('content')
             </div>
         </main>

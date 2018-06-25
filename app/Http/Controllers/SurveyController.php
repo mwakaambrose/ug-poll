@@ -51,10 +51,9 @@ class SurveyController extends Controller
         $survey = new Survey($request->all());
         $survey->group_id = $request->group_id;
         $survey->user_id = Auth::user()->id;
-        if(!$survey->save()){
+        if (!$survey->save()) {
             flash('Something went wrong. Failed to create survey, Please try again.')->error();
-            return back();           
-
+            return back();
         }
         flash('Survey created successfully')->success();
         return redirect("/surveys/{$survey->id}");
@@ -69,7 +68,19 @@ class SurveyController extends Controller
     public function show(Survey $survey)
     {
         $read_question = Question::where('survey_id', $survey->id)->get();
-        return view('surveys.show', compact('survey','read_question'));
+        return view('surveys.show', compact('survey', 'read_question'));
+    }
+
+    /**
+     * Show results from a survey.
+     *
+     * @param  int  $survey
+     * @return \Illuminate\Http\Response
+     */
+    public function results(Survey $survey)
+    {
+        $survey = $survey->load('questions', 'group.respondents');
+        return view('surveys.results', compact('survey'));
     }
 
     /**
@@ -80,17 +91,18 @@ class SurveyController extends Controller
      */
     public function edit(Survey $survey)
     {
-        $my_out_box=Outbox::select('phone_number', 
-            'status', 
-            'cost', 
-            'questions.description', 
+        $my_out_box=Outbox::select(
+            'phone_number',
+            'status',
+            'cost',
+            'questions.description',
             'questions.created_at'
-            )->join('questions','outboxes.question_id','questions.id')
-             ->join('surveys','questions.survey_id','surveys.id')
+            )->join('questions', 'outboxes.question_id', 'questions.id')
+             ->join('surveys', 'questions.survey_id', 'surveys.id')
              ->where('surveys.id', $survey->id)
              ->get();
 
-        return view('surveys.outbox')->with(compact('my_out_box','survey'));      
+        return view('surveys.outbox')->with(compact('my_out_box', 'survey'));
     }
 
     /**

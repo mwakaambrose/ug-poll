@@ -13,7 +13,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <table class="table table-condensed table-striped">
+                <table class="table table-condensed table-striped" style="overflow: auto;">
                     <tr>
                         <th>Name</th>
                         <th>Phone Number</th>

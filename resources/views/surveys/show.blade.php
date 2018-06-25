@@ -10,13 +10,15 @@
 
 	<div class="btn-group" role="group">
 		<a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#questions">Add survey question</a>
-		<a class="btn btn-secondary" id="process_survey" href="#">Send survey now</a> 
+		<a class="btn btn-secondary" id="process_survey" href="#">Send survey now</a>
 		<a class="btn btn-secondary"  href="{{route('surveys.edit',$survey->id)}}">View outbox</a>
 	</div>
 
 	<div class="card mt-3">
 		<div class="card-body">
-			<h5>{{ $survey->name }}</h5>
+			<h5 class="row">
+				<span class="col-sm-12">{{ $survey->name }} <a href="/surveys/{{ $survey->id }}/results" class="btn btn-success float-right">View Results</a></span>
+			</h5>
 			<p class="text-muted">{{$survey->description }}</p>
 			<hr>
 			<h5>Survey Questions</h5>
@@ -40,7 +42,7 @@
 	</div>
 
 	<!-- Modal -->
-	<div class="modal fade" id="questions" tabindex="-1" 
+	<div class="modal fade" id="questions" tabindex="-1"
 		role="dialog" data-backdrop="static" data-keyboard="false"
 		aria-labelledby="questions" aria-hidden="true">
 		<div class="modal-dialog" role="document">
@@ -75,28 +77,28 @@
 
 @push('scripts')
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script>  
+	<script>
 		$(document).ready(function(){
 			$("#process_survey").click(function(){
 				$("#display_alert").html("<b class='text-success'>The Survey is in progress, Please Live this page on.</b>");
 
-				/* 
+				/*
 				1. send the first question to all members in the group
 
 				2. Listen to the Inbox, if any new inbox comes in, find who responded, check the last question he answered, take a record in the InBOX and find the next question. "My Next question is NOT your next Question"
-				*/ 
+				*/
 
 				$.ajax({
 					type: "POST",
 					url: "{{ route('outbox.store') }}",
-					data: { 
-						survey_id: {{$survey->id}},	                 
+					data: {
+						survey_id: {{$survey->id}},
 						_token: "{{Session::token()}}" },
 					success: function(result){
 						console.log(result);
 					}
 				})
-			});	    
+			});
 		});
 	</script>
 
@@ -111,7 +113,7 @@
 		$.ajax({
 				type: "GET",
 				url: "{{route('outbox.create')}}",
-				data: {                
+				data: {
 					_token: "{{Session::token()}}" },
 				success: function(result){
 				console.log(result);

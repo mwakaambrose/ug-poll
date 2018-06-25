@@ -18,6 +18,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('respondents', 'RespondentsController');
 
     //Surveys & Questions
+    Route::get('/surveys/{survey}/results', 'SurveyController@results');
+
     Route::resource('surveys', 'SurveyController');
     Route::resource('surveys.questions', 'QuestionController');
     Route::get('/questions/{question}/delete', 'QuestionController@destroy');
