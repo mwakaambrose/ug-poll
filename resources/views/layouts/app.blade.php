@@ -48,6 +48,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/respondents">Respondents</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/sms-actions">Call to actions</a>
+                            </li>
                         </ul>
                     @endauth
 
@@ -87,7 +90,7 @@
 
         <main class="py-4" style="margin-top: 80px;">
             <div class="container">
-                <div class="row"> {{-- justify-content-center --}}
+                {{-- <div class="row"> --}}
 
                     @include('flash::message')
 
@@ -109,7 +112,7 @@
 
                     @yield('content')
 
-                </div>
+                {{-- </div> --}}
             </div>
         </main>
     </div>
