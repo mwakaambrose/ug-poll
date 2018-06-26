@@ -1,29 +1,24 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::get('/', function () {
     return view('welcome');
 });
 
 Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
-	Route::get('/home', 'HomeController@index')->name('home');
-	Route::resource('surveys', 'SurveyController');
-	Route::resource('respondents', 'RespondentController');
-	Route::resource('region', 'RegionController');
-	Route::resource('district', 'DistrictController');
-	Route::resource('group', 'GroupCOntroller');
-	Route::resource('respondent', 'RespondentController');
-	Route::resource('questions', 'QuestionController');
-	Route::resource('outbox', 'OutboxController');
-});//middleware
+    Route::get('/home', 'HomeController@index')->name('home');
+
+    //Regions & Districts
+    Route::resource('district', 'DistrictController');
+    Route::resource('regions', 'RegionsController')->except(['show']);
+
+    //Survey Groups & Respondents
+    Route::resource('groups', 'GroupsController');
+    Route::resource('respondents', 'RespondentsController');
+
+    //Surveys & Questions
+    Route::resource('surveys', 'SurveyController');
+    Route::resource('surveys.questions', 'QuestionController');
+    Route::get('/questions/{question}/delete', 'QuestionController@destroy');
+    Route::resource('outbox', 'OutboxController');
+});

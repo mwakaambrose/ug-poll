@@ -12,7 +12,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-     
+
     <link rel="shortcut icon" href="/favicon.png" />
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -24,7 +24,7 @@
  </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+        <nav class="navbar fixed-top navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img src="/favicon.png" width="27px" />
@@ -35,32 +35,25 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    @guest
 
-                    @else
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/surveys">Surveys</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/respondents">Respondents</a>
-                        </li>
 
-                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('region.index')}}">Regions</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('group.index')}}">Survey Groups</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('respondent.index')}}">Respondent</a>
-                        </li>
-                    </ul>
-                    @endguest
-
+                    @auth
+                        <!-- Left Side Of Navbar -->
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/regions">1-Regions</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/groups">2-Groups</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/respondents">3-Respondents</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/surveys">4-Surveys</a>
+                            </li>
+                        </ul>
+                    @endauth
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
@@ -95,13 +88,17 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4" style="margin-top: 80px;">
             <div class="container">
                 @include('flash::message')
+                @if (session('status'))
+                    <div class="col-sm-12 alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
+                @endif
+
                 @if ($errors->any())
                     <div class="alert alert-danger">
-                        <strong>Error! </strong><span>Please attend to it.</span>
-                        <hr>
                         <ul>
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
@@ -109,12 +106,11 @@
                         </ul>
                     </div>
                 @endif
+                @yield('content')
             </div>
-            @yield('content')
         </main>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
     @stack('scripts')
 </body>
 
