@@ -82,4 +82,10 @@ class SurveyController extends Controller
     {
         //
     }
+
+    public function load_questionier($survey_id)
+    {
+       $survey=Survey::find($survey_id);
+       return view('surveys.create_questions')->with(compact('survey')); 
+    }
 }

@@ -18,7 +18,10 @@ class QuestionController extends Controller
      */
     public function index(){}
 
-    public function create(){}
+    public function create()
+    {
+         
+    }
  
  
     public function store(StoreQuestion $request, Survey $survey)

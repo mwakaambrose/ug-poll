@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col">
 		<div class="mt-4">
-			{{-- <div class="card-body"> --}}
+	 
 				@if($resources->count() == 0)
 					<h4>No resource created yet.</h4>
 				@endif
@@ -13,7 +13,7 @@
 						 
 					</div>
 				@endforeach
-			{{-- </div> --}}
+		 
 		</div>
 	</div>
 </div>

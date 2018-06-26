@@ -11,7 +11,8 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    
+     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 
     <link rel="shortcut icon" href="/favicon.png" />
     <!-- Fonts -->
@@ -20,6 +21,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    @yield('styles')
 
  </head>
 <body>
@@ -110,7 +113,7 @@
             </div>
         </main>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
     @stack('scripts')
 </body>
 
