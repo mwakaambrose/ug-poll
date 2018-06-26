@@ -8,7 +8,7 @@ use App\includes\AfricasTalkingGateway;
 
 class Communication extends Model
 {
-    public function send_SMS($phone_number,$sms,$question_id,$respondent_id)
+    public function send_SMS($phone_number, $sms, $question_id, $respondent_id)
     {
 
 		$gateway = new AfricasTalkingGateway(env("API_USERNAME"), env("API_KEY"), "agripoll");
@@ -18,7 +18,7 @@ class Communication extends Model
 
             if ($respondent_outbox->count() == 0) {
               
-    			$results = $gateway->sendMessage($phone_number,$sms,env("SHORT_CODE"),1);
+    			$results = $gateway->sendMessage($phone_number, $sms, env("SHORT_CODE"), 1);
 				
 				foreach ($results as $key => $value) { 
     				$save_outbox = new Outbox();

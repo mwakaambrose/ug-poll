@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use App\Response;
+use App\Models\Survey;
+use App\Models\Response;
 use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
@@ -33,5 +34,10 @@ class Question extends Model
     public function responses()
     {
     	return $this->hasMany(Response::class);
-    }
+	}
+	
+	public function survey()
+	{
+		return $this->belongsTo(Survey::class);
+	}
 }

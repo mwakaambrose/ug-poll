@@ -8,11 +8,11 @@ class Outbox extends Model
 {
     public function questions()
     {
-    	return $this->belongsTo('App\Question','question_id');
+    	return $this->belongsTo('App\Models\Question','question_id');
     }
 
     public function inbox()
     {
-    	return $this->hasOne('App\Inbox');
+    	return $this->hasOne('App\Models\Inbox');
     }
 }
