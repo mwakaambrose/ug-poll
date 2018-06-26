@@ -36,8 +36,12 @@ class OutboxController extends Controller
             $check_in_outbox = Outbox::all()->where('phone_number', $inbox_content->from)->last();
 
             if (isset($check_in_outbox)) {
+
+                $count=Inbox::all()->where('outbox_id',$check_in_outbox->id)->where('question_id',$check_in_outbox->question_id)->where('phone_number',$check_in_outbox->phone_number)->count();
+
+                echo "COUNT: ".$count;
             
-                if (Inbox::all()->where('outbox_id', $check_in_outbox->id)->count() == 0) {
+                if ($count == 0) {
                     $save_inbox = new Inbox();
                     $save_inbox->answer = $inbox_content->text;
                     $save_inbox->phone_number = $inbox_content->from;

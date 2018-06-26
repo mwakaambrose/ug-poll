@@ -35,6 +35,16 @@
 				@foreach($question->responses as $response)
 					<li>{{ $response->answer }}</li>
 				@endforeach
+
+				<h2> Answers</h2>
+			<table class="table">
+				<th>Phone</th> <th>Answer</th>
+				@foreach($question->inboxes as $inbox)
+				 <tr>
+				 	<td>{{$inbox->phone_number}}</td> <td>{{$inbox->answer}}</td>
+				 </tr>				 
+				@endforeach				
+			</table>				
 			@endforeach
 		</div>
 	</div>
@@ -91,7 +101,8 @@
 					url: "{{ route('outbox.store') }}",
 					data: { 
 						survey_id: {{$survey->id}},	                 
-						_token: "{{Session::token()}}" },
+						_token: "{{Session::token()}}" 
+					},
 					success: function(result){
 						console.log(result);
 					}
