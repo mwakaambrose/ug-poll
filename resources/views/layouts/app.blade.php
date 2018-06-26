@@ -37,16 +37,19 @@
                         <!-- Left Side Of Navbar -->
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="/surveys">Surveys</a>
-                            </li>
-                             <li class="nav-item">
-                                <a class="nav-link" href="/regions">Regions</a>
+                                <a class="nav-link" href="/regions">1-Regions</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/groups">Survey Groups</a>
+                                <a class="nav-link" href="/groups">2-Groups</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/respondents">Respondents</a>
+                                <a class="nav-link" href="/respondents">3-Respondents</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/surveys">4-Surveys</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/sms-actions">Call to actions</a>
                             </li>
                         </ul>
                     @endauth
@@ -87,33 +90,30 @@
 
         <main class="py-4" style="margin-top: 80px;">
             <div class="container">
-                <div class="row"> {{-- justify-content-center --}}
 
-                    @include('flash::message')
+                @include('flash::message')
 
-                    @if (session('status'))
-                        <div class="col-sm-12 alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+                @if (session('status'))
+                     <div class="col-sm-12 alert alert-success" role="alert">
+                         {{ session('status') }}
+                     </div>
+                @endif
 
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                         </ul>
+                     </div>
+                @endif
 
-                    @yield('content')
+                @yield('content')
 
-                </div>
             </div>
         </main>
     </div>
     @stack('scripts')
 </body>
-
 </html>
