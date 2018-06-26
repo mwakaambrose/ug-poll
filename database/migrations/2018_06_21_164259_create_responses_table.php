@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRegionsTable extends Migration
+class CreateResponsesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateRegionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('regions', function (Blueprint $table) {
+        Schema::create('responses', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->integer('question_id')->unsigned();
+            $table->string('answer')->nullable();
             $table->timestamps();
+
+            $table->foreign('question_id')->references('id')->on('questions')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -27,6 +30,6 @@ class CreateRegionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('regions');
+        Schema::dropIfExists('responses');
     }
 }

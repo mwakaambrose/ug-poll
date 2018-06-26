@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Models\Group;
-use App\Models\District;
-use App\Models\Respondent;
 use Illuminate\Http\Request;
 
-class DistrictController extends Controller
+class GroupsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +15,8 @@ class DistrictController extends Controller
      */
     public function index()
     {
-        //
+        $groups = Group::where('user_id', Auth::user()->id)->withCount('respondents')->get();
+        return view('groups.index', compact('groups'));
     }
 
     /**
@@ -26,7 +26,7 @@ class DistrictController extends Controller
      */
     public function create()
     {
-        //
+        return view('groups.create');
     }
 
     /**
@@ -37,13 +37,13 @@ class DistrictController extends Controller
      */
     public function store(Request $request)
     {
-        $district = new District($request->all());
+        $group = new Group($request->all());
+        $group->user_id = Auth::user()->id;
 
-        try {
-            $district->save();
-            $status = "Successfully added a new district called $district->name";
-        } catch (\Exception $e) {
-            $status=$e->getMessage();
+        if (!$group->save()) {
+            $status = "Failed to save group. Please check the error messages.";
+        } else {
+            $status = "Successfully created new survey group called $request->name.";
         }
 
         return redirect()->back()->with(['status' => $status]);
@@ -57,7 +57,12 @@ class DistrictController extends Controller
      */
     public function show($id)
     {
-         
+        $group = Group::findOrFail($id)->load('respondents');
+        if ($group) {
+            return view('groups.show', compact('group'));
+        }
+
+        return redirect()->back()->with(['status' => "That survey group doesn't exist"]);
     }
 
     /**
@@ -68,7 +73,12 @@ class DistrictController extends Controller
      */
     public function edit($id)
     {
-        //
+        $group = Group::findOrFail($id)->load('respondents');
+        if ($group) {
+            return view('groups.edit', compact('group'));
+        }
+
+        return redirect()->back()->with(['status' => "That survey group doesn't exist"]);
     }
 
     /**
@@ -91,7 +101,7 @@ class DistrictController extends Controller
      */
     public function destroy($id)
     {
-        District::destroy($id);
-        return redirect()->back()->with(['status' => 'District Successfully Deleted.']);
+        Group::destroy($id);
+        return redirect('/groups')->with(['status' => 'Group has been Successfully deleted.']);
     }
 }

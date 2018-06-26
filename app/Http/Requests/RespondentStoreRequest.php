@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Survey;
+use App\Models\Respondent;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSurvey extends FormRequest
+class RespondentStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,6 +24,6 @@ class StoreSurvey extends FormRequest
      */
     public function rules()
     {
-        return (new Survey)->rules();
+        return (new Respondent)->rules();
     }
 }

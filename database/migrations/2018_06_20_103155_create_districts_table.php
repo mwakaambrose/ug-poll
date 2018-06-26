@@ -15,10 +15,12 @@ class CreateDistrictsTable extends Migration
     {
         Schema::create('districts', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
-            $table->string('name');
             $table->integer('region_id')->unsigned();
-            $table->foreign('region_id')->references('id')->on('regions')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('name');
+            $table->timestamps();
+
+            $table->foreign('region_id')->references('id')->on('regions')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
