@@ -48,6 +48,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/surveys">4-Surveys</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/sms-actions">Call to actions</a>
+                            </li>
                         </ul>
                     @endauth
 
@@ -87,11 +90,13 @@
 
         <main class="py-4" style="margin-top: 80px;">
             <div class="container">
+
                 @include('flash::message')
+
                 @if (session('status'))
-                    <div class="col-sm-12 alert alert-success" role="alert">
-                        {{ session('status') }}
-                    </div>
+                     <div class="col-sm-12 alert alert-success" role="alert">
+                         {{ session('status') }}
+                     </div>
                 @endif
 
                 @if ($errors->any())
@@ -100,10 +105,12 @@
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
-                        </ul>
-                    </div>
+                         </ul>
+                     </div>
                 @endif
+
                 @yield('content')
+
             </div>
         </main>
     </div>

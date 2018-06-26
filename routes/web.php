@@ -19,6 +19,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Surveys & Questions
     Route::resource('surveys', 'SurveyController');
+    Route::resource('sms-actions', 'SMSController');
+    Route::resource('answer-weights', 'AnswerWeightsController');
     Route::resource('surveys.questions', 'QuestionController');
     Route::get('/questions/{question}/delete', 'QuestionController@destroy');
     Route::resource('outbox', 'OutboxController');
