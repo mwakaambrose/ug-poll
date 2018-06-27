@@ -7,11 +7,7 @@ use Illuminate\Http\Request;
 
 class RespondentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         return view('group.members_list')->with(['respondant' => Respondent::all()]);
@@ -35,18 +31,20 @@ class RespondentController extends Controller
      */
     public function store(Request $request)
     {
+
         $save_respondant = new Respondent();
         $save_respondant->name = $request->name;
-     
         $phone = $request->phone_number;
-
         if ($phone[0] == "+") {
             $phone_number = $phone;
-        } else if ($phone[0] == "0") {
+        } else if (($phone[0] == "0")) {
             $out = ltrim($phone, "0");
             $phone_number = "+256".$out;
-        } else {
-            $phone_number=$phone;
+        } else if($phone[0] == "256") {             
+            $phone_number="+".$phone;
+        }
+        else{
+           $phone_number=$phone; 
         }
 
         $save_respondant->phone_number = $phone_number;
@@ -61,6 +59,7 @@ class RespondentController extends Controller
                 try {
                    \DB::table('group_respondent')->insert([['respondent_id' => $save_respondant->id, 'group_id' => $group_id],]);  
                 } catch (\Exception $e) {}
+
             }
         } catch (\Exception $e) {}
         return redirect()->back();

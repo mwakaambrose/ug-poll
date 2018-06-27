@@ -12,7 +12,7 @@
             <div class="card-body">
                 <form action="/respondents/import" method="POST">
                     <div class="form-group">
-                        <label for="file">Select File to upload</label>
+                        <label for="file"></label>
                         {{-- <input type="multipart" name="file"> --}}
                     </div>
                 </form>

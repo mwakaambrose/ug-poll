@@ -9,14 +9,18 @@
 	])
 
 	<div class="btn-group" role="group">
-		<a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#questions">Add survey question</a>
+		<!-- <a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#questions">Add survey question</a> -->
+		<a class="btn btn-secondary" href="/load_questionier/{{$survey->id}}">Add survey question</a>
 		<a class="btn btn-secondary" id="process_survey" href="#">Send survey now</a> 
 		<a class="btn btn-secondary"  href="{{route('surveys.edit',$survey->id)}}">View outbox</a>
 	</div>
+	<br>
+
+	<span id="display_alert"></span>
 
 	<div class="card mt-3">
 		<div class="card-body">
-			<h5>{{ $survey->name }}</h5>
+			<h1>{{ $survey->name }}</h1>
 			<p class="text-muted">{{$survey->description }}</p>
 			<hr>
 			<h5>Survey Questions</h5>
@@ -27,15 +31,62 @@
 				</div>
 			@endif
 			@foreach($survey->questions as $question)
-				<h6>{{ $question->description }} <span class="text-muted small">
+				<h3>{{ $question->description }} </h3> <span class="text-muted small">
 						{{ $question->answer_type }}
 						<a href="/questions/{{$question->id}}/delete" class="text-danger">(Delete)</a>
 					</span>
-				</h6>
-				@foreach($question->responses as $response)
-					<li>{{ $response->answer }}</li>
-				@endforeach
-			@endforeach
+
+					<ul>
+						@foreach($question->responses as $response)
+							<li>{{ $response->answer }}</li>
+						@endforeach						
+					</ul>
+				 
+				
+
+				<h2> Answers</h2>
+			<table class="table table-hover table-striped" id="answers{{$question->id}}">
+				<thead>
+					<th>Phone</th> <th>Answer</th>
+				</thead>
+				<tbody>
+					@foreach($question->inboxes as $inbox)
+					 <tr>
+					 	<td>{{$inbox->phone_number}}</td> <td>{{$inbox->answer}}</td>
+					 </tr>				 
+					@endforeach
+				</tbody>				
+			</table>
+
+			@push('scripts')
+			    <script>
+			       $(document).ready(function() {
+			            $('#answers{{$question->id}}').DataTable( {
+			                dom: 'Bfrtip',
+			                buttons: [
+			                    'copy',
+			                    {
+			                        extend: 'excel',
+			                        messageTop: '{{ $question->description }}'
+			                    },
+			                    {
+			                        extend: 'csv',
+			                        messageTop: '{{ $question->description }}'
+			                    },
+			                    {
+			                        extend: 'pdf',
+			                        messageTop: '{{$question->description }}'
+			                    },
+			                    {
+			                        extend: 'print',
+			                        messageTop: '{{ $question->description }}'
+			                    }
+			                ]
+			            } );
+			        } );
+    			</script>
+			@endpush
+		@endforeach
 		</div>
 	</div>
 
@@ -73,8 +124,13 @@
 	</div>
 @endsection
 
+@section('styles')  
+   <link rel="stylesheet" type="text/css" href=" https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css"> 
+@endsection
+
 @push('scripts')
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	
 	<script>  
 		$(document).ready(function(){
 			$("#process_survey").click(function(){
@@ -91,7 +147,8 @@
 					url: "{{ route('outbox.store') }}",
 					data: { 
 						survey_id: {{$survey->id}},	                 
-						_token: "{{Session::token()}}" },
+						_token: "{{Session::token()}}" 
+					},
 					success: function(result){
 						console.log(result);
 					}
@@ -119,5 +176,13 @@
 			})
 		}
 	</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
 @endpush
-

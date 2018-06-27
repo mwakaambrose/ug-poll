@@ -11,7 +11,9 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    
+     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
     <link rel="shortcut icon" href="/favicon.png" />
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -19,6 +21,9 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    @yield('styles')
+
  </head>
 <body>
     <div id="app">
@@ -33,6 +38,8 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
                     @auth
                         <!-- Left Side Of Navbar -->
                         <ul class="navbar-nav mr-auto">
@@ -53,7 +60,6 @@
                             </li>
                         </ul>
                     @endauth
-
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
@@ -114,6 +120,8 @@
             </div>
         </main>
     </div>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
     @stack('scripts')
 </body>
+
 </html>

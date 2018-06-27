@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Survey;
 use App\Models\Response;
+use App\Models\Inbox;
 use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
@@ -40,4 +41,9 @@ class Question extends Model
 	{
 		return $this->belongsTo(Survey::class);
 	}
+
+    public function inboxes()
+    {
+        return $this->hasMany(Inbox::class);
+    }
 }

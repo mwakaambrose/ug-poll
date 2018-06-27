@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOutboxesTable extends Migration
+class GroupRespondent extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,14 @@ class CreateOutboxesTable extends Migration
      */
     public function up()
     {
-        Schema::create('outboxes', function (Blueprint $table) {
-            $table->increments('id');
+        //
+          Schema::create('group_respondent', function (Blueprint $table) {
             $table->timestamps();
-            $table->integer('question_id')->unsigned();
             $table->integer('respondent_id')->unsigned();
-            $table->string('phone_number');
-            $table->string('status');
-            $table->string('cost');
-
-            $table->foreign('question_id')->references('id')->on('questions')->onUpdate('cascade')->onDelete('cascade');
+            $table->integer('group_id')->unsigned();
             $table->foreign('respondent_id')->references('id')->on('respondents')->onUpdate('cascade')->onDelete('cascade');
-
+            $table->foreign('group_id')->references('id')->on('groups')->onUpdate('cascade')->onDelete('cascade');
+            $table->primary(['group_id','respondent_id']);    
         });
     }
 
@@ -35,6 +31,6 @@ class CreateOutboxesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('outboxes');
+        Schema::dropIfExists('group_respondent');
     }
 }
