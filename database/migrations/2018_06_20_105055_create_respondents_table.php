@@ -19,10 +19,9 @@ class CreateRespondentsTable extends Migration
             $table->integer('district_id')->unsigned();
             $table->string('gender');
             $table->string('address');
-            $table->string('phone_number')->unique();
+            $table->string('phone_number');
             $table->string('email_address')->nullable();
             $table->timestamps();
-
             $table->foreign('district_id')->references('id')->on('districts')->onUpdate('cascade')->onDelete('cascade');
         });
     }

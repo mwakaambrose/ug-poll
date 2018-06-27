@@ -5,7 +5,6 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', 'HomeController@index')->name('home');
 
@@ -23,5 +22,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('answer-weights', 'AnswerWeightsController');
     Route::resource('surveys.questions', 'QuestionController');
     Route::get('/questions/{question}/delete', 'QuestionController@destroy');
+    Route::get('load_questionier/{survey_id}', 'SurveyController@load_questionier')->name('load_questionier');
     Route::resource('outbox', 'OutboxController');
 });
