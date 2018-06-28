@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Models\Group;
+use App\Models\Survey;
 use Illuminate\Http\Request;
 
 class GroupsController extends Controller
@@ -57,12 +58,13 @@ class GroupsController extends Controller
      */
     public function show($id)
     {
-        $group = Group::findOrFail($id)->load('respondents');
-        if ($group) {
-            return view('groups.show', compact('group'));
+        $group = Group::find($id);
+        $group_surveys = Survey::all()->where('group_id',$id);
+        $group_surveys_count = Survey::all()->where('group_id',$id)->count();
+        if ($group_surveys) {
+            return view('groups.show', compact('group_surveys','group','group_surveys_count'));
         }
-
-        return redirect()->back()->with(['status' => "That survey group doesn't exist"]);
+        return redirect()->back()->with(['status' => "That survey group doesn't exist",'group_surveys_count'=>$group_surveys_count]);
     }
 
     /**

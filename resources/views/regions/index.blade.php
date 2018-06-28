@@ -14,12 +14,14 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <table class="table table-condensed">
-                    <tr>
+                <table class="table table-condensed" id="data_table">
+                    <thead>
                         <th>Region</th>
                         <th>Districts</th>
                         <th>Actions</th>
-                    </tr>
+                    </thead>
+
+                    <tbody>
 
                     @foreach($regions as $region)
                         <tr>
@@ -34,9 +36,11 @@
                             </td>
                         </tr>
                     @endforeach
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 
 @endsection
+@include('shared._datatable_scripts')

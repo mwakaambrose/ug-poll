@@ -46,11 +46,9 @@ class RespondentsController extends Controller
 
         $phone = $request->phone_number;
 
-        if ($phone[0] == "+") {
-            $phone_number = str_replace("+", "", $phone);
-        } elseif ($phone[0] == "0") {
+        if ($phone[0] == "0") {
             $core_contact = ltrim($phone, "0");
-            $phone_number = "256".$core_contact;
+            $phone_number = "+256".$core_contact;
         } else {
             $phone_number = $phone;
         }

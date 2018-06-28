@@ -15,17 +15,22 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table">
-                       <th>Date</th> <th>phone number</th> <th>Question</th> <th>Status</th> <th>Cost</th>
-                         @foreach($my_out_box as $outbox)
-                         <tr>
-                             <td>{{$outbox->created_at}}</td>
-                             <td>{{$outbox->phone_number}}</td>
-                             <td>{{$outbox->description}}</td>
-                             <td>{{$outbox->status}}</td>
-                             <td>{{$outbox->cost}}</td>
-                         </tr>
-                        @endforeach
+                    <table class="table table-hover table-striped" id="data_table">
+                        <thead>
+                            <th>Date</th> <th>phone number</th> <th>Question</th> <th>Status</th> <th>Cost</th>
+                        </thead>
+
+                        <tbody>
+                             @foreach($my_out_box as $outbox)
+                             <tr>
+                                 <td>{{$outbox->created_at}}</td>
+                                 <td>{{$outbox->phone_number}}</td>
+                                 <td>{{$outbox->description}}</td>
+                                 <td>{{$outbox->status}}</td>
+                                 <td>{{$outbox->cost}}</td>
+                             </tr>
+                            @endforeach
+                        </tbody>
                     </table>           
                 </div>
             </div>
@@ -33,3 +38,4 @@
     </div>
 </div>
 @endsection
+@include('shared._datatable_scripts')

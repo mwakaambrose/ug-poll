@@ -9,7 +9,7 @@ use App\Models\Outbox;
 use App\Models\Reward;
 use App\Models\Question;
 use App\Models\Communication;
-use Illuminate\Http\Request;
+use Illuminate\Http\Request; 
 use App\includes\AfricasTalkingGateway;
 
 class OutboxController extends Controller
@@ -32,18 +32,30 @@ class OutboxController extends Controller
         $send_sms = new Communication();
 
         foreach ($send_sms->fetch_SMS() as $inbox_content) {
+
+            // 34 YES  [expected response format  34 is the question id]
+
+            $response = explode(" ", $inbox_content->text);           
             
-            $check_in_outbox = Outbox::all()->where('phone_number', $inbox_content->from)->last();
+            $check_in_outbox = Outbox::all()->where('phone_number', $inbox_content->from)->where('question_id',$response[0])->last();          
 
             if (isset($check_in_outbox)) {
-            
-                if (Inbox::all()->where('outbox_id', $check_in_outbox->id)->count() == 0) {
-                    $save_inbox = new Inbox();
-                    $save_inbox->answer = $inbox_content->text;
-                    $save_inbox->phone_number = $inbox_content->from;
-                    $save_inbox->outbox_id = $check_in_outbox->id;
-                    $save_inbox->question_id = $check_in_outbox->question_id;
-                    $save_inbox->save();
+
+                $count=Inbox::all()->where('phone_number', $inbox_content->from)->where('outbox_id',$check_in_outbox->id)->where('question_id',$response[0])->count();
+                
+                if ($count == 0) {
+                    try {
+                        
+                        $save_inbox = new Inbox();
+                        $save_inbox->answer = $response[1];
+                        $save_inbox->phone_number = $inbox_content->from;
+                        $save_inbox->outbox_id = $check_in_outbox->id;
+                        $save_inbox->question_id = $response[0];                    
+                        $save_inbox->save();  
+                    } catch (\Exception $e) {
+                        
+                    }
+                    
                 } else {
                     #send next question
                     $survey = $check_in_outbox->questions->survey;
@@ -56,6 +68,8 @@ class OutboxController extends Controller
                         // and ask them to paticipate more.
                         if (Reward::all()->where('phone_number', $inbox_content->from)->where('survey_id', $survey->id)->count() == 0) {
                             $recipients = array(array("phoneNumber" => $inbox_content->from, "amount" => "UGX 100"));
+
+                            $send_sms->plain_SMS($inbox_content->from, "Thank you for conducting a survey with us"); 
                             $recipientStringFormat = json_encode($recipients);
                             $gateway = new AfricasTalkingGateway(env("API_USERNAME"), env("API_KEY"));
                             $results = $gateway->sendAirtime($recipientStringFormat);
@@ -71,17 +85,19 @@ class OutboxController extends Controller
                         }
                     } else if (!empty($next_question_id)) {  
                         $options = '';
+
+                        echo $response[0];
                         $inbox = Inbox::where('outbox_id', $check_in_outbox->id)
-                            ->where('question_id', $check_in_outbox->question_id)
+                            ->where('question_id', $response[0])
                             ->where('phone_number', $check_in_outbox->phone_number)
-                            ->get();
+                            ->get();                         
                         
                         if ($inbox->count() > 0) {
                             $next_question = Question::find($next_question_id);
                             foreach ($next_question->responses as $response) {
                                 $options .= "\n- ".$response->answer;
                             }
-                            $questions = $next_question->description ."{$options}";
+                            $questions = $next_question->description ."{$options} \n  QN: ".$next_question->id;
                             $send_sms->send_SMS($inbox_content->from, $questions, $next_question->id, $check_in_outbox->respondent_id); 
                         }  
                     }                
@@ -108,9 +124,9 @@ class OutboxController extends Controller
             foreach ($first_question->responses as $response) {
                 $options .= "\n- ".$response->answer;
             }
-            $questions = $first_question->description ."{$options}";
+            $questions = $first_question->description ."{$options} \n  QN: ".$first_question->id;
             $send_sms = new Communication();
-            $send_sms->send_SMS($phone_number, $questions, $first_question->id, $respondent_value->id);
+            $send_sms->send_SMS($phone_number, $questions, $first_question->id, $respondent_value->id); 
         }
     }
 
