@@ -35,7 +35,7 @@ class SurveyController extends Controller
      */
     public function create()
     {
-        $group = Group::all();
+        $group = Group::all()->where('user_id',\Auth::user()->id);
         $survey = new Survey;
         return view('surveys.create', compact('survey', 'group'));
     }
@@ -68,7 +68,7 @@ class SurveyController extends Controller
      */
     public function show(Survey $survey)
     {
-        $read_question = Question::where('survey_id', $survey->id)->get();
+       $read_question = Question::where('survey_id', $survey->id)->get();
         return view('surveys.show', compact('survey','read_question'));
     }
 
@@ -114,5 +114,11 @@ class SurveyController extends Controller
     public function destroy(Survey $survey)
     {
         //
+    }
+
+     public function load_questionier($survey_id)
+    {
+       $survey=Survey::find($survey_id);
+       return view('surveys.create_questions')->with(compact('survey')); 
     }
 }

@@ -13,12 +13,14 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <table class="table table-condensed table-striped">
-                    <tr>
+                <table class="table table-condensed table-striped" id="data_table">
+                    <thead>
                         <th>Name</th>
                         <th>Respondents</th>
                         <th class="text-center">Actions</th>
-                    </tr>
+                    </thead>
+
+                    <tbody>
 
                      @foreach($groups as $group)
                          <tr>
@@ -30,9 +32,11 @@
                              </td>
                          </tr>
                     @endforeach
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 
 @endsection
+@include('shared._datatable_scripts')

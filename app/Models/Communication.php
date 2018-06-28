@@ -38,6 +38,18 @@ class Communication extends Model
     	} catch (AfricasTalkingGatewayException $e) {}    	 
     }
 
+
+    public function plain_SMS($phone_number, $sms)
+    {
+        $gateway = new AfricasTalkingGateway(env("API_USERNAME"), env("API_KEY"), "agripoll");
+        try {
+
+           $gateway->sendMessage($phone_number, $sms, env("SHORT_CODE"), 1);             
+                     
+        } catch (AfricasTalkingGatewayException $e) {}  
+
+    }
+
     public function fetch_SMS()
     {
         $gateway = new AfricasTalkingGateway(env("API_USERNAME"),env("API_KEY"),"agripoll");

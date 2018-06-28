@@ -40,4 +40,9 @@ class Question extends Model
 	{
 		return $this->belongsTo(Survey::class);
 	}
+
+    public function inboxes()
+    {
+        return $this->hasMany(Inbox::class);
+    }
 }

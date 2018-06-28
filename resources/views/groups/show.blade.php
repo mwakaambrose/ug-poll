@@ -28,7 +28,7 @@
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">0</h5>
+                        <h5 class="card-title">{{$group_surveys_count}}</h5>
                         <p class="card-text">Surveys</p>
                     </div>
                 </div>
@@ -39,35 +39,30 @@
 
         <div class="card">
             <div class="card-body">
-                <table class="table table-condensed table-striped">
-                    <tr>
+                <table class="table table-condensed table-striped" id="data_table">
+                    <thead>
                         <th>Title</th>
                         <th>Participants</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
+                        <th class="text-center">Actions</th>                        
+                    </thead>
 
-                    {{-- Remove this one feature is built --}}
-                    <tr>
-                         <td><a href="#">Fake Survey</a></td>
-                         <td>3</td>
-                         <td class="text-center">
-                             <a href="#" class="text-success mx-3">View Statistics</a>
-                         </td>
-                     </tr>
-
-                    {{-- waiting feature --}}
-                     {{-- @foreach($group->surveys as $survey)
+                    <tbody>
+                        @foreach($group_surveys as $survey)
                          <tr>
-                             <td><a href="/survey/{{ $survey->id }}">{{ $survey->name }}</a></td>
+                             <td><a href="{{route('surveys.show',$survey->id)}}">{{ $survey->name }}</a></td>
                              <td>{{ $survey->respondents_count }}</td>
                              <td class="text-center">
-                                 <a href="/surveys/{{ $survey->id }}" class="text-success mx-3">View Statistics</a>
+                                 <a href="{{route('surveys.show',$survey->id)}}" class="text-success mx-3">View Statistics</a>
                              </td>
                          </tr>
-                    @endforeach --}}
+                        @endforeach                        
+                    </tbody>               
+                      
                 </table>
             </div>
         </div>
     </div>
 
 @endsection
+
+@include('shared._datatable_scripts')

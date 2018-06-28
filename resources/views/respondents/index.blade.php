@@ -13,8 +13,8 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <table class="table table-condensed table-striped">
-                    <tr>
+                <table class="table table-condensed table-striped" id="data_table">
+                    <thead>
                         <th>Name</th>
                         <th>Phone Number</th>
                         <th>Address</th>
@@ -22,8 +22,9 @@
                         <th>Email</th>
                         <th>District</th>
                         <th>Groups</th>
-                    </tr>
+                     </thead>
 
+                    <tbody>
                     @foreach($respondents as $respondent)
                         <tr>
                             <td>{{ $respondent->name }}</td>
@@ -39,8 +40,10 @@
                             </td>
                         </tr>
                     @endforeach
+                </tbody>
                 </table>
             </div>
         </div>
     </div>
 @endsection
+@include('shared._datatable_scripts')
