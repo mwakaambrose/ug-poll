@@ -35,13 +35,9 @@ class OutboxController extends Controller
 
             // 34 YES  [expected response format  34 is the question id]
 
-            $response = explode(" ", $inbox_content->text);
-
-            echo "Phone: ".$inbox_content->from." ".$response[0];
+            $response = explode(" ", $inbox_content->text);           
             
-            $check_in_outbox = Outbox::all()->where('phone_number', $inbox_content->from)->where('question_id',$response[0])->last();
-
-          
+            $check_in_outbox = Outbox::all()->where('phone_number', $inbox_content->from)->where('question_id',$response[0])->last();          
 
             if (isset($check_in_outbox)) {
 
@@ -73,9 +69,7 @@ class OutboxController extends Controller
                         if (Reward::all()->where('phone_number', $inbox_content->from)->where('survey_id', $survey->id)->count() == 0) {
                             $recipients = array(array("phoneNumber" => $inbox_content->from, "amount" => "UGX 100"));
 
-                            $send_sms->plain_SMS($inbox_content->from, "Thank you for conducting a survey with us");
-
- 
+                            $send_sms->plain_SMS($inbox_content->from, "Thank you for conducting a survey with us"); 
                             $recipientStringFormat = json_encode($recipients);
                             $gateway = new AfricasTalkingGateway(env("API_USERNAME"), env("API_KEY"));
                             $results = $gateway->sendAirtime($recipientStringFormat);
@@ -96,9 +90,7 @@ class OutboxController extends Controller
                         $inbox = Inbox::where('outbox_id', $check_in_outbox->id)
                             ->where('question_id', $response[0])
                             ->where('phone_number', $check_in_outbox->phone_number)
-                            ->get();
-
-                            echo $inbox;
+                            ->get();                         
                         
                         if ($inbox->count() > 0) {
                             $next_question = Question::find($next_question_id);
