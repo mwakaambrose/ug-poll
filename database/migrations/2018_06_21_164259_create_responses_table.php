@@ -17,6 +17,7 @@ class CreateResponsesTable extends Migration
             $table->increments('id');
             $table->integer('question_id')->unsigned();
             $table->string('answer')->nullable();
+            $table->string('value')->nullable();
             $table->timestamps();
 
             $table->foreign('question_id')->references('id')->on('questions')->onUpdate('cascade')->onDelete('cascade');

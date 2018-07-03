@@ -38,7 +38,7 @@
 
 					<ul>
 						@foreach($question->responses as $response)
-							<li>{{ $response->answer }}</li>
+							<li>{{ $response->answer }} ({{$response->value}})</li>
 						@endforeach						
 					</ul>
 				 
@@ -47,12 +47,20 @@
 		<h2> Answers</h2>
 			<table class="table table-hover table-striped" id="answers{{$question->id}}">
 				<thead>
-					<th>Phone</th> <th>Answer</th>
+					<th>Phone</th> <th>Answer</th> <th>Value</th>
 				</thead>
 				<tbody>
 					@foreach($question->inboxes as $inbox)
 					 <tr>
 					 	<td>{{$inbox->phone_number}}</td> <td>{{$inbox->answer}}</td>
+					 	<td>
+					 		<?php
+
+					 		$posible_response = App\Models\Response::select('value')->where('question_id',$inbox->question_id)->where('answer',$inbox->answer)->first();
+					 		echo $posible_response->value; 
+
+					 		 ?>
+					 	</td>
 					 </tr>				 
 					@endforeach
 				</tbody>				

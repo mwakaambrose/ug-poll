@@ -12,14 +12,21 @@ class SMS extends Model
         'sms_action',
         'minimum_weight',
         'maximum_weight',
+        'survey_id',
     ];
 
     public function rules()
     {
         return [
             'sms_action' => 'required|string',
-            'minimum_weight' => 'required|numeric|between:0, 9999.999',
-            'maximum_weight' => 'required|numeric|between:0, 9999.999',
+            'minimum_weight' => 'required|numeric',
+            'maximum_weight' => 'required|numeric',
+            'survey_id'=>'required',
         ];
+    }
+
+    public function survey()
+    {
+        return $this->belongsTo(Survey::class);
     }
 }

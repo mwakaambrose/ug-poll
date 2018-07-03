@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inbox;
+use App\Models\SMS;
+use App\Models\Response;
 use App\Models\Group;
 use App\Models\Survey;
 use App\Models\Outbox;
@@ -62,11 +64,32 @@ class OutboxController extends Controller
                     $previous_question_id = Question::where('survey_id', $survey->id)->where('id', '<', $check_in_outbox->question_id)->max('id');
                     $next_question_id = Question::where('survey_id', $survey->id)->where('id', '>', $check_in_outbox->question_id)->min('id');
 
-                    if (empty($next_question_id)) {
-                        // No more question, send the Airtime
+                     if (empty($next_question_id)) {                       
+                        // No more question, send the Airtime and Call to action
                         // Send them ssm to thank them for paticipating
                         // and ask them to paticipate more.
+
                         if (Reward::all()->where('phone_number', $inbox_content->from)->where('survey_id', $survey->id)->count() == 0) {
+                             // call to action
+                            $survey_qns = Question::select('id')->where('survey_id',$survey->id)->get();
+                            $sum_of_values=0;
+                            foreach ($survey_qns as $survey_value) {
+                                //read the Inbox for each qn on this respondent
+                                $respondent_inbox = Inbox::select('phone_number','answer')->where('question_id',$survey_value->id)->where('phone_number',$inbox_content->from)->first();
+                                // read the coresponding letter for that answer
+                                $posible_response = Response::select('value')->where('question_id',$survey_value->id)->where('answer',$respondent_inbox->answer)->first();
+
+                                if (!empty($posible_response)) {
+                                    $sum_of_values = $sum_of_values + $posible_response->value;                  
+                                }
+                            }
+                            // read the call action that siuts the $sum_of_values
+                            $posible_action = SMS::select('sms_action')->where('minimum_weight','<=',$sum_of_values)->where('maximum_weight','>=',$sum_of_values)->first();                           
+
+                            if (!empty($posible_action)) {
+                                $send_sms->plain_SMS($inbox_content->from,$posible_action->sms_action); //this is the SMS call to action to the respondent
+                            }
+                            // Airtime
                             $recipients = array(array("phoneNumber" => $inbox_content->from, "amount" => "UGX 100"));
 
                             $send_sms->plain_SMS($inbox_content->from, "Thank you for conducting a survey with us"); 
@@ -85,8 +108,7 @@ class OutboxController extends Controller
                         }
                     } else if (!empty($next_question_id)) {  
                         $options = '';
-
-                        echo $response[0];
+                        // echo $response[0];
                         $inbox = Inbox::where('outbox_id', $check_in_outbox->id)
                             ->where('question_id', $response[0])
                             ->where('phone_number', $check_in_outbox->phone_number)

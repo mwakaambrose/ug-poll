@@ -13,14 +13,26 @@
         <div class="card-body">
             <form method="POST" action="/sms-actions">
                 @csrf
+
+                <div class="form-group">
+                    <div class="col">
+                        <label>Choose a survey</label>
+                        <select name="survey_id" class="form-control">
+                            <option></option>
+                            @foreach($survey as $surveys)
+                              <option value="{{$surveys->id}}">{{$surveys->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
                 <div class="form-group">
                     <div class="col">
                         <label>Minimum Weight</label>
-                        <input type="number" step="0.000000001" name="minimum_weight" class="form-control">
+                        <input type="number" step="any" name="minimum_weight" class="form-control">
                     </div>
                     <div class="col">
                         <label>Maximum Weight</label>
-                        <input type="number" step="0.000000001" name="maximum_weight" class="form-control">
+                        <input type="number" step="any" name="maximum_weight" class="form-control">
                     </div>
                 </div>
                 <div class="form-group">

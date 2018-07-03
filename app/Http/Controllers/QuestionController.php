@@ -34,23 +34,19 @@ class QuestionController extends Controller
     public function store(StoreQuestion $request, Survey $survey)
     {
         $question = new Question($request->all());
-        if ($request->answer_type == 'objective_type') {
-            if (strlen($request->answers) == 0) {
-                flash('You need to provide atleast one answer option')->error();
-                return back();
-            }
-        }
         $question->survey_id = $survey->id;
         if (!$question->save()) {
             flash('Failed to add question')->error();
             return back();
         }
         if ($request->answer_type == 'objective_type') {
-            if (strlen($request->answers) > 0) {
-                $question->storeAnswers($request->answers, $question->id);
+            if (count($request->answertext) == count($request->answervalue)) {
+                $question->storeAnswers($request->answertext, $request->answervalue, $question->id);
+                flash('Question added successfully')->success();
+            }else{
+                flash('Number of posible answers should be equal to the number of values')->error();
             }
-        }
-        flash('Question added')->success();
+        }        
         return back();
     }
 

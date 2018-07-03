@@ -17,6 +17,8 @@
                     <thead>
                         <th>Name</th>
                         <th>Phone Number</th>
+                        <th>Language</th>
+                        <th>Literacy Level</th>
                         <th>Address</th>
                         <th>Gender</th>
                         <th>Email</th>
@@ -29,6 +31,8 @@
                         <tr>
                             <td>{{ $respondent->name }}</td>
                             <td>{{ $respondent->phone_number }}</td>
+                            <td>{{$respondent->language}}</td>
+                            <td>{{$respondent->level_of_education}}</td>
                             <td>{{ $respondent->address }}</td>
                             <td>{{ $respondent->gender }}</td>
                             <td>{{ $respondent->email_address }}</td>

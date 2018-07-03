@@ -21,6 +21,8 @@ class CreateRespondentsTable extends Migration
             $table->string('address');
             $table->string('phone_number');
             $table->string('email_address')->nullable();
+            $table->string('language')->nullable();
+            $table->string('level_of_education')->nullable();
             $table->timestamps();
 
             $table->foreign('district_id')->references('id')->on('districts')->onUpdate('cascade')->onDelete('cascade');
