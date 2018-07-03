@@ -13,6 +13,8 @@ class Respondent extends Model
         'address',
         'gender',
         'email',
+        'language',
+        'level_of_education',
     ];
 
     public function rules()
