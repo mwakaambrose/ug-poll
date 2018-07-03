@@ -21,14 +21,17 @@ class Question extends Model
     	];
     }
 
-    public function storeAnswers($answers, $question_id)
+    public function storeAnswers($answertext, $answervalue, $question_id)
     {
-    	foreach (explode(',', $answers) as $answer) {
-    		$response = new Response;
-    		$response->answer = $answer;
-    		$response->question_id = $question_id;
-    		$response->save();
-    	}
+        for ($i=0; $i < count($answertext); $i++) { 
+            $response = new Response;
+            $response->answer = $answertext[$i];
+            $response->value = $answervalue[$i];
+            $response->question_id = $question_id;
+            $response->save();
+        }
+
+ 
     }
 
     public function responses()

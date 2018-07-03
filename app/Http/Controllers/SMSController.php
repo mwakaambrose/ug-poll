@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SMS;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreSMS;
+use App\Models\Survey;
 
 class SMSController extends Controller
 {
@@ -26,7 +27,7 @@ class SMSController extends Controller
      */
     public function create()
     {
-        return view("call_to_actions.sms.create");
+        return view("call_to_actions.sms.create")->with(['survey'=>Survey::all()->where('user_id',\Auth::user()->id)]);
     }
 
     /**
@@ -85,8 +86,10 @@ class SMSController extends Controller
      * @param  \App\SMS  $sMS
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SMS $sMS)
+    public function destroy($id)
     {
-        //
+       SMS::destroy($id);
+       flash("SMS action deleted successfully")->success();
+       return back();
     }
 }

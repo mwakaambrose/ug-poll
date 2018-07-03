@@ -15,9 +15,11 @@ class CreateSMSTable extends Migration
     {
         Schema::create('s_m_s', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('sms_action');
+            $table->text('sms_action');
             $table->integer('minimum_weight')->default(0);
             $table->integer('maximum_weight')->default(0);
+            $table->integer('survey_id')->unsigned();
+            $table->foreign('survey_id')->references('id')->on('surveys')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
