@@ -12,7 +12,7 @@
 
     <!-- Scripts -->
    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <link rel="icon" href="{{asset('img/logo.jpeg')}}"/>
+    <link rel="icon" href="{{asset('img/logo.png')}}"/>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
@@ -27,7 +27,7 @@
         <nav class="navbar fixed-top navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="{{asset('img/logo.jpeg')}}" width="100px" />
+                    <img src="{{asset('img/logo.png')}}" width="100px" />
                  </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
