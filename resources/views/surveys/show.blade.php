@@ -27,7 +27,7 @@
 			<hr>
 			@if($survey->questions->count() == 0)
 				<div class="alert alert-info">
-					<strong>No questions added.</strong> <a href="#" data-toggle="modal" data-target="#questions">Add</a>
+					<strong>No questions added.	</strong> <a href="/load_questionier/{{$survey->id}}">Add</a>
 				</div>
 			@endif
 			@foreach($survey->questions as $question)
@@ -57,7 +57,10 @@
 					 		<?php
 
 					 		$posible_response = App\Models\Response::select('value')->where('question_id',$inbox->question_id)->where('answer',$inbox->answer)->first();
-					 		echo $posible_response->value; 
+					 		if (!empty($posible_response)) {
+					 			echo $posible_response->value; 
+					 		}
+					 		
 
 					 		 ?>
 					 	</td>
