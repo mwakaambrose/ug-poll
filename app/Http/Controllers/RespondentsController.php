@@ -50,7 +50,7 @@ class RespondentsController extends Controller
             $core_contact = ltrim($phone, "0");
             $phone_number = "+256".$core_contact;
         } else {
-            $phone_number = $phone;
+            $phone_number=$phone;
         }
         $respondent->phone_number=$phone_number;
 

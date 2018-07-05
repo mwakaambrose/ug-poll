@@ -24,7 +24,7 @@ class Communication extends Model
     				$save_outbox = new Outbox();
     				$save_outbox->question_id = $question_id;  			
     				$save_outbox->respondent_id = $respondent_id;
-    				$save_outbox->phone_number = $phone_number;
+    				$save_outbox->phone_number = $value->number;
     				$save_outbox->status = $value->status;
     				$save_outbox->cost = $value->cost;
     				try {
