@@ -119,7 +119,7 @@ class OutboxController extends Controller
                             foreach ($next_question->responses as $response) {
                                 $options .= "\n- ".$response->answer;
                             }
-                            $questions = $next_question->description ."{$options} \n  QN: ".$next_question->id;
+                            $questions = $next_question->description ."{$options} \n  Code: ".$next_question->id;
                             $send_sms->send_SMS($inbox_content->from, $questions, $next_question->id, $check_in_outbox->respondent_id); 
                         }  
                     }                
@@ -141,12 +141,14 @@ class OutboxController extends Controller
         $first_question = $survey->questions()->first(); 
         $group = Group::find($survey->group_id);
         $options = '';
+
+        foreach ($first_question->responses as $response) {
+            $options .= "\n- ".$response->answer;
+        }
+
         foreach ($group->respondents as $respondent_value) {
-            $phone_number = $respondent_value->phone_number;
-            foreach ($first_question->responses as $response) {
-                $options .= "\n- ".$response->answer;
-            }
-            $questions = $first_question->description ."{$options} \n  QN: ".$first_question->id;
+            $phone_number = $respondent_value->phone_number;            
+            $questions = $first_question->description ."{$options} \n  Code: ".$first_question->id;
             $send_sms = new Communication();
             $send_sms->send_SMS($phone_number, $questions, $first_question->id, $respondent_value->id); 
         }

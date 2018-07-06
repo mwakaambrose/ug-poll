@@ -26,4 +26,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/questions/{question}/delete', 'QuestionController@destroy');
     Route::get('load_questionier/{survey_id}', 'SurveyController@load_questionier')->name('load_questionier');
     Route::resource('outbox', 'OutboxController');
+    Route::resource('category', 'CategoryController');
 });
