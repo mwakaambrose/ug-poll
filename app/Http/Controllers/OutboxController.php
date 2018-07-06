@@ -141,11 +141,13 @@ class OutboxController extends Controller
         $first_question = $survey->questions()->first(); 
         $group = Group::find($survey->group_id);
         $options = '';
+
+        foreach ($first_question->responses as $response) {
+            $options .= "\n- ".$response->answer;
+        }
+
         foreach ($group->respondents as $respondent_value) {
-            $phone_number = $respondent_value->phone_number;
-            foreach ($first_question->responses as $response) {
-                $options .= "\n- ".$response->answer;
-            }
+            $phone_number = $respondent_value->phone_number;            
             $questions = $first_question->description ."{$options} \n  QN: ".$first_question->id;
             $send_sms = new Communication();
             $send_sms->send_SMS($phone_number, $questions, $first_question->id, $respondent_value->id); 

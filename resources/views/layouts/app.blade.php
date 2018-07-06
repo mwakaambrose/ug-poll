@@ -52,6 +52,11 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/sms-actions">Call to actions</a>
                             </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="/category">SMS Category</a>
+                            </li>
+
                         </ul>
                     @endauth
 
