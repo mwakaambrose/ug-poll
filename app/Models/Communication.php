@@ -18,7 +18,7 @@ class Communication extends Model
 
             if ($respondent_outbox->count() == 0) {
               
-    			$results = $gateway->sendMessage($phone_number, $sms, env("SHORT_CODE"), 1);
+    			$results = $gateway->sendMessage(trim($phone_number), $sms, env("SHORT_CODE"), 1);
 				
 				foreach ($results as $key => $value) { 
     				$save_outbox = new Outbox();
@@ -38,13 +38,13 @@ class Communication extends Model
     	} catch (AfricasTalkingGatewayException $e) {}    	 
     }
 
-
+ 
     public function plain_SMS($phone_number, $sms)
     {
         $gateway = new AfricasTalkingGateway(env("API_USERNAME"), env("API_KEY"), "agripoll");
         try {
 
-           $gateway->sendMessage($phone_number, $sms, env("SHORT_CODE"), 1);             
+           $gateway->sendMessage(trim($phone_number), $sms, env("SHORT_CODE"), 1);             
                      
         } catch (AfricasTalkingGatewayException $e) {}  
 
