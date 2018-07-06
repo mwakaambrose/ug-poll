@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Category;
+use App\Models\CategoryMessage;
 
-class CategoryController extends Controller
+class CategoryMessageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-       return view("category.list")->with(['categories'=>Category::all()]);
+        //
     }
 
     /**
@@ -24,7 +24,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view("category.create");
+        //
     }
 
     /**
@@ -35,13 +35,15 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,["name"=>"required"]);
-        $save_category = new Category();
+        $save_categorymessage = new CategoryMessage();
+        $save_categorymessage->category_id=$request->category_id;
+        $save_categorymessage->description=$request->description;
         try {
-            $save_category->name = $request->name;
-            $save_category->save();
+             $save_categorymessage->save();
         } catch (\Exception $e) {}
-        return redirect()->route('category.index');
+
+
+        return redirect()->route('category.show',$save_categorymessage->category_id);
     }
 
     /**
@@ -52,7 +54,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        return view('category.show_message')->with(['category'=>Category::find($id)]);
+        //
     }
 
     /**
@@ -63,7 +65,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-         return view('category.add_message')->with(['category'=>Category::find($id)]);
+        //
     }
 
     /**
@@ -86,6 +88,9 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+       try {
+           CategoryMessage::destroy($id);
+       } catch (\Exception $e) {}
+       return back();
     }
 }

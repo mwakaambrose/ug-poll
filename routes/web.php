@@ -27,4 +27,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('load_questionier/{survey_id}', 'SurveyController@load_questionier')->name('load_questionier');
     Route::resource('outbox', 'OutboxController');
     Route::resource('category', 'CategoryController');
+    Route::resource('category_message', 'CategoryMessageController');
 });
