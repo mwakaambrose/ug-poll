@@ -77,14 +77,14 @@ class OutboxController extends Controller
                                 //read the Inbox for each qn on this respondent
                                 $respondent_inbox = Inbox::select('phone_number','answer')->where('question_id',$survey_value->id)->where('phone_number',$inbox_content->from)->first();
                                 // read the coresponding letter for that answer
-                                $posible_response = Response::select('value')->where('question_id',$survey_value->id)->where('answer',$respondent_inbox->answer)->first();
+                                $posible_response = Response::all()->where('question_id',$survey_value->id)->where('answer',$respondent_inbox->answer)->last();
 
                                 if (!empty($posible_response)) {
                                     $sum_of_values = $sum_of_values + $posible_response->value;                  
                                 }
                             }
                             // read the call action that siuts the $sum_of_values
-                            $posible_action = SMS::select('sms_action')->where('minimum_weight','<=',$sum_of_values)->where('maximum_weight','>=',$sum_of_values)->first();                           
+                            $posible_action = SMS::all()->where('minimum_weight','<=',$sum_of_values)->where('maximum_weight','>=',$sum_of_values)->where('survey_id',$survey_value->id)->last();                           
 
                             if (!empty($posible_action)) {
                                 $send_sms->plain_SMS($inbox_content->from,$posible_action->sms_action); //this is the SMS call to action to the respondent

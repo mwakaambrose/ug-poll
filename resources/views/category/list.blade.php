@@ -16,11 +16,17 @@
                     @endif
 
                     <table class="table">
-                        <th>Name</th> 
+                        <th>Name</th> <th>Action</th>
 
                          @foreach($categories as $category)
                         <tr>
                             <td>{{$category->name}}</td>
+                            <td><a href="{{route('category.edit',$category->id)}}">Add Message</a> 
+                             <a href="{{route('category.show',$category->id)}}">View Message</a>
+
+           
+ 
+                         </td>
                         </tr>                          
                         @endforeach
                     </table>           
