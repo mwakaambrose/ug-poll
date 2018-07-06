@@ -119,7 +119,7 @@ class OutboxController extends Controller
                             foreach ($next_question->responses as $response) {
                                 $options .= "\n- ".$response->answer;
                             }
-                            $questions = $next_question->description ."{$options} \n  QN ID: ".$next_question->id;
+                            $questions = $next_question->description ."{$options} \n  Code: ".$next_question->id;
                             $send_sms->send_SMS($inbox_content->from, $questions, $next_question->id, $check_in_outbox->respondent_id); 
                         }  
                     }                
@@ -148,7 +148,7 @@ class OutboxController extends Controller
 
         foreach ($group->respondents as $respondent_value) {
             $phone_number = $respondent_value->phone_number;            
-            $questions = $first_question->description ."{$options} \n  QN ID: ".$first_question->id;
+            $questions = $first_question->description ."{$options} \n  Code: ".$first_question->id;
             $send_sms = new Communication();
             $send_sms->send_SMS($phone_number, $questions, $first_question->id, $respondent_value->id); 
         }
