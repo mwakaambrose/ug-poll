@@ -55,8 +55,9 @@ class Communication extends Model
         $gateway = new AfricasTalkingGateway(env("API_USERNAME"),env("API_KEY"),"agripoll");
         try {
             $lastReceivedId = 0;
-            $results = $gateway->fetchMessages($lastReceivedId);
-            return $results;               
+            $results = array_reverse($gateway->fetchMessages($lastReceivedId));
+            
+            return  $results;
         } catch (AfricasTalkingGatewayException $e) {}
     }
 }
