@@ -72,7 +72,12 @@ class RespondentsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {}
+    {
+        $districts = District::all();
+        $groups = Group::where('user_id', Auth::user()->id)->get();
+        $respondents = Respondent::find($id);
+        return view("respondents.edit")->with(compact('respondents','districts','groups'));
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -91,7 +96,40 @@ class RespondentsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(RespondentStoreRequest $request, $id)
-    {}
+    {
+        $respondents = Respondent::find($id);
+        if (!empty($request->district_id)) {
+            $respondents->district_id = $request->district_id;
+        }
+        
+        $respondents->name = $request->name;
+        $respondents->phone_number = $request->phone_number;
+        $respondents->address = $request->address;
+
+        if (!empty($request->gender)) {
+           $respondents->gender = $request->gender;
+        }
+        
+        $respondents->email_address = $request->email_address;
+        
+
+        if (!empty($request->language)) {
+            $respondents->language = $request->language;
+        }
+
+        if (!empty($request->level_of_education)) {
+             $respondents->level_of_education = $request->level_of_education;
+        }
+
+       try {
+            $respondents->save();
+            echo "Updated";
+       } catch (\Exception $e) {
+           echo $e->getMessage();
+       }
+
+       
+    }
 
     /**
      * Remove the specified resource from storage.

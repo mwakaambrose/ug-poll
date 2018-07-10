@@ -33,7 +33,7 @@ class OutboxController extends Controller
     {
         $send_sms = new Communication();
 
-        foreach ($send_sms->fetch_SMS() as $inbox_content) {
+        foreach ($send_sms->fetch_SMS() as $inbox_content) {            
 
             // 34 YES  [expected response format  34 is the question id]
 
