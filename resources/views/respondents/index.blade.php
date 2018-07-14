@@ -14,38 +14,18 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <table class="nowrap table table-bordered table-striped" id="data_table">
+                <table class="nowrap table table-bordered table-striped table-responsive" width="100%" id="respondents_data_table">
                     <thead>
                         <th>Name</th>
                         <th>Phone Number</th>
                         <th>Language</th>
                         <th>Literacy Level</th>
-                        <th>Address</th>
+                        <!-- <th>Address</th> -->
                         <th>Gender</th>
                         <th>Email</th>
                         <th>District</th>
                         <th>Groups</th>
                      </thead>
-
-                    <tbody>
-                    @foreach($respondents as $respondent)
-                        <tr>
-                            <td>{{ $respondent->name }}</td>
-                            <td>{{ $respondent->phone_number }}</td>
-                            <td>{{$respondent->language}}</td>
-                            <td>{{$respondent->level_of_education}}</td>
-                            <td>{{ $respondent->address }}</td>
-                            <td>{{ $respondent->gender }}</td>
-                            <td>{{ $respondent->email_address }}</td>
-                            <td>{{ isset($respondent->district) ? $respondent->district->name : '' }}</td>
-                            <td>
-                                @foreach($respondent->groups as $group)
-                                    <a href="/groups/{{ $group->id }}">{{ $group->name }}</a>
-                                @endforeach
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
                 </table>
             </div>
         </div>
@@ -60,45 +40,44 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div class="text-center"><b><span id="error_message" class="text-danger"></span></b></div>
             <div class="modal-body">
                 <form id="add_respondent" class="form-horizontal">
                     @csrf
-                    <!-- <div class="form-group has-danger" id="add_error">
-                        <label>Survey Group</label>
-                        <input type="text" name="name" id="name" class="form-control">
-                    </div> -->
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
-                            <div class="form-group">
-                                <label>Name <span class="text-danger">(Required)</span></label>
+                            <div id="name_error" class="form-group has-danger">
+                                <label>Name <span class="text-warning" style="font-size: 13px;">(Required)</span></label>
                                 <input type="text" id="name" name="name" class="form-control" required>
                             </div>
-                            <div class="form-group">
-                                <label>Phone Number <span class="text-danger">(Required)</span></label>
-                                <input type="number" id="phone_number" name="phone_number" class="form-control" required>
+                            <div id="phone_number_error" class="form-group has-danger">
+                                <label>Phone Number <span class="text-warning" style="font-size: 13px;">(Required)</span></label>
+                                <input type="number" id="phone_number" name="phone_number" placeholder="2567XXXXXXXX" class="form-control" required>
                             </div>
-                            <div class="form-group">
-                                <label>Address <span class="text-danger">(Required)</span></label>
+                            <div id="address_error" class="form-group has-danger">
+                                <label>Address <span class="text-warning" style="font-size: 13px;">(Required)</span></label>
                                 <input type="text" id="address" name="address" class="form-control" required>
                             </div>
 
-                            <div class="form-group">
-                                <label>Gender <span class="text-danger">(Required)</span></label>
+                            <div id="gender_error" class="form-group has-danger">
+                                <label>Gender <span class="text-warning" style="font-size: 13px;">(Required)</span></label>
                                 <select id="gender" name="gender" class="form-control" required>
+                                    <option></option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Email adress (Optional)</label>
-                                <input type="email_address" id="email_address" name="email_adress" class="form-control">
+                                <input type="email" id="email_address" name="email_address" class="form-control">
                             </div>
                         </div>
 
                         <div class="col-md-6 col-lg-6">
-                            <div class="form-group">
-                                <label>District</label>
+                            <div id="district_id_error" class="form-group has-danger">
+                                <label>District <span class="text-warning" style="font-size: 13px;">(Required)</span></label>
                                 <select id="district_id" name="district_id" class="form-control">
+                                <option></option>
                                     @foreach($districts as $district)
                                         <option value="{{ $district->id }}">{{ $district->name }}</option>
                                     @endforeach

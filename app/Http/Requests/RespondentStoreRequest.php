@@ -24,12 +24,6 @@ class RespondentStoreRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required|unique:respondent',
-            'phone_number' => 'required|digits_between:12,12',
-            'address' => 'required',
-            'gender' => 'required',
-        ]
-        // return (new Respondent)->rules();
+        return (new Respondent)->rules();
     }
 }

@@ -8,6 +8,7 @@ use App\Models\District;
 use App\Models\Respondent;
 use Illuminate\Http\Request;
 use App\Http\Requests\RespondentStoreRequest;
+use App\Http\Requests\StoreRespondentsForm;
 
 class RespondentsController extends Controller
 {
@@ -25,6 +26,37 @@ class RespondentsController extends Controller
         return view('respondents.index', compact('respondents','districts', 'groups'));
     }
 
+    public function fetchRespondents()
+    {   
+        $respondents = Respondent::with('groups')->get();
+        $districts = District::all();
+        $groups = Group::where('user_id', Auth::user()->id)->get();
+        
+        foreach($respondents as $respondent){
+            $result   = [];
+            $result[] = $respondent->name;
+            $result[] = $respondent->phone_number;
+            $result[] = isset($respondent->language) ? $respondent->language : 'N/A';
+            $result[] = isset($respondent->level_of_education) ? $respondent->level_of_education : 'N/A';
+            // $result[] = isset($respondent->address) ? $respondent->address : 'N/A';
+            $result[] = $respondent->gender;
+            $result[] = isset($respondent->email_address) ? $respondent->email_address : 'N/A';
+            $result[] = isset($respondent->district) ? $respondent->district->name : 'N/A';
+
+            $fe = [];
+            foreach ($respondent->groups as $group) {
+                $fe[] = '<a href="'.url("/groups", $group->id).'">'.$group->name.'</a>';
+            }
+            $result[] = empty($fe) ? 'N/A' : $fe;
+
+            $data[]   = $result;
+        }
+
+        $x =  response()->json($data);
+
+        return $x;
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -40,34 +72,12 @@ class RespondentsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\RespondentStoreRequest $request
+     * @param  \App\Http\Requests\StoreRespondentsForm $request
      * @return \Illuminate\Http\Response
      */
-    public function store(RespondentStoreRequest $request)
-    {
-        /* Original */
-        $respondent = new Respondent($request->all());
-
-        $phone = $request->phone_number;
-
-        if ($phone[0] == "0") {
-            $core_contact = ltrim($phone, "0");
-            $phone_number = "+256".$core_contact;
-        } else {
-            $phone_number=$phone;
-        }
-        $respondent->phone_number=$phone_number;
-
-        if (!$respondent->save()) {
-            return back()->withErrors()->withInput();
-        }
-
-        //link the respondent with a group
-        foreach ($request->group as $key => $group_id) {
-            $respondent->groups()->attach($group_id);
-        }
-        return redirect()->back()->with(['status' => 'New Respondent successfully saved.']);
-        /* End ORiginal */
+    public function store(StoreRespondentsForm $form)
+    {   
+        return $form->persist();
     }
 
     /**
@@ -132,8 +142,6 @@ class RespondentsController extends Controller
        } catch (\Exception $e) {
            echo $e->getMessage();
        }
-
-       
     }
 
     /**

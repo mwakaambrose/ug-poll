@@ -24,12 +24,12 @@ class GroupsController extends Controller
     {
         $groups = Group::where('user_id', Auth::user()->id)->withCount('respondents')->get();
         foreach($groups as $group){
-            $result=[];
-            $result[] =  '<a href="'.url("/groups", $group->id).'">'.$group->name.'</a>';
-            $result[] =  $group->respondents_count;
-            $result[] =  '<a href="'.url("/groups", [$group->id, "edit"]).'" class="text-info-mx-3">Edit Members</a><a href="'.url("/groups", $group->id).'" class="text-success-mx-3">View Details</a>';
+            $result   = [];
+            $result[] = '<a href="'.url("/groups", $group->id).'">'.$group->name.'</a>';
+            $result[] = $group->respondents_count;
+            $result[] = '<a href="'.url("/groups", [$group->id, "edit"]).'" class="text-info-mx-3">Edit Members</a><a href="'.url("/groups", $group->id).'" class="text-success-mx-3">View Details</a>';
 
-            $data[] = $result;
+            $data[]   = $result;
         }
 
         $x =  response()->json($data);
