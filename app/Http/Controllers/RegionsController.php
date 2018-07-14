@@ -36,13 +36,15 @@ class RegionsController extends Controller
      */
     public function store(Request $request)
     {
-        $region = new Region($request->all());
+        $validator = \Validator::make($request->all(), [
+            'name' => 'required'
+        ], ['name.required' => 'The Region field is required.']);
 
-        if (!$region->save()) {
-            return back()->withErrors()->withInput();
+        if ($validator->fails())
+        {
+            return response()->json(['errors'=>$validator->errors()->all()]);
         }
-
-        return redirect('/regions')->with(['status' => 'New Region created successfully.']);
+        return response()->json(['success'=>'Record is successfully added']);
     }
 
     /**

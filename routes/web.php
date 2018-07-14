@@ -15,6 +15,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('regions', 'RegionsController')->except(['show']);
 
     //Survey Groups & Respondents
+    Route::get('/dt_groups', 'GroupsController@fetchGroups');
     Route::resource('groups', 'GroupsController');
     Route::resource('respondents', 'RespondentsController');
 

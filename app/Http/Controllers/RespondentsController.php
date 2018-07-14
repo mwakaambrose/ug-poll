@@ -19,7 +19,10 @@ class RespondentsController extends Controller
     public function index()
     {
         $respondents = Respondent::with('groups')->get();
-        return view('respondents.index', compact('respondents'));
+        $districts = District::all();
+        $groups = Group::where('user_id', Auth::user()->id)->get();
+
+        return view('respondents.index', compact('respondents','districts', 'groups'));
     }
 
     /**
@@ -42,6 +45,7 @@ class RespondentsController extends Controller
      */
     public function store(RespondentStoreRequest $request)
     {
+        /* Original */
         $respondent = new Respondent($request->all());
 
         $phone = $request->phone_number;
@@ -63,6 +67,7 @@ class RespondentsController extends Controller
             $respondent->groups()->attach($group_id);
         }
         return redirect()->back()->with(['status' => 'New Respondent successfully saved.']);
+        /* End ORiginal */
     }
 
     /**

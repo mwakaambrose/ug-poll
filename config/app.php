@@ -14,7 +14,7 @@ return [
     */
 
     // 'name' => env('APP_NAME', 'Agri Poll'),
-    'name' => 'Agri Poll',
+    'name' => 'Buuza Agripoll',
 
     /*
     |--------------------------------------------------------------------------

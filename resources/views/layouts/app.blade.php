@@ -11,14 +11,13 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-   <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <link rel="icon" href="{{asset('img/favicon.png')}}"/>
+    <link rel="icon" href="{{asset('img/favicon_new.png')}}"/>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset(mix('css/app.css')) }}" rel="stylesheet">
 
     @yield('styles')
  </head>
@@ -36,25 +35,25 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     @auth
                         <!-- Left Side Of Navbar -->
-                        <ul class="navbar-nav mr-auto">
+                        <ul class="nav nav-pills mr-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="/regions">1-Regions</a>
+                                <a style="color:black;" class="nav-link {{ Request::is('regions*') ? 'active' : '' }}" href="/regions"><i class="fa fa-map-o"></i> <b>Regions</b></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/groups">2-Groups</a>
+                                <a style="color:black;" class="nav-link {{ Request::is('groups*') ? 'active' : '' }}" href="/groups"><i class="fa fa-address-card-o"></i> <b>Groups</b></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/respondents">3-Respondents</a>
+                                <a style="color:black;" class="nav-link {{ Request::is('respondents*') ? 'active' : '' }}" href="/respondents"><i class="fa fa-user-o"></i> <b>Respondents</b></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/surveys">4-Surveys</a>
+                                <a style="color:black;" class="nav-link {{ Request::is('surveys*') ? 'active' : '' }}" href="/surveys"><i class="fa fa-check-square-o"></i> <b>Surveys</b></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/sms-actions">Call to actions</a>
+                                <a style="color:black;" class="nav-link {{ Request::is('sms-actions*') ? 'active' : '' }}" href="/sms-actions"><i class="fa fa-tag"></i> <b>Call to actions</b></a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="/category">SMS Category</a>
+                                <a style="color:black;" class="nav-link {{ Request::is('category*') ? 'active' : '' }}" href="/category"><i class="fa fa-envelope-o"></i> <b>SMS Category</b></a>
                             </li>
 
                         </ul>
@@ -120,6 +119,7 @@
             </div>
         </main>
     </div>
+    <script src="{{ asset(mix('js/app.js')) }}"></script>
     @stack('scripts')
 </body>
 </html>

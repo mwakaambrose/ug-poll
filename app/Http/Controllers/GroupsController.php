@@ -20,6 +20,23 @@ class GroupsController extends Controller
         return view('groups.index', compact('groups'));
     }
 
+    public function fetchGroups()
+    {
+        $groups = Group::where('user_id', Auth::user()->id)->withCount('respondents')->get();
+        foreach($groups as $group){
+            $result=[];
+            $result[] =  '<a href="'.url("/groups", $group->id).'">'.$group->name.'</a>';
+            $result[] =  $group->respondents_count;
+            $result[] =  '<a href="'.url("/groups", [$group->id, "edit"]).'" class="text-info-mx-3">Edit Members</a><a href="'.url("/groups", $group->id).'" class="text-success-mx-3">View Details</a>';
+
+            $data[] = $result;
+        }
+
+        $x =  response()->json($data);
+
+        return $x;
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -38,16 +55,23 @@ class GroupsController extends Controller
      */
     public function store(Request $request)
     {
-        $group = new Group($request->all());
-        $group->user_id = Auth::user()->id;
+        $validator = \Validator::make($request->all(), [
+            'name' => 'required'
+        ], ['name.required' => 'The Group field is required.']);
 
-        if (!$group->save()) {
-            $status = "Failed to save group. Please check the error messages.";
-        } else {
-            $status = "Successfully created new survey group called $request->name.";
+        if ($validator->fails())
+        {
+            return response()->json(['errors'=>$validator->errors()->all()]);
         }
+        
+        $group = new Group($request->all());
+        $save = Auth::user()->groups()->save($group);
 
-        return redirect()->back()->with(['status' => $status]);
+        if (!$save) {
+            return response()->json(["errors"=>"$request->name creation failed!"]);
+        }else {
+            return response()->json(["success"=>"Successfully created new survey group called $request->name."]);
+        }
     }
 
     /**
