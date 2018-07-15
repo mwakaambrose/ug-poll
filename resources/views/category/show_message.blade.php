@@ -4,9 +4,9 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">All SMS Templates in {{$category->name}}</div>
+                <h4>All SMS Templates in {{$category->name}}</h4>
 
-                <a href="{{route('category.edit',$category->id)}}">Add Message</a>
+               
 
                 <div class="card-body">
                     @if (session('status'))
@@ -15,22 +15,22 @@
                         </div>
                     @endif
 
+                     <a class="btn btn-primary" style="float: right;" href="{{route('category.edit',$category->id)}}">Add Message</a>
+                     <br><br>
+
                     <ol>
                         @foreach($category->categorymessage as $message)
                           <li>
-                              {{$message->description}}
-
-             <form action="/category_message/{{ $message->id }}" method="POST">
-                {{method_field('DELETE')}}
-                {{ csrf_field() }}
-                <span class="glyphicon glyphicon-trash"></span>
-                <input type="submit" class="btn btn-danger" value="Delete "/>
-            </form>
+                            {{$message->description}}
+                             <form style="float: right;" action="/category_message/{{ $message->id }}" method="POST">
+                                {{method_field('DELETE')}}
+                                {{ csrf_field() }}
+                                <span class="glyphicon glyphicon-trash"></span>
+                                <input type="submit" class="btn btn-danger" value="Delete "/>
+                            </form>
                           </li>
                         @endforeach
-                    </ol>
-
-                              
+                    </ol>                              
                 </div>
             </div>
         </div>

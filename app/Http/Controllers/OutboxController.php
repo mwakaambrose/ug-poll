@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Inbox;
 use App\Models\SMS;
-use App\Models\Response;
+use App\Models\Inbox;
 use App\Models\Group;
 use App\Models\Survey;
 use App\Models\Outbox;
 use App\Models\Reward;
 use App\Models\Question;
-use App\Models\Communication;
+use App\Models\Response;
 use Illuminate\Http\Request; 
+use App\Models\Communication;
+use App\Models\CategoryMessage;
 use App\includes\AfricasTalkingGateway;
 
 class OutboxController extends Controller
@@ -83,13 +84,19 @@ class OutboxController extends Controller
                                     $sum_of_values = $sum_of_values + $posible_response->value;                  
                                 }
                             }
+
                             // read the call action that siuts the $sum_of_values
                             $posible_action = SMS::all()->where('minimum_weight','<=',$sum_of_values)->where('maximum_weight','>=',$sum_of_values)->where('survey_id',$survey_value->id)->last();                           
 
-                            if (!empty($posible_action)) {
-                                $send_sms->plain_SMS($inbox_content->from,$posible_action->sms_action); //this is the SMS call to action to the respondent
+                            if ($posible_action->count() != 0) {
+                                // read messages in the target category
+                                $raed_messages = CategoryMessage::select('description')->where('category_id',$posible_action->category_id)->get();                                                             
+                                foreach ($raed_messages as $message_value) {
+                                   $send_sms->plain_SMS($inbox_content->from,$message_value->description); //this is the SMS call to action to the respondent
+                                }                                
                             }
                             // Airtime
+
                             $recipients = array(array("phoneNumber" => $inbox_content->from, "amount" => "UGX 100"));
 
                             $send_sms->plain_SMS($inbox_content->from, "Thank you for conducting a survey with us"); 

@@ -20,8 +20,7 @@
 
                          @foreach($groups as $group)
                          <tr>
-                             <td>{{$group->name}}</td>
-                             
+                             <td>{{$group->name}}</td>                            
                             
                          </tr>
                           

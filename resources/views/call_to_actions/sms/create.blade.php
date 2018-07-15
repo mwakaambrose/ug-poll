@@ -37,8 +37,14 @@
                 </div>
                 <div class="form-group">
                     <div class="col">
-                        <label>SMS Action</label>
-                        <textarea name="sms_action" cols="30" rows="5" class="form-control" placeholder="Provide the sms that will be sent to the respondents when their answers falls between the answer weights."></textarea>
+                        <label>SMS Action Category</label>
+                        <select class="form-control" name="category_id" required="required">
+                            <option></option>
+                            @foreach($category as $categories)
+                              <option value="{{$categories->id}}">{{$categories->name}}</option>
+                            @endforeach
+                        </select>
+                        <!-- <textarea name="sms_action" cols="30" rows="5" class="form-control" placeholder="Provide the sms that will be sent to the respondents when their answers falls between the answer weights."></textarea> -->
                     </div>
                 </div>
                 <div class="col">

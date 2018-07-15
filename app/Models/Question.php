@@ -34,10 +34,10 @@ class Question extends Model
  
     }
 
-    public function responses()
-    {
-    	return $this->hasMany(Response::class);
-	}
+     public function response()
+     {
+        return $this->hasMany(Response::class);
+     }
 	
 	public function survey()
 	{

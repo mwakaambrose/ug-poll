@@ -6,6 +6,7 @@ use App\Models\SMS;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreSMS;
 use App\Models\Survey;
+use App\Models\Category;
 
 class SMSController extends Controller
 {
@@ -27,7 +28,7 @@ class SMSController extends Controller
      */
     public function create()
     {
-        return view("call_to_actions.sms.create")->with(['survey'=>Survey::all()->where('user_id',\Auth::user()->id)]);
+        return view("call_to_actions.sms.create")->with(['survey'=>Survey::all()->where('user_id',\Auth::user()->id),'category'=>Category::all()]);
     }
 
     /**
