@@ -34,7 +34,12 @@ class Question extends Model
  
     }
 
-     public function response()
+    public function response()
+    {
+       return $this->hasMany(Response::class);
+    }
+
+    public function responses()
      {
         return $this->hasMany(Response::class);
      }
