@@ -10,7 +10,7 @@
 
     <div class="card mt-3">
         <div class="card-body">
-            <table class="table table-condensed table-striped" id="data_table">
+            <table class="nowrap table table-bordered table-striped" id="data_table">
                 <thead>
                     <th>#</th>
                     <th>Survey</th>

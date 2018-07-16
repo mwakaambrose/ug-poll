@@ -12,7 +12,7 @@ class Respondent extends Model
         'phone_number',
         'address',
         'gender',
-        'email',
+        'email_address',
         'language',
         'level_of_education',
     ];
@@ -20,12 +20,12 @@ class Respondent extends Model
     public function rules()
     {
         return [
-            'district_id'   => 'nullable|integer',
-            'name'          => 'required|string',
-            'phone_number'  => 'required|string',
-            'address'       => 'required|string',
-            'gender'        => 'required|string',
-            'email'         => 'nullable|string',
+            'district_id' => 'nullable|integer',
+            'name' => 'required|string',
+            'phone_number' => 'required|string',
+            'address' => 'required|string',
+            'gender' => 'required|string',
+            'email_address' => 'nullable|string',
         ];
     }
 
