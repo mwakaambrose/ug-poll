@@ -37,11 +37,10 @@
 					</span>
 
 					<ul>
-						@foreach($question->responses as $response)
-							<li>{{ $response->answer }} ({{$response->value}})</li>
+						@foreach($question->response as $responses)
+							<li>{{ $responses->answer }} ({{$responses->value}})</li>
 						@endforeach						
-					</ul>
-				 
+					</ul>		 
 				
 
 		<h2> Answers</h2>
