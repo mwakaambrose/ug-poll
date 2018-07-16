@@ -20,8 +20,16 @@
                          @foreach($categories as $category)
                         <tr>
                             <td>{{$category->name}}</td>
-                            <td><a class="btn btn-success" href="{{route('category.edit',$category->id)}}">Add Message</a> 
-                             <a class=" btn btn-info" href="{{route('category.show',$category->id)}}">View Message</a>          
+                            <td>
+                               
+                            <form style="float: right;" action="/category/{{ $category->id }}" method="POST">
+                                {{method_field('DELETE')}}
+                                {{ csrf_field() }}
+                                <a class="btn btn-success" href="{{route('category.edit',$category->id)}}">Add Message</a> 
+                                <a class=" btn btn-info" href="{{route('category.show',$category->id)}}">View Message</a> 
+                                <span class="glyphicon glyphicon-trash"></span>
+                                <input type="submit" class="btn btn-danger" value="Delete "/>
+                            </form>         
  
                          </td>
                         </tr>                          
