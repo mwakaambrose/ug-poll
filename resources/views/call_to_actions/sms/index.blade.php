@@ -16,7 +16,7 @@
                     <th>Survey</th>
                     <th>Min</th>
                     <th>Max</th>
-                    <th>SMS action</th>
+                    <th>SMS action category</th>
                     <th>Action</th>
                 </thead>
 
@@ -28,7 +28,7 @@
                             <td>{{$action->survey->name}}</td>
                             <td>{{$action->minimum_weight}}</td>
                             <td>{{$action->maximum_weight}}</td>
-                            <td>{{$action->sms_action}}</td>
+                            <td>{{$action->category->name}}</td>
                             <td>
                                 <form method="POST" action="/sms-actions/{{$action->id}}">
                                     @csrf

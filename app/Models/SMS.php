@@ -9,7 +9,7 @@ class SMS extends Model
     protected $table = "s_m_s";
 
     protected $fillable = [
-        'sms_action',
+        'category_id',
         'minimum_weight',
         'maximum_weight',
         'survey_id',
@@ -18,7 +18,7 @@ class SMS extends Model
     public function rules()
     {
         return [
-            'sms_action' => 'required|string',
+            'category_id' => 'required',
             'minimum_weight' => 'required|numeric',
             'maximum_weight' => 'required|numeric',
             'survey_id'=>'required',
@@ -28,5 +28,10 @@ class SMS extends Model
     public function survey()
     {
         return $this->belongsTo(Survey::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

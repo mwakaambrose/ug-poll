@@ -14,12 +14,13 @@ class CreateSMSTable extends Migration
     public function up()
     {
         Schema::create('s_m_s', function (Blueprint $table) {
-            $table->increments('id');
-            $table->text('sms_action');
+            $table->increments('id');            
             $table->integer('minimum_weight')->default(0);
             $table->integer('maximum_weight')->default(0);
             $table->integer('survey_id')->unsigned();
+            $table->integer('category_id')->unsigned();
             $table->foreign('survey_id')->references('id')->on('surveys')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

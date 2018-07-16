@@ -15,4 +15,9 @@ class Response extends Model
     {
       	return $this->belongsTo('App\Survey');
     }
+
+    public function question()
+    {
+    	return $this->belongsTo('App\Models\Question');
+    }
 }
