@@ -41,7 +41,7 @@ class QuestionController extends Controller
         }
         if ($request->answer_type == 'objective_type') {
             if (count($request->answertext) == count($request->answervalue)) {
-                $question->storeAnswers($request->answertext, $request->answervalue, $question->id);
+                $question->storeAnswers(ucwords($request->answertext), $request->answervalue, $question->id);
                 flash('Question added successfully')->success();
             }else{
                 flash('Number of posible answers should be equal to the number of values')->error();
