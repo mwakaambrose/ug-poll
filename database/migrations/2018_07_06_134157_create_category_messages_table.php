@@ -17,7 +17,7 @@ class CreateCategoryMessagesTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->integer('category_id')->unsigned();
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
             $table->text('description');
         });
     }

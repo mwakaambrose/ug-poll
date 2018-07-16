@@ -88,7 +88,7 @@ class OutboxController extends Controller
                             // read the call action that siuts the $sum_of_values
                             $posible_action = SMS::all()->where('minimum_weight','<=',$sum_of_values)->where('maximum_weight','>=',$sum_of_values)->where('survey_id',$survey_value->id)->last();                           
 
-                            if ($posible_action->count() != 0) {
+                            if (json_encode($posible_action)!="null") {
                                 // read messages in the target category
                                 $raed_messages = CategoryMessage::select('description')->where('category_id',$posible_action->category_id)->get();                                                             
                                 foreach ($raed_messages as $message_value) {

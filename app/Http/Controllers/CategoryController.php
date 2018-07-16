@@ -86,6 +86,12 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            Category::destroy($id);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+            exit();
+        }
+        return back();
     }
 }
