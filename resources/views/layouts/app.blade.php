@@ -37,23 +37,23 @@
                         <!-- Left Side Of Navbar -->
                         <ul class="nav nav-pills mr-auto">
                             <li class="nav-item">
-                                <a style="color:black;" class="nav-link {{ Request::is('regions*') ? 'active' : '' }}" href="/regions"><i class="fa fa-map-o"></i> <b>Regions</b></a>
+                                <a class="nav-link {{ Request::is('regions*') ? 'active' : '' }}" href="/regions"><i class="fa fa-map-o"></i> <b>Regions</b></a>
                             </li>
                             <li class="nav-item">
-                                <a style="color:black;" class="nav-link {{ Request::is('groups*') ? 'active' : '' }}" href="/groups"><i class="fa fa-address-card-o"></i> <b>Groups</b></a>
+                                <a class="nav-link {{ Request::is('groups*') ? 'active' : '' }}" href="/groups"><i class="fa fa-address-card-o"></i> <b>Groups</b></a>
                             </li>
                             <li class="nav-item">
-                                <a style="color:black;" class="nav-link {{ Request::is('respondents*') ? 'active' : '' }}" href="/respondents"><i class="fa fa-user-o"></i> <b>Respondents</b></a>
+                                <a class="nav-link {{ Request::is('respondents*') ? 'active' : '' }}" href="/respondents"><i class="fa fa-user-o"></i> <b>Respondents</b></a>
                             </li>
                             <li class="nav-item">
-                                <a style="color:black;" class="nav-link {{ Request::is('surveys*') ? 'active' : '' }}" href="/surveys"><i class="fa fa-check-square-o"></i> <b>Surveys</b></a>
+                                <a class="nav-link {{ Request::is('surveys*') ? 'active' : '' }}" href="/surveys"><i class="fa fa-check-square-o"></i> <b>Surveys</b></a>
                             </li>
                             <li class="nav-item">
-                                <a style="color:black;" class="nav-link {{ Request::is('sms-actions*') ? 'active' : '' }}" href="/sms-actions"><i class="fa fa-tag"></i> <b>Call to actions</b></a>
+                                <a class="nav-link {{ Request::is('sms-actions*') ? 'active' : '' }}" href="/sms-actions"><i class="fa fa-tag"></i> <b>Call to actions</b></a>
                             </li>
 
                             <li class="nav-item">
-                                <a style="color:black;" class="nav-link {{ Request::is('category*') ? 'active' : '' }}" href="/category"><i class="fa fa-envelope-o"></i> <b>SMS Category</b></a>
+                                <a class="nav-link {{ Request::is('category*') ? 'active' : '' }}" href="/category"><i class="fa fa-envelope-o"></i> <b>SMS Category</b></a>
                             </li>
 
                         </ul>

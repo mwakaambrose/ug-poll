@@ -14,7 +14,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <table class="nowrap table table-bordered table-striped table-responsive" width="100%" id="respondents_data_table">
+                <table class="nowrap table table-bordered table-striped" width="100%" id="respondents_data_table">
                     <thead>
                         <th>Name</th>
                         <th>Phone Number</th>

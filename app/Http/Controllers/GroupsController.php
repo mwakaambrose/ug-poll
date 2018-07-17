@@ -23,6 +23,7 @@ class GroupsController extends Controller
     public function fetchGroups()
     {
         $groups = Group::where('user_id', Auth::user()->id)->withCount('respondents')->get();
+        $data = [];
         foreach($groups as $group){
             $result   = [];
             $result[] = '<a href="'.url("/groups", $group->id).'">'.$group->name.'</a>';
