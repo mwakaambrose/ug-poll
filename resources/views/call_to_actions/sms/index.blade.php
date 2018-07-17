@@ -27,7 +27,7 @@ This Page Displays the Set Call to Action Responses after a Survey is conducted 
 
                 <tbody>
                     @foreach($sms as $action)
-                      @if($action->survey->user_id == Auth::user()->id)
+                      @if(Auth::user()->id)
                         <tr>
                             <td>{{$action->id}}</td>
                             <td>{{$action->survey->name}}</td>
