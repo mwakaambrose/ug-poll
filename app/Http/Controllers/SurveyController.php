@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use Auth;
 use App\Models\Group;
 use App\Models\Outbox;
@@ -9,7 +9,8 @@ use App\Models\Survey;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreSurvey;
-
+use App\Models\Response;
+use PDF;
 class SurveyController extends Controller
 {
     public function __construct()
@@ -121,4 +122,11 @@ class SurveyController extends Controller
        $survey=Survey::find($survey_id);
        return view('surveys.create_questions')->with(compact('survey')); 
     }
+    public function template($survey_id){
+       $template = Question::where('survey_id', $survey_id)->get();
+       $survey=Survey::find($survey_id)->get();
+    return view('surveys.template', compact('template','survey'));
+    }
+     
+     
 }

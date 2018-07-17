@@ -23,6 +23,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Surveys & Questions
     Route::resource('surveys', 'SurveyController');
+    //surveys template
+    Route::get('template/{survey_id}','SurveyController@template');
+    //exportPdf
+    Route::get('/exportPDF/{id}','SurveyController@exportPDF');
     Route::resource('sms-actions', 'SMSController');
     Route::resource('answer-weights', 'AnswerWeightsController');
     Route::resource('surveys.questions', 'QuestionController');

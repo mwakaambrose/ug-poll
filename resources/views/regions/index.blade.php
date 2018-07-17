@@ -4,7 +4,12 @@
 
     <div class="row col-md-12">
         <div class="col-sm-6 pull-left">
-            <h4>Available Regions</h4>
+            <h4>Available Regions&nbsp;&nbsp;<span class="fa fa-question-circle" title="
+-Add regions e.g Central, Western,Eastern,Northern or any category of your choice.&#013;From which you are respondents you are going to register belong&#013;
+-You Can Search a Region and Add a District to it By clicking the Add District active Link&#013;
+-You Can Copy ,Export The Regions as an Excel Sheet,CSV,PDF and even print the Regions&#013;
+
+"></span></h4>
         </div>
         <div class="col-sm-6 text-right pb-2">
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal_add_regions">
