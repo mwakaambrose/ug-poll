@@ -1,17 +1,17 @@
-
 // Fonts
 @import '~font-awesome/scss/font-awesome.scss';
 @import "~select2/dist/css/select2.css";
 @import "~select2-bootstrap4-theme/dist/select2-bootstrap4.css";
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
-
 // Variables
 @import "variables";
-
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-
 .navbar-laravel {
-  background-color: #d8ffd9;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    background-color: #d8ffd9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.nav-pills .nav-link {
+    color: black;
 }

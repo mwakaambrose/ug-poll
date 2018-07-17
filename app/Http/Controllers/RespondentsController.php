@@ -32,6 +32,7 @@ class RespondentsController extends Controller
         $districts = District::all();
         $groups = Group::where('user_id', Auth::user()->id)->get();
         
+        $data = [];
         foreach($respondents as $respondent){
             $result   = [];
             $result[] = $respondent->name;
