@@ -1,6 +1,7 @@
-@include('layouts.app')
+@extends('layouts.app')
+@section('content')
 <div class="card mt-3">
-		<div class="card-body" >
+		<div class="card-body">
 	<button type="button" id="print_btn" class="btn btn-default">Print Survey</button>
 			<hr />
 			<h1>
@@ -39,8 +40,8 @@ foreach($survey as $surv){
  
 		</div>
 	</div>
- 
-@section('styles')  
+@endsection	
+ @section('styles')  
    <link rel="stylesheet" type="text/css" href=" https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css"> 
 @endsection	
