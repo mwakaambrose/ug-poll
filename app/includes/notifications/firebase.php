@@ -1,11 +1,12 @@
 <?php
+namespace App\includes\notifications;
 
 /**
  * @author Ravi Tamada
  * @link URL Tutorial link
  */
 class Firebase {
-
+    
     // sending push message to single user by firebase reg id
     public function send($to, $message) {
         $fields = array(
@@ -73,5 +74,4 @@ class Firebase {
         return $result;
     }
 }
-
-?>
+ 

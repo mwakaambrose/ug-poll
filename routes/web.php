@@ -27,6 +27,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('template/{survey_id}','SurveyController@template');
     //exportPdf
     Route::get('/exportPDF/{id}','SurveyController@exportPDF');
+    
     Route::resource('sms-actions', 'SMSController');
     Route::resource('answer-weights', 'AnswerWeightsController');
     Route::resource('surveys.questions', 'QuestionController');
@@ -35,4 +36,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('outbox', 'OutboxController');
     Route::resource('category', 'CategoryController');
     Route::resource('category_message', 'CategoryMessageController');
+    //notification
+    Route::resource('/notify','NotificationController');
 });
