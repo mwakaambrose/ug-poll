@@ -1,4 +1,5 @@
 <?php
+namespace App\includes\notifications;
 
 /**
  * @author Ravi Tamada

@@ -2,7 +2,7 @@
 @section('content')
 
 
- <form   method="POST" action="/notify">  
+ <form   method="GET" action="/notification">  
  	@csrf
         <legend>Send to all Extension Workers</legend>
         <label for="title1">Title</label><p />

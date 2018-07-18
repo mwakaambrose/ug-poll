@@ -38,4 +38,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('category_message', 'CategoryMessageController');
     //notification
     Route::resource('/notify','NotificationController');
+    Route::get('/notification','NotificationController@sendNotification');
 });
