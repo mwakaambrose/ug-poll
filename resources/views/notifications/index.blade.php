@@ -2,17 +2,28 @@
 @section('content')
 
 
- <form   method="GET" action="/notification">  
+ <form   method="GET" action="/notification" class="form-horizontal">  
  	@csrf
         <legend>Send to all Extension Workers</legend>
         <label for="title1">Title</label><p />
-        <input type="text" id="title1" name="title"  placeholder="Enter title"><p />
+        <input type="text" id="title1" name="title"  placeholder="Enter title" style="width:350px;"><p />
 
         <label for="message1">Message</label><p />
-       <textarea  name="message" id="message1"  placeholder="Notification message!"></textarea><p />
+       <textarea  name="message" id="message1"  placeholder="Notification message!" style="width:350px;height: 120px;"></textarea><p />
+       <input id="include_image1" name="include_image" type="checkbox" style="display: none;" checked="checked">
         <input type="hidden" name="push_type" value="topic"/><p />
-        <button type="submit" >Send </button>     
+        <button type="submit" class="btn btn-success">Send </button>     
  </form>
+ @if(isset($response))
+     @if(!empty($response))
+    <span class="alert alert-success">Notification Sent
+        <i>MessageID: {{$response}}</i>
+    </span>
+    @else
+    <span class="alert alert-danger">Notification Not Sent</span>
+    @endif
+ @endif
+ 
   <style type="text/css">
             body{
             }

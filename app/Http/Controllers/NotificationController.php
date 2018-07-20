@@ -64,7 +64,7 @@ class NotificationController extends Controller
             $regId = isset($_GET['regId']) ? $_GET['regId'] : '';
             $response = $firebase->send($regId, $json);
         }
-        return view('notifications.index');
+        return view('notifications.index',compact('response'));
     }
 
 }
