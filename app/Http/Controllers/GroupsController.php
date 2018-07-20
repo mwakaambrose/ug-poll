@@ -128,7 +128,12 @@ class GroupsController extends Controller
      */
     public function destroy($id)
     {
-        Group::destroy($id);
-        return redirect('/groups')->with(['status' => 'Group has been Successfully deleted.']);
+        try {
+            Group::destroy($id);
+            return redirect('/groups')->with(['status' => 'Group has been Successfully deleted.']); 
+        } catch (\Exception $e) {
+            return redirect('/groups')->with(['status' => 'This Group already has information about it, You can not delete it.']); 
+        }
+       
     }
 }
