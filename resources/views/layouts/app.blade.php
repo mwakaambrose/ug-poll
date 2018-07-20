@@ -55,6 +55,9 @@
                             <li class="nav-item">
                                 <a class="nav-link {{ Request::is('category*') ? 'active' : '' }}" href="/category"><i class="fa fa-envelope-o"></i> <b>SMS Category</b></a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('notify*') ? 'active' : '' }}" href="/notify"><i class="fa fa-bell"></i> <b>Notification</b></a>
+                            </li>
 
                         </ul>
                     @endauth
