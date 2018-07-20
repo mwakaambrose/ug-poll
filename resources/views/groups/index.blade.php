@@ -3,7 +3,14 @@
 
     <div class="row col-md-12">
         <div class="col-sm-6 pull-left">
-            <h4>List of Groups</h4>
+            <h4>List of Groups&nbsp;&nbsp;&nbsp;<span class="fa fa-question-circle" title="
+-You Can Add a New Group to Which Respondents Belong&#013;
+-The Table Below Displays the Registered Groups including Name,Respondents and Actions.&#013;
+Where Name is the Name of The Group ,Respondents represents the Numebr of Respondents Registered in that particular Group&#013;
+-You Can Search a Group and Edit Members Details  By clicking the Edit MembersView Details&#013;
+-You Can Copy ,Export The Regions as an Excel Sheet,CSV,PDF and even print the Groups Registered&#013;
+
+"></span></h4>
         </div>
         
         <div class="col-sm-6 text-right pb-2">

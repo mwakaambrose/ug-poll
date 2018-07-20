@@ -5,7 +5,18 @@
         <div class="col-md-12">
             <div class="card">                 
                 <div class="card-body">
-                    <h3>List of Categories</h3>
+                    <h3>List of Categories
+<span class="fa fa-question-circle"     title='List Of Categories&#013;&#013;
+This Page Displays the List of Registered categories that contain SMS templates that can be resent to Respondents.
+After they complete the survey
+&#013;
+-To Add a New Category of Messages Template Click the Add Category Button&#013;
+-You Add a new SMS message by clicking the Add Message Button&#013;
+-You To View all the Saved Messages click the View Message Button &#013;
+-To Delete The Saved Messages,click the Delete Button&#013;
+'></span>
+                    </h3>
+
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}

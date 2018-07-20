@@ -3,7 +3,13 @@
 
     <div class="row col-md-12">
         <div class="col-sm-6 pull-left">
-            <h4>List of Respondents</h4>
+            <h4>List of Respondents&nbsp;&nbsp;&nbsp;<span class="fa fa-question-circle"  data-toggle="tooltip" data-placement="bottom" title="
+              RESPONDENTS&#013;&#013;
+-You Can Add a New Respondent by Clicking Add New Respondent Button&#013;
+-The Table Below Displays the Registered Respondents with their respective Details and corresponding Groups&#013;
+-You Can for a  Respondent By Typing the name of that person in the Search Field Below&#013;
+-You Can Copy ,Export The Respondents as an Excel Sheet,CSV,PDF and even print the Respondent Data&#013;
+"></span></h4>
         </div>
         <div class="col-sm-6 text-right pb-2">
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal_add_respondents">

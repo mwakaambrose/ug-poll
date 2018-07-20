@@ -7,12 +7,20 @@
 		'action_url' => '',
 		'action_name' => ''
 	])
-
 	<div class="btn-group" role="group">
 		<!-- <a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#questions">Add survey question</a> -->
-		<a class="btn btn-secondary" href="/load_questionier/{{$survey->id}}">Add survey question</a>
-		<a class="btn btn-secondary" id="process_survey" href="#">Send survey now</a> 
-		<a class="btn btn-secondary"  href="{{route('surveys.edit',$survey->id)}}">View outbox</a>
+<a class="btn btn-secondary" href="/load_questionier/{{$survey->id}}">Add survey question</a>
+<a class="btn btn-secondary" id="process_survey" href="#">Send survey now</a> 
+<a class="btn btn-secondary"  href="{{route('surveys.edit',$survey->id)}}">View outbox</a>
+<a class="btn btn-secondary"  href="/template/{{$survey->id}}">Save Survey Template</a>
+	&nbsp;&nbsp;<h4><span class="fa fa-question-circle"	title='SURVEY DETAILS&#013;&#013;
+This Page Displays All Surveys Particular Details including The Questions and Answers that were Set for that survey&#013;
+This page Also Displays the RealTime Answers/inbox from the Sent Survey of which you can filter and Export as Excel Sheet,CSV,PDF for further Data Analysis&#013;
+-You Can Add a Question to this Survey by clicking Add question and Filling in More Detail about the question and the Corresponding Answers for that Question.&#013;
+-To Send The Survey Click the Send Survey Button. This will run a background process  that will Send the Survey content in Intervals i.e After a Response to a Question ,The Next Question is Sent to the Respondent&#013;
+-To View The Sent Survey Questions and the Status click on the View Outbox button &#013;
+-To Save the Survey and Resuse it in future click the Save Survey template button&#013;
+'></span></h4>
 	</div>
 	<br>
 
@@ -60,7 +68,6 @@
 					 			echo $posible_response->value; 
 					 		}
 					 		
-
 					 		 ?>
 					 	</td>
 					 </tr>				 

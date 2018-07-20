@@ -7,7 +7,12 @@
         'action_url' => '/sms-actions/create',
         'action_name' => 'New SMS action'
     ])
-
+    <h4><span class="fa fa-question-circle"     title='SMS Actions&#013;&#013;
+This Page Displays the Set Call to Action Responses after a Survey is conducted ,The Possible values are numerical values that are summed up and a range is set for particular responses received from the respondents and an appopriate Action is sent to the Respondent after he/She Receives the Airtime Reward
+&#013;
+-To set a new Call to SMS action click the New SMS action button&#013;
+-You can Export the Call to Actions Records as CSV,Excel Sheet and PDF 
+'></span><p /></h4>
     <div class="card mt-3">
         <div class="card-body">
             <table class="nowrap table table-bordered table-striped" id="data_table">
