@@ -44,7 +44,7 @@ class Firebase {
         $url = 'https://fcm.googleapis.com/fcm/send';
 
         $headers = array(
-            'Authorization: key='.'AIzaSyCwQ5VweIu5E_vwBm4_mRFRVKbZO8jYZ6Q',
+            'Authorization: key='.env('FIREBASE_API_KEY'),
             'Content-Type: application/json'
         );
         // Open connection
