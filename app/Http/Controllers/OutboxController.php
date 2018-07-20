@@ -73,22 +73,21 @@ class OutboxController extends Controller
                         if (Reward::all()->where('phone_number', $inbox_content->from)->where('survey_id', $survey->id)->count() == 0) {
                              // call to action
                             $survey_qns = Question::select('id')->where('survey_id',$survey->id)->get();
+                            // return json_encode($survey_qns);
                             $sum_of_values=0;
                             foreach ($survey_qns as $survey_value) {
                                 //read the Inbox for each qn on this respondent
-                                $respondent_inbox = Inbox::select('phone_number','answer')->where('question_id',$survey_value->id)->where('phone_number',$inbox_content->from)->first();
+                                $respondent_inbox = Inbox::select('phone_number','answer')->where('question_id',$survey_value->id)->where('phone_number',$inbox_content->from)->first();                               
                                 // read the coresponding letter for that answer
                                 $posible_response = Response::all()->where('question_id',$survey_value->id)->where('answer',$respondent_inbox->answer)->last();
-
+                                
                                 if (!empty($posible_response)) {
                                     $sum_of_values = $sum_of_values + $posible_response->value;                  
                                 }
-                            }
+                            }                      
 
                             // read the call action that siuts the $sum_of_values
-                            $posible_action = SMS::all()->where('minimum_weight','<=',$sum_of_values)->where('maximum_weight','>=',$sum_of_values)->where('survey_id',$survey_value->id)->last();
-
-                            echo "Sum of values: ".$sum_of_values." Survey: ".$survey_value->id;                        
+                            $posible_action = SMS::all()->where('minimum_weight','<=',$sum_of_values)->where('maximum_weight','>=',$sum_of_values)->where('survey_id',$survey->id)->last();
 
                             if (json_encode($posible_action)!="null") {
                                 // read messages in the target category
@@ -96,10 +95,8 @@ class OutboxController extends Controller
                                 foreach ($raed_messages as $message_value) {
                                    $send_sms->plain_SMS($inbox_content->from,$message_value->description); //this is the SMS call to action to the respondent
                                 }                                
-                            }else{
-                               echo json_encode($posible_action); 
                             }
-                            // Airtime
+                            // Airtime                       
 
                             $recipients = array(array("phoneNumber" => $inbox_content->from, "amount" => "UGX 100"));
 
@@ -117,6 +114,8 @@ class OutboxController extends Controller
                                 $save_reward->save();                                      
                             }
                         }
+
+
                     } else if (!empty($next_question_id)) {  
                         $options = '';
                         // echo $response[0];
