@@ -4,7 +4,7 @@
 
  <form   method="GET" action="/notification" class="form-horizontal">  
  	@csrf
-        <legend>Send to all Extension Workers</legend>
+        <legend>Send Notification</legend>
         <label for="title1">Title</label><p />
         <input type="text" id="title1" name="title"  placeholder="Enter title" style="width:350px;"><p />
 
