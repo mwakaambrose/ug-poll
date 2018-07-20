@@ -1,11 +1,12 @@
 <?php
+namespace App\includes\notifications;
 
 /**
  * @author Ravi Tamada
  * @link URL Tutorial link
  */
 class Firebase {
-
+    
     // sending push message to single user by firebase reg id
     public function send($to, $message) {
         $fields = array(
@@ -43,7 +44,7 @@ class Firebase {
         $url = 'https://fcm.googleapis.com/fcm/send';
 
         $headers = array(
-            'Authorization: key=' . FIREBASE_API_KEY,
+            'Authorization: key='.env('FIREBASE_API_KEY'),
             'Content-Type: application/json'
         );
         // Open connection
@@ -73,5 +74,4 @@ class Firebase {
         return $result;
     }
 }
-
-?>
+ 

@@ -144,23 +144,7 @@
             </form>
             <br/><br/><br/><br/>
 
-            <form class="pure-form pure-form-stacked" method="get">
-                <fieldset>
-                    <legend>Send to all Extension Workers</legend>
-
-                    <label for="title1">Title</label>
-                    <input type="text" id="title1" name="title" class="pure-input-1-2" placeholder="Enter title">
-
-                    <label for="message1">Message</label>
-                    <textarea class="pure-input-1-2" name="message" id="message1" rows="5" placeholder="Notification message!"></textarea>
-
-                    <label for="include_image1" class="pure-checkbox">
-                        <input id="include_image1" name="include_image" type="checkbox"> Include image
-                    </label>
-                    <input type="hidden" name="push_type" value="topic"/>
-                    <button type="submit" class="pure-button pure-button-primary btn_send">Send </button>
-                </fieldset>
-            </form>
+           
         </div>
     </body>
 </html>
