@@ -1,109 +1,84 @@
 @extends('layouts.app')
 
 @section('content')
-	@include('shared._heading', [
-		'heading' => 'Survey Details',
-		'should_show_action' => false,
-		'action_url' => '',
-		'action_name' => ''
-	])
-	<div class="btn-group" role="group">
-		<!-- <a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#questions">Add survey question</a> -->
-<a class="btn btn-secondary" href="/load_questionier/{{$survey->id}}">Add survey question</a>
-<a class="btn btn-secondary" id="process_survey" href="#">Send survey now</a> 
-<a class="btn btn-secondary"  href="{{route('surveys.edit',$survey->id)}}">View outbox</a>
-<a class="btn btn-secondary"  href="/template/{{$survey->id}}">Save Survey Template</a>
-	&nbsp;&nbsp;<h4><span class="fa fa-question-circle"	title='SURVEY DETAILS&#013;&#013;
-This Page Displays All Surveys Particular Details including The Questions and Answers that were Set for that survey&#013;
-This page Also Displays the RealTime Answers/inbox from the Sent Survey of which you can filter and Export as Excel Sheet,CSV,PDF for further Data Analysis&#013;
--You Can Add a Question to this Survey by clicking Add question and Filling in More Detail about the question and the Corresponding Answers for that Question.&#013;
--To Send The Survey Click the Send Survey Button. This will run a background process  that will Send the Survey content in Intervals i.e After a Response to a Question ,The Next Question is Sent to the Respondent&#013;
--To View The Sent Survey Questions and the Status click on the View Outbox button &#013;
--To Save the Survey and Resuse it in future click the Save Survey template button&#013;
-'></span></h4>
-	</div>
-	<br>
+	<div class="row col-md-12">
+        <div class="col-sm-6 pull-left">
+            <h4>Survey Details</h4>
+        </div>
+    </div>
 
-	<span id="display_alert"></span>
-
-	<div class="card mt-3">
-		<div class="card-body">
-			<h1>{{ $survey->name }}</h1>
-			<p class="text-muted">{{$survey->description }}</p>
-			<hr>
-			<h5>Survey Questions</h5>
-			<hr>
-			@if($survey->questions->count() == 0)
-				<div class="alert alert-info">
-					<strong>No questions added.	</strong> <a href="/load_questionier/{{$survey->id}}">Add</a>
+	<div class="col-md-12">
+		<div class="card mt-3">
+			<br>
+			<div class="text-center">
+				<div class="btn-group mr-2" role="group">
+					<!-- <a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#questions">Add survey question</a> -->
+					<a class="btn btn-secondary btn-info" href="/load_questionier/{{$survey->id}}">Add survey question</a>
 				</div>
-			@endif
-			@foreach($survey->questions as $question)
-				<h3>{{ $question->description }} </h3> <span class="text-muted small">
-						{{ $question->answer_type }}
-						<a href="/questions/{{$question->id}}/delete" class="text-danger">(Delete)</a>
-					</span>
+		
+				<div class="btn-group mr-2" role="group">
+					<a class="btn btn-secondary btn-info" id="process_survey" href="#">Send survey now</a>
+				</div>
 
-					<ul>
-						@foreach($question->response as $responses)
-							<li>{{ $responses->answer }} ({{$responses->value}})</li>
-						@endforeach						
-					</ul>		 
-				
-
-		<h2> Answers</h2>
-			<table class="table table-hover table-striped" id="answers{{$question->id}}">
-				<thead>
-					<th>Phone</th> <th>Answer</th> <th>Value</th>
-				</thead>
-				<tbody>
-					@foreach($question->inboxes as $inbox)
-					 <tr>
-					 	<td>{{$inbox->phone_number}}</td> <td>{{$inbox->answer}}</td>
-					 	<td>
-					 		<?php
-
-					 		$posible_response = App\Models\Response::select('value')->where('question_id',$inbox->question_id)->where('answer',$inbox->answer)->first();
-					 		if (!empty($posible_response)) {
-					 			echo $posible_response->value; 
-					 		}
-					 		
-					 		 ?>
-					 	</td>
-					 </tr>				 
-					@endforeach
-				</tbody>				
-			</table>
-
-			@push('scripts')
-			    <script>
-			       $(document).ready(function() {
-			            $('#answers{{$question->id}}').DataTable( {
-			                dom: 'Bfrtip',
-			                buttons: [
-			                    'copy',
-			                    {
-			                        extend: 'excel',
-			                        messageTop: '{{ $question->description }}'
-			                    },
-			                    {
-			                        extend: 'csv',
-			                        messageTop: '{{ $question->description }}'
-			                    },
-			                    {
-			                        extend: 'pdf',
-			                        messageTop: '{{$question->description }}'
-			                    },
-			                    {
-			                        extend: 'print',
-			                        messageTop: '{{ $question->description }}'
-			                    }
-			                ]
-			            } );
-			        } );
-    			</script>
-			@endpush
-		@endforeach
+				<div class="btn-group mr-2" role="group">
+					<a class="btn btn-secondary btn-info"  href="{{route('surveys.edit',$survey->id)}}">View outbox</a>
+				</div>
+		
+				<div class="btn-group mr-2" role="group">
+					<a class="btn btn-secondary btn-info"  href="{{route('surveys.edit',$survey->id)}}">View outbox</a>
+				</div>
+			</div>
+			<br>
+			<div class="card-body">
+				<h3><small>Survey</small>: {{ $survey->name }}</h3>
+				<span class="text-muted">Description: {{$survey->description }}</span>
+				<hr>
+				@if($survey->questions->count() == 0)
+					<div class="alert alert-info">
+						<strong>No questions added.	</strong> <a href="/load_questionier/{{$survey->id}}">Add</a>
+					</div>
+				@endif
+				@foreach($survey->questions as $key => $question)
+					<div class="card">
+						<div class="card-body">
+							<span class="lead">{{ $key+1 }}. {{ $question->description }} </span>
+							<span class="text-muted small pull-right">
+								{{ $question->answer_type }}
+								<a href="/questions/{{$question->id}}/delete" class="text-danger">(Delete)</a>
+							</span>
+							<ul>
+								@foreach($question->response as $responses)
+									<li>{{ $responses->answer }} ({{$responses->value}})</li>
+								@endforeach						
+							</ul>
+							<h2> Answers</h2>
+							<table class="nowrap table table-bordered table-striped custom" id="answers{{$question->id}}">
+								<thead>
+									<th>Phone</th> <th>Answer</th> <th>Value</th>
+								</thead>
+								<tbody>
+									@foreach($question->inboxes as $inbox)
+									<tr>
+										<td>{{$inbox->phone_number}}</td> <td>{{$inbox->answer}}</td>
+										<td>
+											<?php
+		
+											$posible_response = App\Models\Response::select('value')->where('question_id',$inbox->question_id)->where('answer',$inbox->answer)->first();
+											if (!empty($posible_response)) {
+												echo $posible_response->value; 
+											}
+											
+		
+											?>
+										</td>
+									</tr>				 
+									@endforeach
+								</tbody>				
+							</table>
+						</div>
+					</div>
+				@endforeach
+			</div>
 		</div>
 	</div>
 
@@ -139,11 +114,6 @@ This page Also Displays the RealTime Answers/inbox from the Sent Survey of which
 			</div>
 		</div>
 	</div>
-@endsection
-
-@section('styles')  
-   <link rel="stylesheet" type="text/css" href=" https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css"> 
 @endsection
 
 @push('scripts')
@@ -193,13 +163,5 @@ This page Also Displays the RealTime Answers/inbox from the Sent Survey of which
 			})
 		}
 	</script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
 @endpush
+@include('shared._datatable_scripts')

@@ -70,11 +70,39 @@
                 }
             ]
         });
-
+        
         var respondentTable = $('#respondents_data_table').DataTable({
             "ordering": false,
             "ajax": {
                 "url": "{{ url('dt_respondents') }}",
+                "dataSrc": ""
+            },
+            dom: 'Bfrtip',
+            buttons: [
+                'copy',
+                {
+                    extend: 'excel',
+                    messageTop: ' '
+                },
+                {
+                    extend: 'csv',
+                    messageTop: ' '
+                },
+                {
+                    extend: 'pdf',
+                    messageTop: ' '
+                },
+                {
+                    extend: 'print',
+                    messageTop: null
+                }
+            ]
+        });
+
+        var surveyTable = $('#survey_data_table').DataTable({
+            "ordering": false,
+            "ajax": {
+                "url": "{{ url('dt_surveys') }}",
                 "dataSrc": ""
             },
             dom: 'Bfrtip',
@@ -181,6 +209,85 @@
             });
         });
 
+        $('#submit_survey').click(function(e){
+            e.preventDefault();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+            
+            $.ajax({
+                url: "{{ url('/surveys') }}",
+                method: "POST",
+                data: $('form#add_survey').serialize(),
+                dataType: 'json',
+                success: function(msg){
+                        $("#modal_add_survey").modal('hide');
+                            $("#add_survey")[0].reset();
+                            surveyTable.ajax.reload(null,false);
+                        },
+                error: function(msg){
+                        var error = msg.responseJSON;
+                        console.log(error);
+                        $("#error_message").html(error.message);
+                        var all_errors = error.errors;
+                        if('name' in all_errors){
+                            $('#name').addClass('is-invalid');
+                            if($('#show_name_error').length==0){
+                                $('#name_error').append('<span id="show_name_error" style="font-size: 13px;" class="text-danger">'+all_errors.name[0]+' </span>');
+                            }else{
+                                $('#show_name_error').remove();
+                                $('#name_error').append('<span id="show_name_error" style="font-size: 13px;" class="text-danger">'+all_errors.name[0]+' </span>');
+                            }
+                        }else{
+                            $('#name').removeClass('is-invalid');
+                            $('#show_name_error').remove();
+                        }
+
+                        if('description' in all_errors){
+                            $('#description').addClass('is-invalid');
+                            if($('#show_description_error').length==0){
+                                $('#description_error').append('<span id="show_description_error" style="font-size: 13px;" class="text-danger">'+all_errors.description[0]+' </span>');
+                            }else{
+                                $('#show_description_error').remove();
+                                $('#description_error').append('<span id="show_description_error" style="font-size: 13px;" class="text-danger">'+all_errors.description[0]+' </span>');
+                            }
+                        }else{
+                            $('#description').removeClass('is-invalid');
+                            $('#show_description_error').remove();
+                        }
+
+                        if('group_id' in all_errors){
+                            $('#group_id').addClass('is-invalid');
+                            if($('#show_group_id_error').length==0){
+                                $('#group_id_error').append('<span id="show_group_id_error" style="font-size: 13px;" class="text-danger">'+all_errors.group_id[0]+' </span>');
+                            }else{
+                                $('#show_group_id_error').remove();
+                                $('#group_id_error').append('<span id="show_group_id_error" style="font-size: 13px;" class="text-danger">'+all_errors.group_id[0]+' </span>');
+                            }
+                        }else{
+                            $('#group_id').removeClass('is-invalid');
+                            $('#show_group_id_error').remove();
+                        }
+
+                        if('send_time' in all_errors){
+                            $('#send_time').addClass('is-invalid');
+                            if($('#show_send_time_error').length==0){
+                                $('#send_time_error').append('<span id="show_send_time_error" style="font-size: 13px;" class="text-danger">'+all_errors.send_time[0]+' </span>');
+                            }else{
+                                $('#show_send_time_error').remove();
+                                $('#send_time_error').append('<span id="show_send_time_error" style="font-size: 13px;" class="text-danger">'+all_errors.send_time[0]+' </span>');
+                            }
+                        }else{
+                            $('#send_time').removeClass('is-invalid');
+                            $('#show_send_time_error').remove();
+                        }
+                    }
+            });
+        });
+
         $('select').attr('style', 'border:hidden; width:100%');
         
         $( "select" ).select2({
@@ -279,5 +386,33 @@
                     }
             });
         });
+
+        $('.custom').each(function(){
+          $id = this.id;
+          $($('#'+$id)).DataTable({
+            "ordering": false,
+            dom: 'Bfrtip',
+            buttons: [
+                'copy',
+                {
+                    extend: 'excel',
+                    messageTop: ' '
+                },
+                {
+                    extend: 'csv',
+                    messageTop: ' '
+                },
+                {
+                    extend: 'pdf',
+                    messageTop: ' '
+                },
+                {
+                    extend: 'print',
+                    messageTop: null
+                }
+            ]
+          });
+        });
+
     </script>
 @endpush

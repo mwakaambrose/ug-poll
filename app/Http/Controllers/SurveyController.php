@@ -9,8 +9,8 @@ use App\Models\Survey;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreSurvey;
-use App\Models\Response;
-use PDF;
+use App\Http\Requests\StoreSurveyForm;
+
 class SurveyController extends Controller
 {
     public function __construct()
@@ -25,8 +25,30 @@ class SurveyController extends Controller
      */
     public function index()
     {
+        $surveys = Survey::all()->where('user_id',\Auth::user()->id);
+        $group = Group::all()->where('user_id',\Auth::user()->id);
+        return view('surveys.index', compact('surveys','group'));
+    }
+
+    public function fetchSurveys()
+    {
         $surveys = Survey::all();
-        return view('surveys.index', compact('surveys'));
+        // dd($surveys->toJson());
+        $data = [];
+        foreach($surveys as $survey){
+            $result   = [];
+            $result[] = '<a href="'.url("/surveys", $survey->id).'">'.$survey->name.'</a>';
+            $result[] = $survey->description;
+            $result[] = $survey->send_time;
+            $result[] = '<a href="'.url("/load_questionier", $survey->id).'" class="text-info-mx-3">Add</a>';
+            $result[] = $survey->questions()->count();
+
+            $data[]   = $result;
+        }
+
+        $x =  response()->json($data);
+
+        return $x;
     }
 
     /**
@@ -47,18 +69,9 @@ class SurveyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSurvey $request)
+    public function store(StoreSurveyForm $form)
     {
-        $survey = new Survey($request->all());
-        $survey->group_id = $request->group_id;
-        $survey->user_id = Auth::user()->id;
-        if(!$survey->save()){
-            flash('Something went wrong. Failed to create survey, Please try again.')->error();
-            return back();           
-
-        }
-        flash('Survey created successfully')->success();
-        return redirect("/surveys/{$survey->id}");
+        return $form->persist();
     }
 
     /**
