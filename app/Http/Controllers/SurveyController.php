@@ -9,8 +9,8 @@ use App\Models\Survey;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreSurvey;
-use App\Http\Requests\StoreSurveyForm;
-
+use App\Models\Response;
+use PDF;
 class SurveyController extends Controller
 {
     public function __construct()
