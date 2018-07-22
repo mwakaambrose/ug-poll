@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+  protected $fillable = ['name'];
   public function categorymessage()
   {
-  	 return $this->hasMany('App\Models\CategoryMessage');
+    return $this->hasMany('App\Models\CategoryMessage');
   }
 }

@@ -130,8 +130,8 @@
                 data: $('form#add_category').serialize(),
                 dataType: 'json',
                 success: function(msg){
-                        $("#modal_add_sms_actions").modal('hide');
-                        $("#add_sms_action")[0].reset();
+                        $("#modal_add_category").modal('hide');
+                        $("#add_category")[0].reset();
                         categoryTable.ajax.reload(null,false);
                     },
                 error: function(msg){
@@ -139,56 +139,17 @@
                         $("#error_message").html(error.message);
 
                         var all_errors = error.errors;
-                        if('survey_id' in all_errors){
-                            $('#survey_id').addClass('is-invalid');
-                            if($('#show_survey_id_error').length==0){
-                                $('#survey_id_error').append('<span id="show_survey_id_error" style="font-size: 13px;" class="text-danger">'+all_errors.survey_id[0]+' </span>');
+                        if('name' in all_errors){
+                            $('#name').addClass('is-invalid');
+                            if($('#show_name_error').length==0){
+                                $('#name_error').append('<span id="show_name_error" style="font-size: 13px;" class="text-danger">'+all_errors.name[0]+' </span>');
                             }else{
-                                $('#show_survey_id_error').remove();
-                                $('#survey_id_error').append('<span id="show_survey_id_error" style="font-size: 13px;" class="text-danger">'+all_errors.survey_id[0]+' </span>');
+                                $('#show_name_error').remove();
+                                $('#name_error').append('<span id="show_name_error" style="font-size: 13px;" class="text-danger">'+all_errors.name[0]+' </span>');
                             }
                         }else{
-                            $('#survey_id').removeClass('is-invalid');
-                            $('#show_survey_id_error').remove();
-                        }
-
-                        if('minimum_weight' in all_errors){
-                            $('#minimum_weight').addClass('is-invalid');
-                            if($('#show_minimum_weight_error').length==0){
-                                $('#minimum_weight_error').append('<span id="show_minimum_weight_error" style="font-size: 13px;" class="text-danger">'+all_errors.minimum_weight[0]+' </span>');
-                            }else{
-                                $('#show_minimum_weight_error').remove();
-                                $('#minimum_weight_error').append('<span id="show_minimum_weight_error" style="font-size: 13px;" class="text-danger">'+all_errors.minimum_weight[0]+' </span>');
-                            }
-                        }else{
-                            $('#minimum_weight').removeClass('is-invalid');
-                            $('#show_minimum_weight_error').remove();
-                        }
-                        
-                        if('maximum_weight' in all_errors){
-                            $('#maximum_weight').addClass('is-invalid');
-                            if($('#show_maximum_weight_error').length==0){
-                                $('#maximum_weight_error').append('<span id="show_maximum_weight_error" style="font-size: 13px;" class="text-danger">'+all_errors.maximum_weight[0]+' </span>');
-                            }else{
-                                $('#show_maximum_weight_error').remove();
-                                $('#maximum_weight_error').append('<span id="show_maximum_weight_error" style="font-size: 13px;" class="text-danger">'+all_errors.maximum_weight[0]+' </span>');
-                            }
-                        }else{
-                            $('#maximum_weight').removeClass('is-invalid');
-                            $('#show_maximum_weight_error').remove();
-                        }
-
-                        if('category_id' in all_errors){
-                            $('#category_id').addClass('is-invalid');
-                            if($('#show_category_id_error').length==0){
-                                $('#category_id_error').append('<span id="show_category_id_error" style="font-size: 13px;" class="text-danger">'+all_errors.category_id[0]+' </span>');
-                            }else{
-                                $('#show_category_id_error').remove();
-                                $('#category_id_error').append('<span id="show_category_id_error" style="font-size: 13px;" class="text-danger">'+all_errors.category_id[0]+' </span>');
-                            }
-                        }else{
-                            $('#category_id').removeClass('is-invalid');
-                            $('#show_category_id_error').remove();
+                            $('#name').removeClass('is-invalid');
+                            $('#show_name_error').remove();
                         }
                     }
             });

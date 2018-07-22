@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Http\Requests\CategoryForm;
 
 class CategoryController extends Controller
 {
@@ -26,8 +27,9 @@ class CategoryController extends Controller
         foreach($categories as $category){
             $result   = [];
             $result[] = $category->name;
-            $result[] = '<a class="btn btn-info" href="{{ route(\'category.edit\',$category->id) }}">Add Message</a>';
-            $result[] = '<a class=" btn btn-info" href="{{ route(\'category.show\',$category->id) }}">View Message</a>';
+            $result[] = '<a class="btn btn-info" data-fancybox data-options=\'{ "caption" : "Add Message For : '.$category->name.'", "src" : "'.url("/category", [$category->id,"edit"]).'", "type" : "iframe" }\' href="javascript:;">Add Message</a>';
+            
+            $result[] = '<a class="btn btn-info" data-fancybox data-options=\'{ "caption" : "View Message For : '.$category->name.'", "src" : "'.url('category', $category->id).'", "type" : "iframe" }\' href="javascript:;">View Message</a>';
 
             $result[] = '<button id="delete" href="'.$category->id.'">DELETE</button>';
 
@@ -55,15 +57,9 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryForm $form)
     {
-        $this->validate($request,["name"=>"required"]);
-        $save_category = new Category();
-        try {
-            $save_category->name = $request->name;
-            $save_category->save();
-        } catch (\Exception $e) {}
-        return redirect()->route('category.index');
+        return $form->persist();
     }
 
     /**
@@ -85,7 +81,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-         return view('category.add_message')->with(['category'=>Category::find($id)]);
+        return view('category.add_message')->with(['category'=>Category::find($id)]);
     }
 
     /**
@@ -108,12 +104,7 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            Category::destroy($id);
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-            exit();
-        }
-        return back();
+        Category::destroy($id);
+        return response()->json(["success"=>"Category deleted."]);
     }
 }
