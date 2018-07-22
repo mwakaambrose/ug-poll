@@ -47,7 +47,7 @@ class SMSController extends Controller
 
         return $x;
     }
-    
+
     /**
      * Show the form for creating a new resource.
      *
@@ -111,10 +111,7 @@ class SMSController extends Controller
      */
     public function destroy($id)
     {
-    //    SMS::destroy($id);
-        SMS::find($id)->delete();
+        SMS::destroy($id);
         return response()->json(["success"=>"SMS Action successfully deleted."]);
-    //    flash("SMS action deleted successfully")->success();
-    //    return back();
     }
 }

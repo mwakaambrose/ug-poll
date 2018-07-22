@@ -38,7 +38,7 @@ class SurveyController extends Controller
         $data = [];
         foreach($surveys as $survey){
             $result   = [];
-            // $result[] = '<a href="'.url("/surveys", $survey->id).'">'.$survey->name.'</a>';
+            
             $result[] = '<a data-fancybox data-options=\'{ "caption" : "Survey Name: '.$survey->name.'", "src" : "'.url("/surveys", $survey->id).'", "type" : "iframe" }\' href="javascript:;">'.$survey->name.'</a>';
             $result[] = $survey->description;
             $result[] = $survey->send_time;
