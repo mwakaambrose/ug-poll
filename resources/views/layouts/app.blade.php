@@ -15,16 +15,16 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
-<link href="{{ asset('css/print.css') }}" rel="stylesheet" media="print" type="text/css">
     <!-- Styles -->
     <link href="{{ asset(mix('css/app.css')) }}" rel="stylesheet">
 
     @yield('styles')
+    @stack('styles')
  </head>
 <body>
     <div id="app">
         <nav class="navbar fixed-top navbar-expand-md navbar-light navbar-laravel">
-            <div class="container">
+            <div class="container" style=" padding-left: 0px; padding-right: 0px;">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img src="{{asset('img/logo.png')}}" width="100px" />
                  </a>

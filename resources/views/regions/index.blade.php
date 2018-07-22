@@ -4,12 +4,7 @@
 
     <div class="row col-md-12">
         <div class="col-sm-6 pull-left">
-            <h4>Available Regions&nbsp;&nbsp;<span class="fa fa-question-circle" title="
--Add regions e.g Central, Western,Eastern,Northern or any category of your choice.&#013;From which you are respondents you are going to register belong&#013;
--You Can Search a Region and Add a District to it By clicking the Add District active Link&#013;
--You Can Copy ,Export The Regions as an Excel Sheet,CSV,PDF and even print the Regions&#013;
-
-"></span></h4>
+            <h4>Available Regions&nbsp;&nbsp;<span class="fa fa-question-circle" title="-Add regions e.g Central, Western,Eastern,Northern or any category of your choice.&#013;From which you are respondents you are going to register belong&#013;-You Can Search a Region and Add a District to it By clicking the Add District active Link&#013;-You Can Copy ,Export The Regions as an Excel Sheet,CSV,PDF and even print the Regions&#013;"></span></h4>
         </div>
         <div class="col-sm-6 text-right pb-2">
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal_add_regions">
@@ -78,3 +73,44 @@
 
 @endsection
 @include('shared._datatable_scripts')
+@push('scripts')
+    <script type="text/javascript">
+        $('#submit_region').click(function(e){
+            e.preventDefault();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+            
+            $.ajax({
+                url: "{{ url('/regions') }}",
+                method: "POST",
+                data: $('form#add_region').serialize(),
+                dataType: 'json',
+                success: function(msg){
+                        if('errors' in msg){
+                            $.each(msg.errors, function(key, value){
+                                $('#name').addClass('is-invalid');
+                                if($('#show_error').length==0){
+                                    $('#add_error').append('<span id="show_error" class="text-danger">'+value+' </span>');
+                                }else{
+                                    $('#show_error').remove();
+                                    $('#add_error').append('<span id="show_error" class="text-danger">'+value+' </span>');
+                                }
+                            });
+                        }else{
+                            $('#name').removeClass('is-invalid');
+                            $('#show_error').remove();
+                            console.log('Succesful');
+                        }
+                    },
+
+                error: function(){
+                        console.log('Failed!');
+                    }
+            });
+        });
+    </script>
+@endpush

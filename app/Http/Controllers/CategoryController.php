@@ -17,6 +17,28 @@ class CategoryController extends Controller
        return view("category.list")->with(['categories'=>Category::all()]);
     }
 
+    public function fetchCategories()
+    {   
+    
+        $categories = Category::all();
+        
+        $data = [];
+        foreach($categories as $category){
+            $result   = [];
+            $result[] = $category->name;
+            $result[] = '<a class="btn btn-info" href="{{ route(\'category.edit\',$category->id) }}">Add Message</a>';
+            $result[] = '<a class=" btn btn-info" href="{{ route(\'category.show\',$category->id) }}">View Message</a>';
+
+            $result[] = '<button id="delete" href="'.$category->id.'">DELETE</button>';
+
+            $data[]   = $result;
+            $x =  response()->json($data);
+        }
+        $x =  response()->json($data);
+
+        return $x;
+    }
+
     /**
      * Show the form for creating a new resource.
      *

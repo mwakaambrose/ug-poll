@@ -9,8 +9,9 @@ use App\Models\Survey;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreSurvey;
+use App\Http\Requests\StoreSurveyForm;
 use App\Models\Response;
-use PDF;
+
 class SurveyController extends Controller
 {
     public function __construct()
@@ -25,8 +26,33 @@ class SurveyController extends Controller
      */
     public function index()
     {
+        $surveys = Survey::all()->where('user_id',\Auth::user()->id);
+        $group = Group::all()->where('user_id',\Auth::user()->id);
+        return view('surveys.index', compact('surveys','group'));
+    }
+
+    public function fetchSurveys()
+    {
         $surveys = Survey::all();
-        return view('surveys.index', compact('surveys'));
+        // dd($surveys->toJson());
+        $data = [];
+        foreach($surveys as $survey){
+            $result   = [];
+            // $result[] = '<a href="'.url("/surveys", $survey->id).'">'.$survey->name.'</a>';
+            $result[] = '<a data-fancybox data-options=\'{ "caption" : "Survey Name: '.$survey->name.'", "src" : "'.url("/surveys", $survey->id).'", "type" : "iframe" }\' href="javascript:;">'.$survey->name.'</a>';
+            $result[] = $survey->description;
+            $result[] = $survey->send_time;
+            $result[] = '<a class="btn btn-secondary btn-info" data-fancybox data-options=\'{ "caption" : "Add Question to Survey: '.$survey->name.'", "src" : "'.url("/load_questionier", $survey->id).'", "type" : "iframe" }\' href="javascript:;">Add</a>';
+            $result[] = '<a class="btn btn-secondary btn-info" id="process_survey" href="#">Send</a>';
+            $result[] = '<a class="btn btn-secondary btn-info" data-fancybox data-options=\'{ "caption" : "Outbox for Survey: '.$survey->name.'", "src" : "'.url("/surveys", [$survey->id,'edit']).'", "type" : "iframe" }\' href="javascript:;">Outbox</a>';
+            $result[] = $survey->questions()->count();
+
+            $data[]   = $result;
+        }
+
+        $x =  response()->json($data);
+
+        return $x;
     }
 
     /**
@@ -47,18 +73,9 @@ class SurveyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSurvey $request)
+    public function store(StoreSurveyForm $form)
     {
-        $survey = new Survey($request->all());
-        $survey->group_id = $request->group_id;
-        $survey->user_id = Auth::user()->id;
-        if(!$survey->save()){
-            flash('Something went wrong. Failed to create survey, Please try again.')->error();
-            return back();           
-
-        }
-        flash('Survey created successfully')->success();
-        return redirect("/surveys/{$survey->id}");
+        return $form->persist();
     }
 
     /**
@@ -117,11 +134,12 @@ class SurveyController extends Controller
         //
     }
 
-     public function load_questionier($survey_id)
+    public function load_questionier($survey_id)
     {
        $survey=Survey::find($survey_id);
        return view('surveys.create_questions')->with(compact('survey')); 
     }
+
     public function template($survey_id){
        $template = Question::where('survey_id', $survey_id)->get();
        $survey=Survey::find($survey_id)->get();

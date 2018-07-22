@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreSMS;
 use App\Models\Survey;
 use App\Models\Category;
+use Auth;
 
 class SMSController extends Controller
 {
@@ -18,9 +19,35 @@ class SMSController extends Controller
     public function index()
     {
         $sms = SMS::all();
-        return view('call_to_actions.sms.index', compact('sms'));
+        $survey = Survey::all()->where('user_id',Auth::user()->id);
+        $category = Category::all();
+        // return $sms->category->toArray();
+        return view('call_to_actions.sms.index', compact('sms','survey','category'));
     }
 
+    public function fetchSMSActions()
+    {   
+        $sms = SMS::all();
+        
+        $data = [];
+        foreach($sms as $action){
+            $result   = [];
+            $result[] = $action->id;
+            $result[] = $action->survey->name;
+            $result[] = $action->minimum_weight;
+            $result[] = $action->maximum_weight;
+            $result[] = $action->category->name;
+
+            $result[] = '<button id="delete" href="'.$action->id.'">DELETE</button>';
+
+            $data[]   = $result;
+            $x =  response()->json($data);
+        }
+        $x =  response()->json($data);
+
+        return $x;
+    }
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -28,7 +55,7 @@ class SMSController extends Controller
      */
     public function create()
     {
-        return view("call_to_actions.sms.create")->with(['survey'=>Survey::all()->where('user_id',\Auth::user()->id),'category'=>Category::all()]);
+        return view("call_to_actions.sms.create")->with(['survey'=>Survey::all()->where('user_id',Auth::user()->id),'category'=>Category::all()]);
     }
 
     /**
@@ -37,14 +64,9 @@ class SMSController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSMS $request)
-    {
-        $sms = new SMS($request->all());
-        if (!$sms->save()) {
-            flash("Failed to save SMS action")->error();
-        }
-        flash("SMS action created successfully")->success();
-        return back();
+    public function store(StoreSMS $form)
+    {        
+        return $form->persist();
     }
 
     /**
@@ -89,8 +111,10 @@ class SMSController extends Controller
      */
     public function destroy($id)
     {
-       SMS::destroy($id);
-       flash("SMS action deleted successfully")->success();
-       return back();
+    //    SMS::destroy($id);
+        SMS::find($id)->delete();
+        return response()->json(["success"=>"SMS Action successfully deleted."]);
+    //    flash("SMS action deleted successfully")->success();
+    //    return back();
     }
 }

@@ -3,13 +3,7 @@
 
     <div class="row col-md-12">
         <div class="col-sm-6 pull-left">
-            <h4>List of Respondents&nbsp;&nbsp;&nbsp;<span class="fa fa-question-circle"  data-toggle="tooltip" data-placement="bottom" title="
-              RESPONDENTS&#013;&#013;
--You Can Add a New Respondent by Clicking Add New Respondent Button&#013;
--The Table Below Displays the Registered Respondents with their respective Details and corresponding Groups&#013;
--You Can for a  Respondent By Typing the name of that person in the Search Field Below&#013;
--You Can Copy ,Export The Respondents as an Excel Sheet,CSV,PDF and even print the Respondent Data&#013;
-"></span></h4>
+            <h4>List of Respondents&nbsp;&nbsp;&nbsp;<span class="fa fa-question-circle"  data-toggle="tooltip" data-placement="bottom" title="RESPONDENTS&#013;&#013;-You Can Add a New Respondent by Clicking Add New Respondent Button&#013;-The Table Below Displays the Registered Respondents with their respective Details and corresponding Groups&#013;-You Can for a  Respondent By Typing the name of that person in the Search Field Below&#013;-You Can Copy ,Export The Respondents as an Excel Sheet,CSV,PDF and even print the Respondent Data&#013;"></span></h4>
         </div>
         <div class="col-sm-6 text-right pb-2">
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal_add_respondents">
@@ -26,7 +20,6 @@
                         <th>Phone Number</th>
                         <th>Language</th>
                         <th>Literacy Level</th>
-                        <!-- <th>Address</th> -->
                         <th>Gender</th>
                         <th>Email</th>
                         <th>District</th>
@@ -130,3 +123,125 @@
     </div>
 @endsection
 @include('shared._datatable_scripts')
+@push('scripts')
+    <script type="text/javascript">
+        var respondentTable = $('#respondents_data_table').DataTable({
+            "ordering": false,
+            "ajax": {
+                "url": "{{ url('dt_respondents') }}",
+                "dataSrc": ""
+            },
+            dom: 'Bfrtip',
+            buttons: [
+                'copy',
+                {
+                    extend: 'excel',
+                    messageTop: ' '
+                },
+                {
+                    extend: 'csv',
+                    messageTop: ' '
+                },
+                {
+                    extend: 'pdf',
+                    messageTop: ' '
+                },
+                {
+                    extend: 'print',
+                    messageTop: null
+                }
+            ]
+        });
+
+        $('#submit_respondent').click(function(e){
+            e.preventDefault();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+            
+            $.ajax({
+                url: "{{ url('/respondents') }}",
+                method: "POST",
+                data: $('form#add_respondent').serialize(),
+                dataType: 'json',
+                success: function(msg){
+                        $("#modal_add_respondents").modal('hide');
+                        $("#add_respondent")[0].reset();
+                        respondentTable.ajax.reload(null,false);
+                    },
+                error: function(msg){
+                        var error = msg.responseJSON;
+                        $("#error_message").html(error.message);
+                        var all_errors = error.errors;
+                        if('address' in all_errors){
+                            $('#address').addClass('is-invalid');
+                            if($('#show_address_error').length==0){
+                                $('#address_error').append('<span id="show_address_error" style="font-size: 13px;" class="text-danger">'+all_errors.address[0]+' </span>');
+                            }else{
+                                $('#show_address_error').remove();
+                                $('#address_error').append('<span id="show_address_error" style="font-size: 13px;" class="text-danger">'+all_errors.address[0]+' </span>');
+                            }
+                        }else{
+                            $('#address').removeClass('is-invalid');
+                            $('#show_address_error').remove();
+                        }
+
+                        if('gender' in all_errors){
+                            $('#gender').addClass('is-invalid');
+                            if($('#show_gender_error').length==0){
+                                $('#gender_error').append('<span id="show_gender_error" style="font-size: 13px;" class="text-danger">'+all_errors.gender[0]+' </span>');
+                            }else{
+                                $('#show_gender_error').remove();
+                                $('#gender_error').append('<span id="show_gender_error" style="font-size: 13px;" class="text-danger">'+all_errors.gender[0]+' </span>');
+                            }
+                        }else{
+                            $('#gender').removeClass('is-invalid');
+                            $('#show_gender_error').remove();
+                        }
+
+                        if('name' in all_errors){
+                            $('#name').addClass('is-invalid');
+                            if($('#show_name_error').length==0){
+                                $('#name_error').append('<span id="show_name_error" style="font-size: 13px;" class="text-danger">'+all_errors.name[0]+' </span>');
+                            }else{
+                                $('#show_name_error').remove();
+                                $('#name_error').append('<span id="show_name_error" style="font-size: 13px;" class="text-danger">'+all_errors.name[0]+' </span>');
+                            }
+                        }else{
+                            $('#name').removeClass('is-invalid');
+                            $('#show_name_error').remove();
+                        }
+
+                        if('phone_number' in all_errors){
+                            $('#phone_number').addClass('is-invalid');
+                            if($('#show_phone_number_error').length==0){
+                                $('#phone_number_error').append('<span id="show_phone_number_error" style="font-size: 13px;" class="text-danger">'+all_errors.phone_number[0]+' </span>');
+                            }else{
+                                $('#show_phone_number_error').remove();
+                                $('#phone_number_error').append('<span id="show_phone_number_error" style="font-size: 13px;" class="text-danger">'+all_errors.phone_number[0]+' </span>');
+                            }
+                        }else{
+                            $('#phone_number').removeClass('is-invalid');
+                            $('#show_phone_number_error').remove();
+                        }
+
+                        if('district_id' in all_errors){
+                            $('#district_id').addClass('is-invalid');
+                            if($('#show_district_id_error').length==0){
+                                $('#district_id_error').append('<span id="show_district_id_error" style="font-size: 13px;" class="text-danger">'+all_errors.district_id[0]+' </span>');
+                            }else{
+                                $('#show_district_id_error').remove();
+                                $('#district_id_error').append('<span id="show_district_id_error" style="font-size: 13px;" class="text-danger">'+all_errors.district_id[0]+' </span>');
+                            }
+                        }else{
+                            $('#district_id').removeClass('is-invalid');
+                            $('#show_district_id_error').remove();
+                        }
+                    }
+            });
+        });
+    </script>
+@endpush
