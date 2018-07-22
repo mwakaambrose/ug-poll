@@ -4,13 +4,11 @@
     <div class="row col-md-12">
         <div class="col-sm-6 pull-left">
             <h4>List of Groups&nbsp;&nbsp;&nbsp;<span class="fa fa-question-circle" title="
--You Can Add a New Group to Which Respondents Belong&#013;
--The Table Below Displays the Registered Groups including Name,Respondents and Actions.&#013;
-Where Name is the Name of The Group ,Respondents represents the Numebr of Respondents Registered in that particular Group&#013;
--You Can Search a Group and Edit Members Details  By clicking the Edit MembersView Details&#013;
--You Can Copy ,Export The Regions as an Excel Sheet,CSV,PDF and even print the Groups Registered&#013;
-
-"></span></h4>
+                -You Can Add a New Group to Which Respondents Belong&#013;
+                -The Table Below Displays the Registered Groups including Name,Respondents and Actions.&#013;
+                Where Name is the Name of The Group ,Respondents represents the Numebr of Respondents Registered in that particular Group&#013;
+                -You Can Search a Group and Edit Members Details  By clicking the Edit MembersView Details&#013;
+                -You Can Copy ,Export The Regions as an Excel Sheet,CSV,PDF and even print the Groups Registered&#013;"></span></h4>
         </div>
         
         <div class="col-sm-6 text-right pb-2">
@@ -42,6 +40,7 @@ Where Name is the Name of The Group ,Respondents represents the Numebr of Respon
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div class="text-center"><b><span id="error_message" class="text-danger"></span></b></div>
             <div class="modal-body">
                 <form id="add_group" class="form-horizontal">
                     @csrf
@@ -62,3 +61,74 @@ Where Name is the Name of The Group ,Respondents represents the Numebr of Respon
 
 @endsection
 @include('shared._datatable_scripts')
+@push('scripts')
+    <script type="text/javascript">
+        var groupTable = $('#group_data_table').DataTable({
+            "ordering": false,
+            "ajax": {
+                "url": "{{ url('dt_groups') }}",
+                "dataSrc": ""
+            },
+            dom: 'Bfrtip',
+            buttons: [
+                'copy',
+                {
+                    extend: 'excel',
+                    messageTop: ' '
+                },
+                {
+                    extend: 'csv',
+                    messageTop: ' '
+                },
+                {
+                    extend: 'pdf',
+                    messageTop: ' '
+                },
+                {
+                    extend: 'print',
+                    messageTop: null
+                }
+            ]
+        });
+
+        $('#submit_group').click(function(e){
+            e.preventDefault();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+            
+            $.ajax({
+                url: "{{ url('/groups') }}",
+                method: "POST",
+                data: $('form#add_group').serialize(),
+                dataType: 'json',
+                success: function(msg){
+                        if('errors' in msg){
+                            $.each(msg.errors, function(key, value){
+                                $('#name').addClass('is-invalid');
+                                if($('#show_error').length==0){
+                                    $('#add_error').append('<span id="show_error" class="text-danger">'+value+' </span>');
+                                }else{
+                                    $('#show_error').remove();
+                                    $('#add_error').append('<span id="show_error" class="text-danger">'+value+' </span>');
+                                }
+                            });
+                        }else{
+                            $('#name').removeClass('is-invalid');
+                            $('#show_error').remove();
+                            $("#modal_add_groups").modal('hide');
+                            $("#add_group")[0].reset();
+                            groupTable.ajax.reload(null,false);
+                        }
+                    },
+
+                error: function(){
+                        console.log('Failed!');
+                    }
+            });
+        });
+    </script>
+@endpush

@@ -28,12 +28,15 @@ Route::group(['middleware' => 'auth'], function () {
     //exportPdf
     Route::get('/exportPDF/{id}','SurveyController@exportPDF');
     
+    Route::get('/dt_sms_actions','SMSController@fetchSMSActions');
     Route::resource('sms-actions', 'SMSController');
     Route::resource('answer-weights', 'AnswerWeightsController');
     Route::resource('surveys.questions', 'QuestionController');
     Route::get('/questions/{question}/delete', 'QuestionController@destroy');
     Route::get('load_questionier/{survey_id}', 'SurveyController@load_questionier')->name('load_questionier');
     Route::resource('outbox', 'OutboxController');
+
+    Route::get('dt_categories', 'CategoryController@fetchCategories');
     Route::resource('category', 'CategoryController');
     Route::resource('category_message', 'CategoryMessageController');
     //notification

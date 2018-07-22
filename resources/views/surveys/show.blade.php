@@ -1,38 +1,32 @@
-@extends('layouts.app')
+@extends('layouts.app_fancy')
 
 @section('content')
-	<div class="row col-md-12">
-        <div class="col-sm-6 pull-left">
-            <h4>Survey Details</h4>
-        </div>
-    </div>
-
 	<div class="col-md-12">
-		<div class="card mt-3">
-			<br>
-			<div class="text-center">
-				<div class="btn-group mr-2" role="group">
-					<!-- <a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#questions">Add survey question</a> -->
-					<a class="btn btn-secondary btn-info" href="/load_questionier/{{$survey->id}}">Add survey question</a>
-				</div>
-		
-				<div class="btn-group mr-2" role="group">
-					<a class="btn btn-secondary btn-info" id="process_survey" href="#">Send survey now</a>
-				</div>
-
-				<div class="btn-group mr-2" role="group">
-					<a class="btn btn-secondary btn-info"  href="{{route('surveys.edit',$survey->id)}}">View outbox</a>
-				</div>
-		
-				<div class="btn-group mr-2" role="group">
-					<a class="btn btn-secondary btn-info"  href="{{route('surveys.edit',$survey->id)}}">View outbox</a>
-				</div>
+		<div class="card">
+			<div class="card-header">
+				<blockquote class="blockquote">
+					<p class="mb-0">{{ $survey->name }}</p>
+					<footer class="blockquote-footer">{{$survey->description }}</footer>
+				</blockquote>
 			</div>
-			<br>
 			<div class="card-body">
-				<h3><small>Survey</small>: {{ $survey->name }}</h3>
-				<span class="text-muted">Description: {{$survey->description }}</span>
-				<hr>
+				@include('flash::message')
+
+                @if (session('status'))
+                    <div class="col-sm-12 alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                            </ul>
+                        </div>
+                @endif
 				@if($survey->questions->count() == 0)
 					<div class="alert alert-info">
 						<strong>No questions added.	</strong> <a href="/load_questionier/{{$survey->id}}">Add</a>
@@ -51,7 +45,7 @@
 									<li>{{ $responses->answer }} ({{$responses->value}})</li>
 								@endforeach						
 							</ul>
-							<h2> Answers</h2>
+							<em><h5 class="text-center"> Responses</h5></em>
 							<table class="nowrap table table-bordered table-striped custom" id="answers{{$question->id}}">
 								<thead>
 									<th>Phone</th> <th>Answer</th> <th>Value</th>
@@ -68,7 +62,6 @@
 												echo $posible_response->value; 
 											}
 											
-		
 											?>
 										</td>
 									</tr>				 
@@ -78,6 +71,9 @@
 						</div>
 					</div>
 				@endforeach
+			</div>
+			<div class="card-footer">
+				<a class="float-right btn btn-info" href="{{ url('/load_questionier', $survey->id) }}">Add question</a>
 			</div>
 		</div>
 	</div>
@@ -115,53 +111,70 @@
 		</div>
 	</div>
 @endsection
-
+@include('shared._datatable_scripts')
 @push('scripts')
-	
-	<script>  
-		$(document).ready(function(){
-			$("#process_survey").click(function(){
-				$("#display_alert").html("<b class='text-success'>The Survey is in progress, Please Live this page on.</b>");
+	<script type="text/javascript">
+		$('.custom').each(function(){
+          $id = this.id;
+          $($('#'+$id)).DataTable({
+            "ordering": false,
+            dom: 'Bfrtip',
+            buttons: [
+                'copy',
+                {
+                    extend: 'excel',
+                    messageTop: ' '
+                },
+                {
+                    extend: 'csv',
+                    messageTop: ' '
+                },
+                {
+                    extend: 'pdf',
+                    messageTop: ' '
+                },
+                {
+                    extend: 'print',
+                    messageTop: null
+                }
+            ]
+          });
+        });
+		
+		$("#process_survey").click(function(){
+			$("#display_alert").html("<b class='text-success'>The Survey is in progress, Please Live this page on.</b>");
 
-				/* 
-				1. send the first question to all members in the group
-
-				2. Listen to the Inbox, if any new inbox comes in, find who responded, check the last question he answered, take a record in the InBOX and find the next question. "My Next question is NOT your next Question"
-				*/ 
-
-				$.ajax({
-					type: "POST",
-					url: "{{ route('outbox.store') }}",
-					data: { 
-						survey_id: {{$survey->id}},	                 
-						_token: "{{Session::token()}}" 
-					},
-					success: function(result){
-						console.log(result);
-					}
-				})
-			});	    
+			/* 1. send the first question to all members in the group
+			2. Listen to the Inbox, if any new inbox comes in, find who responded, check the last question he answered, take a record in the InBOX and find the next question. "My Next question is NOT your next Question"*/ 
+			$.ajax({
+				type: "POST",
+				url: "{{ route('outbox.store') }}",
+				data: { 
+					survey_id: {{$survey->id}},	                 
+					_token: "{{Session::token()}}" 
+				},
+				success: function(result){
+					console.log(result);
+				}
+			})
 		});
 	</script>
 
 	<script type="text/javascript">
-		$(document).ready(function() {
 		setInterval(function() {
 			verify_response()
 		}, 10000);
-		});
 
 		function verify_response() {
-		$.ajax({
-				type: "GET",
-				url: "{{route('outbox.create')}}",
-				data: {                
-					_token: "{{Session::token()}}" },
-				success: function(result){
-				console.log(result);
-				}
-			})
+			$.ajax({
+					type: "GET",
+					url: "{{route('outbox.create')}}",
+					data: {                
+						_token: "{{Session::token()}}" },
+					success: function(result){
+					console.log(result);
+					}
+				})
 		}
 	</script>
 @endpush
-@include('shared._datatable_scripts')

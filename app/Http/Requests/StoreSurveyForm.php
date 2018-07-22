@@ -45,20 +45,6 @@ class StoreSurveyForm extends FormRequest
     }
 
     public function persist(){
-        /* $respondent = new Respondent($this->all());
-        if (!$respondent->save()) {
-            return response()->json(["errors"=>"$this->name not saved!"]);
-        }else {
-            foreach ($this->group as $group_id) {
-                try {
-                    \DB::table('group_respondent')->insert(['respondent_id' => $respondent->id, 'group_id' => $group_id]);               
-                 }catch (\Exception $e) {
-                    return $e;
-                }
-            }
-            return response()->json(["success"=>"Respondent $this->name. saved."]);
-        } */
-
         $survey = new Survey($this->all());
         $survey->group_id = $this->group_id;
         $survey->user_id = Auth::user()->id;

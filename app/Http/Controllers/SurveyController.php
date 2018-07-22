@@ -9,8 +9,9 @@ use App\Models\Survey;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreSurvey;
+use App\Http\Requests\StoreSurveyForm;
 use App\Models\Response;
-use PDF;
+
 class SurveyController extends Controller
 {
     public function __construct()
@@ -37,10 +38,13 @@ class SurveyController extends Controller
         $data = [];
         foreach($surveys as $survey){
             $result   = [];
-            $result[] = '<a href="'.url("/surveys", $survey->id).'">'.$survey->name.'</a>';
+            // $result[] = '<a href="'.url("/surveys", $survey->id).'">'.$survey->name.'</a>';
+            $result[] = '<a data-fancybox data-options=\'{ "caption" : "Survey Name: '.$survey->name.'", "src" : "'.url("/surveys", $survey->id).'", "type" : "iframe" }\' href="javascript:;">'.$survey->name.'</a>';
             $result[] = $survey->description;
             $result[] = $survey->send_time;
-            $result[] = '<a href="'.url("/load_questionier", $survey->id).'" class="text-info-mx-3">Add</a>';
+            $result[] = '<a class="btn btn-secondary btn-info" data-fancybox data-options=\'{ "caption" : "Add Question to Survey: '.$survey->name.'", "src" : "'.url("/load_questionier", $survey->id).'", "type" : "iframe" }\' href="javascript:;">Add</a>';
+            $result[] = '<a class="btn btn-secondary btn-info" id="process_survey" href="#">Send</a>';
+            $result[] = '<a class="btn btn-secondary btn-info" data-fancybox data-options=\'{ "caption" : "Outbox for Survey: '.$survey->name.'", "src" : "'.url("/surveys", [$survey->id,'edit']).'", "type" : "iframe" }\' href="javascript:;">Outbox</a>';
             $result[] = $survey->questions()->count();
 
             $data[]   = $result;
@@ -130,11 +134,12 @@ class SurveyController extends Controller
         //
     }
 
-     public function load_questionier($survey_id)
+    public function load_questionier($survey_id)
     {
        $survey=Survey::find($survey_id);
        return view('surveys.create_questions')->with(compact('survey')); 
     }
+
     public function template($survey_id){
        $template = Question::where('survey_id', $survey_id)->get();
        $survey=Survey::find($survey_id)->get();

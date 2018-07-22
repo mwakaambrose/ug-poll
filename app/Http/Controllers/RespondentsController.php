@@ -49,7 +49,7 @@ class RespondentsController extends Controller
                 $fe[] = '<a href="'.url("/groups", $group->id).'">'.$group->name.'</a>';
             }
             $result[] = empty($fe) ? 'N/A' : $fe;
-
+            
             $data[]   = $result;
         }
 
