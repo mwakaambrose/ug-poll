@@ -140,41 +140,5 @@
             ]
           });
         });
-		
-		$("#process_survey").click(function(){
-			$("#display_alert").html("<b class='text-success'>The Survey is in progress, Please Live this page on.</b>");
-
-			/* 1. send the first question to all members in the group
-			2. Listen to the Inbox, if any new inbox comes in, find who responded, check the last question he answered, take a record in the InBOX and find the next question. "My Next question is NOT your next Question"*/ 
-			$.ajax({
-				type: "POST",
-				url: "{{ route('outbox.store') }}",
-				data: { 
-					survey_id: {{$survey->id}},	                 
-					_token: "{{Session::token()}}" 
-				},
-				success: function(result){
-					console.log(result);
-				}
-			})
-		});
-	</script>
-
-	<script type="text/javascript">
-		setInterval(function() {
-			verify_response()
-		}, 10000);
-
-		function verify_response() {
-			$.ajax({
-					type: "GET",
-					url: "{{route('outbox.create')}}",
-					data: {                
-						_token: "{{Session::token()}}" },
-					success: function(result){
-					console.log(result);
-					}
-				})
-		}
 	</script>
 @endpush

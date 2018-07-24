@@ -43,7 +43,7 @@ class SurveyController extends Controller
             $result[] = $survey->description;
             $result[] = $survey->send_time;
             $result[] = '<a class="btn btn-secondary btn-info" data-fancybox data-options=\'{ "caption" : "Add Question to Survey: '.$survey->name.'", "src" : "'.url("/load_questionier", $survey->id).'", "type" : "iframe" }\' href="javascript:;">Add</a>';
-            $result[] = '<a class="btn btn-secondary btn-info" id="process_survey" href="#">Send</a>';
+            $result[] = '<a class="btn btn-secondary btn-info" id="process_survey" href="'.$survey->id.'">Send</a>';
             $result[] = '<a class="btn btn-secondary btn-info" data-fancybox data-options=\'{ "caption" : "Outbox for Survey: '.$survey->name.'", "src" : "'.url("/surveys", [$survey->id,'edit']).'", "type" : "iframe" }\' href="javascript:;">Outbox</a>';
             $result[] = $survey->questions()->count();
 
