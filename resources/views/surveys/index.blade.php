@@ -20,6 +20,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
+                <span id="send_info" style="display: none;"><b class='text-success'>The Survey is in progress ...</b></span>
                 <table class="nowrap table table-bordered table-striped" id="survey_data_table">
                     <thead>
                         <th>Survey Name</th>
@@ -190,5 +191,47 @@
                 }
             ]
         });
+
+		setInterval(function() {
+			verify_response()
+		}, 1000);
+		
+		function verify_response() {
+			$.ajax({
+                type: "GET",
+                url: "{{route('outbox.create')}}",
+                data: {                
+                    _token: "{{Session::token()}}" },
+                success: function(result){
+                console.log(result);
+                }
+            })
+		}
+
+        $('#survey_data_table').on("click", '#process_survey', function(e){
+            e.preventDefault();
+            var id = $(this).attr('href');
+
+            $.ajax({
+                beforeSend: function(){
+                    $("#send_info").show();
+                },
+                complete: function(){
+                    $("#send_info").hide();
+                },
+                url: "{{ url('/outbox') }}/",
+                method: "POST",
+                data: { survey_id: survey_id, _token: '{{csrf_token()}}' },
+                dataType: 'json',
+                success: function(msg){
+                        console.log(result);
+                        surveyTable.ajax.reload(null,false);
+                    },
+                error: function(xhr){
+                        console.log(xhr.responseText);
+                    }
+            });
+        });
+
     </script>
 @endpush
