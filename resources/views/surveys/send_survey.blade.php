@@ -6,6 +6,8 @@
 		}
 	</style>	
 @endpush
+
+
 @section('content')
     <div class="row col-md-12">
         <div class="col-sm-6 pull-left">
@@ -16,14 +18,14 @@
         	<div class="table-responsive"> 
                 <table class="nowrap table table-bordered table-striped" id="survey_data_table">
                     <thead>
-                        <th>Survey Name</th>                      
+                       <th>#</th> <th>Survey Name</th>                      
                      	<th class="text-center">Send Now</th>                                            
                     </thead>
 
                     <tbody>
                     	@foreach($surveys as $survey)
                     	  <tr>
-                    	  	<td>{{$survey->name}}</td> <td>,<a href="#" class="btn btn-primary" id="send_survey{{$survey->id}}">Send Now</a></td>
+                    	     <td>{{$survey->id}}</td>	<td>{{$survey->name}}</td> <td>,<a href="#" class="btn btn-primary" id="send_survey{{$survey->id}}">Send Now</a></td>
                     	  </tr>
 
                     	  @push('scripts')
@@ -48,16 +50,13 @@
 						        });
                     	    </script>
                     	  @endpush
-
                     	@endforeach
                     </tbody>
                 </table>
-            </div>
-   
-    </div>
+            </div>   
+    	</div>
 @endsection
 @include('shared._datatable_scripts')
-
 @push('scripts')
   <script type="text/javascript">
 	var surveyTable = $('#survey_data_table').DataTable({
@@ -84,3 +83,4 @@
     });
   </script>
 @endpush
+
