@@ -50,7 +50,7 @@ class OutboxController extends Controller
                     try {
                         
                         $save_inbox = new Inbox();
-                        $save_inbox->answer = $response[1];
+                        $save_inbox->answer = ucwords(strtolower($response[1]));
                         $save_inbox->phone_number = $inbox_content->from;
                         $save_inbox->outbox_id = $check_in_outbox->id;
                         $save_inbox->question_id = $response[0];                    
