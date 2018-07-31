@@ -194,7 +194,7 @@
 
 		setInterval(function() {
 			verify_response()
-		}, 1000);
+		},10000);
 		
 		function verify_response() {
 			$.ajax({
