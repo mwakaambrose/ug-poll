@@ -16,7 +16,7 @@
 
  
         	<div class="table-responsive"> 
-                <table class="nowrap table table-bordered table-striped" id="survey_data_table">
+                <table class="nowrap table table-bordered table-striped" id="data_table">
                     <thead>
                        <th>#</th> <th>Survey Name</th>                      
                      	<th class="text-center">Send Now</th>                                            
@@ -57,30 +57,6 @@
     	</div>
 @endsection
 @include('shared._datatable_scripts')
-@push('scripts')
-  <script type="text/javascript">
-	var surveyTable = $('#survey_data_table').DataTable({
-        dom: 'Bfrtip',
-        buttons: [
-            'copy',
-            {
-                extend: 'excel',
-                messageTop: ' '
-            },
-            {
-                extend: 'csv',
-                messageTop: ' '
-            },
-            {
-                extend: 'pdf',
-                messageTop: ' '
-            },
-            {
-                extend: 'print',
-                messageTop: null
-            }
-        ]
-    });
-  </script>
-@endpush
+ 
+ 
 
