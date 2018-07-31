@@ -12,6 +12,7 @@
             <h4>Surveys</h4>
         </div>
         <div class="col-sm-6 text-right pb-2">
+            <a href="/survey_sender" target="_blank" class="btn btn-info">Send survey</a>
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal_add_survey">
             <i class="fa fa-plus" aria-hidden="true"></i> Add New Survey
         </div>
@@ -21,17 +22,19 @@
         <div class="card">
             <div class="card-body">
                 <span id="send_info" style="display: none;"><b class='text-success'>The Survey is in progress ...</b></span>
+               <div class="table-responsive"> 
                 <table class="nowrap table table-bordered table-striped" id="survey_data_table">
                     <thead>
                         <th>Survey Name</th>
                         <th>Description</th>
                         <th class="text-center">Send Date</th>
                         <th class="text-center">Add Question</th>
-                        <th class="text-center">Send Now</th>
+                        <!-- <th class="text-center">Send Now</th> -->
                         <th class="text-center">Outbox</th>
                         <th class="text-center">Questions</th>
                     </thead>
                 </table>
+            </div>
             </div>
         </div>
     </div>

@@ -25,7 +25,7 @@ class Question extends Model
     {
         for ($i=0; $i < count($answertext); $i++) { 
             $response = new Response;
-            $response->answer = $answertext[$i];
+            $response->answer = ucwords(strtolower($answertext[$i]));
             $response->value = $answervalue[$i];
             $response->question_id = $question_id;
             $response->save();
