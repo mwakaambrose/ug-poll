@@ -9,7 +9,7 @@
                         <img src="{{ asset('img/graphic-man-box.svg')}}" alt="Survey Man" class="w-100">
                     </div>
                     <div class="col-12 col-md-6 col-lg-5 order-md-1">
-                        <h1 class="text-dark" style="white-space:nowrap;">Data Collection The Right Way</h1>
+                        <h1 class="text-dark" style="white-space:nowrap;">Manya ekiifa Munimiro</h1>
                         <span class="lead">
                             We help you collect user data and analyse it into actionable information.
                         </span>

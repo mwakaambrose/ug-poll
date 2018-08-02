@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Auth;
 use App\Models\Group;
+use App\Models\SMS;
 use App\Models\Outbox;
 use App\Models\Survey;
 use App\Models\Question;
@@ -33,20 +34,27 @@ class SurveyController extends Controller
 
     public function fetchSurveys()
     {
-        $surveys = Survey::all();
+        $surveys = Survey::orderBy('id','DESC')->get();
         // dd($surveys->toJson());
         $data = [];
         foreach($surveys as $survey){
             $result   = [];
+
+            $result[]   = $survey->id;
             
             $result[] = '<a data-fancybox data-options=\'{ "caption" : "Survey Name: '.$survey->name.'", "src" : "'.url("/surveys", $survey->id).'", "type" : "iframe" }\' href="javascript:;">'.$survey->name.'</a>';
-            $result[] = $survey->description;
-            $result[] = $survey->send_time;
+
             $result[] = '<a class="btn btn-secondary btn-info" data-fancybox data-options=\'{ "caption" : "Add Question to Survey: '.$survey->name.'", "src" : "'.url("/load_questionier", $survey->id).'", "type" : "iframe" }\' href="javascript:;">Add</a>';
-            // $result[] = '<a class="btn btn-secondary btn-info" id="process_survey" href="'.$survey->id.'">Send</a>';
-            // $result[] = '<a href="'.$survey->id.'"></a>';
-            $result[] = '<a class="btn btn-secondary btn-info" data-fancybox data-options=\'{ "caption" : "Outbox for Survey: '.$survey->name.'", "src" : "'.url("/surveys", [$survey->id,'edit']).'", "type" : "iframe" }\' href="javascript:;">Outbox</a>';
+
             $result[] = $survey->questions()->count();
+         
+            $result[] = '<a class="btn btn-secondary btn-info" data-fancybox data-options=\'{ "caption" : "Outbox for Survey: '.$survey->name.'", "src" : "'.url("/surveys", [$survey->id,'edit']).'", "type" : "iframe" }\' href="javascript:;">Outbox</a>';
+
+            $result[] = $survey->groups->name;        
+                       
+            $result[] = $survey->send_time;        
+            
+            $result[] = "<p style='overflow-wrap: break-word;'>".$survey->description."</p>";
 
             $data[]   = $result;
         }
@@ -135,6 +143,57 @@ class SurveyController extends Controller
         //
     }
 
+    public function reuse_survey(Request $request)
+    {
+        $this_survey = Survey::find($request->survey_id);
+        // instatiate for new Survey record
+        $newsurvey = new Survey();
+        $newsurvey->user_id = \Auth::user()->id;
+        $newsurvey->group_id = $request->group_id;
+        $newsurvey->name = $this_survey->name;
+        $newsurvey->is_completed = $this_survey->is_completed;
+        $newsurvey->description = $this_survey->description;
+        $newsurvey->send_time = $this_survey->send_time;
+        try {
+            $newsurvey->save();
+
+            // return json_encode($this_survey->questions);
+
+            foreach ($this_survey->questions as $questions_value) {
+
+                $save_question = new Question();
+                // replicate every qn for this new survey
+                $save_question->survey_id = $newsurvey->id;
+                $save_question->description = $questions_value->description;
+                $save_question->answer_type = $questions_value->answer_type;
+                $save_question->save();
+                // replicate the responses as well
+                foreach ($questions_value->responses as $response_value) {
+                    $new_response = new Response();
+                    $new_response->question_id = $save_question->id;
+                    $new_response->answer = $response_value->answer;
+                    $new_response->value = $response_value->value;
+                    $new_response->save();                   
+                }
+            }     
+           
+
+           // replicate its call to action
+            foreach ($this_survey->sms as $sms_value) {
+                $new_sms = new SMS();
+                $new_sms->minimum_weight = $sms_value->minimum_weight;
+                $new_sms->maximum_weight = $sms_value->maximum_weight;
+                $new_sms->survey_id = $newsurvey->id;
+                $new_sms->category_id = $sms_value->category_id;
+                $new_sms->save();              
+            }
+            echo "Saved";
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+            return;
+        }
+    }
+
     public function load_questionier($survey_id)
     {
        $survey=Survey::find($survey_id);
@@ -149,7 +208,7 @@ class SurveyController extends Controller
 
     public function survey_sender()
     {
-        $surveys = Survey::all();
+        $surveys = Survey::orderBy('id','DESC')->get();
         return view("surveys.send_survey")->with(['surveys'=>$surveys]);
     }
      

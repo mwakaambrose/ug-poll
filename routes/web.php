@@ -43,4 +43,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/notify','NotificationController');
     Route::get('/notification','NotificationController@sendNotification');
     Route::get('/survey_sender','SurveyController@survey_sender');
+    Route::post('/reuse_survey','SurveyController@reuse_survey');
 });

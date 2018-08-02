@@ -18,6 +18,13 @@
     <!-- Styles -->
     <link href="{{ asset(mix('css/app.css')) }}" rel="stylesheet">
 
+    <style type="text/css">
+       table tbody td{
+            width: 20em;
+            word-wrap: break-word;
+        }
+    </style>
+
     @yield('styles')
  </head>
 <body>
@@ -38,6 +45,7 @@
             allowClear: true
         });
     </script>
+    
     @stack('scripts')
 </body>
 </html>

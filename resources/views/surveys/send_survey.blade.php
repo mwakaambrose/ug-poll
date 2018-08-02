@@ -18,14 +18,17 @@
         	<div class="table-responsive"> 
                 <table class="nowrap table table-bordered table-striped" id="data_table">
                     <thead>
-                       <th>#</th> <th>Survey Name</th>                      
+                       <th>#</th> <th>Survey Name</th> <th>Group</th>                  
                      	<th class="text-center">Send Now</th>                                            
                     </thead>
 
                     <tbody>
                     	@foreach($surveys as $survey)
                     	  <tr>
-                    	     <td>{{$survey->id}}</td>	<td>{{$survey->name}}</td> <td>,<a href="#" class="btn btn-primary" id="send_survey{{$survey->id}}">Send Now</a></td>
+                    	     <td>{{$survey->id}}</td>	
+                             <td>{{$survey->name}}</td> 
+                             <td><a href="{{route('groups.edit',$survey->groups->id)}}"></a> {{$survey->groups->name}}</td> 
+                             <td><a href="#" class="btn btn-primary" id="send_survey{{$survey->id}}">Send Now</a></td>
                     	  </tr>
 
                     	  @push('scripts')
