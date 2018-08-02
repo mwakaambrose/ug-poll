@@ -34,12 +34,13 @@ class OutboxController extends Controller
     {
         $send_sms = new Communication();
 
-        foreach ($send_sms->fetch_SMS() as $inbox_content) {            
+       echo "Count: ".count($send_sms->fetch_SMS())."<br>";
 
+        foreach ($send_sms->fetch_SMS() as $inbox_content) { 
+           echo "Last Id: ". $inbox_content->id."<br>";           
             // 34 YES  [expected response format  34 is the question id]
-
-            $response = explode(" ", $inbox_content->text);           
-            
+            $response = explode(" ", $inbox_content->text);
+        
             $check_in_outbox = Outbox::all()->where('phone_number', $inbox_content->from)->where('question_id',$response[0])->last();          
 
             if (isset($check_in_outbox)) {

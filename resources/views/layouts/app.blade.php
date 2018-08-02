@@ -48,13 +48,16 @@
                             <li class="nav-item">
                                 <a class="nav-link {{ Request::is('surveys*') ? 'active' : '' }}" href="/surveys"><i class="fa fa-check-square-o"></i> <b>Surveys</b></a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ Request::is('sms-actions*') ? 'active' : '' }}" href="/sms-actions"><i class="fa fa-tag"></i> <b>Call to actions</b></a>
-                            </li>
 
                             <li class="nav-item">
                                 <a class="nav-link {{ Request::is('category*') ? 'active' : '' }}" href="/category"><i class="fa fa-envelope-o"></i> <b>SMS Category</b></a>
                             </li>
+                            
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('sms-actions*') ? 'active' : '' }}" href="/sms-actions"><i class="fa fa-tag"></i> <b>Call to actions</b></a>
+                            </li>
+
+                            
                             <li class="nav-item">
                                 <a class="nav-link {{ Request::is('notify*') ? 'active' : '' }}" href="/notify"><i class="fa fa-bell"></i> <b>Notification</b></a>
                             </li>
