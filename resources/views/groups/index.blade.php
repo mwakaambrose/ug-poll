@@ -22,6 +22,7 @@
             <div class="card-body">
                 <table class="nowrap table table-bordered table-striped" id="group_data_table">
                     <thead>
+                        <th>#</th>
                         <th>Name</th>
                         <th>Respondents</th>
                         <th class="text-center">Actions</th>

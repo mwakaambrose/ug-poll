@@ -7,7 +7,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
-    // Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/home', 'HomeController@index')->name('home');
 
     //Regions & Districts
     Route::resource('district', 'DistrictController');
@@ -43,4 +43,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/notify','NotificationController');
     Route::get('/notification','NotificationController@sendNotification');
     Route::get('/survey_sender','SurveyController@survey_sender');
+    Route::post('/reuse_survey','SurveyController@reuse_survey');
 });

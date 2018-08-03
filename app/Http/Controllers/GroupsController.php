@@ -16,19 +16,20 @@ class GroupsController extends Controller
      */
     public function index()
     {
-        $groups = Group::where('user_id', Auth::user()->id)->withCount('respondents')->get();
+        $groups = Group::where('user_id', Auth::user()->id)->withCount('respondents')->orderBy('id','DESC')->get();
         return view('groups.index', compact('groups'));
     }
 
     public function fetchGroups()
     {
-        $groups = Group::where('user_id', Auth::user()->id)->withCount('respondents')->get();
+        $groups = Group::where('user_id', Auth::user()->id)->withCount('respondents')->orderBy('id','DESC')->get();
         $data = [];
         foreach($groups as $group){
             $result   = [];
+            $result[] = $group->id;
             $result[] = '<a href="'.url("/groups", $group->id).'">'.$group->name.'</a>';
             $result[] = $group->respondents_count;
-            $result[] = '<a href="'.url("/groups", [$group->id, "edit"]).'" class="text-info-mx-3">Edit Members</a><a href="'.url("/groups", $group->id).'" class="text-success-mx-3">View Details</a>';
+            $result[] = '   <a href="'.url("/groups", [$group->id, "edit"]).'" class="text-info-mx-3 btn btn-info">Edit Members</a><a href="'.url("/groups", $group->id).'" class="text-success-mx-3 btn btn-success">View Details</a>';
 
             $data[]   = $result;
         }

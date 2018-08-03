@@ -14,18 +14,21 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <table class="nowrap table table-bordered table-striped" width="100%" id="respondents_data_table">
-                    <thead>
-                        <th>Name</th>
-                        <th>Phone Number</th>
-                        <th>Language</th>
-                        <th>Literacy Level</th>
-                        <th>Gender</th>
-                        <th>Email</th>
-                        <th>District</th>
-                        <th>Groups</th>
-                     </thead>
-                </table>
+                <div class="table-responsive">
+                    <table class="nowrap table table-bordered table-striped" width="100%" id="respondents_data_table">
+                        <thead>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Phone Number</th>
+                            <th>Language</th>
+                            <th>Literacy Level</th>
+                            <th>Gender</th>
+                            <th>Email</th>
+                            <th>District</th>
+                            <th>Groups</th>
+                         </thead>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

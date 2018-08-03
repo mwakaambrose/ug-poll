@@ -27,5 +27,15 @@ class Survey extends Model
         return $this->hasMany(Question::class);
     }
 
+    public function sms()
+    {
+        return $this->hasMany(SMS::class);
+    }
+
+    public function groups()
+    {
+        return $this->belongsTo("App\Models\Group","group_id");
+    }
+
  
 }

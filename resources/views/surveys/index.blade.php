@@ -13,8 +13,12 @@
         </div>
         <div class="col-sm-6 text-right pb-2">
             <a href="/survey_sender" target="_blank" class="btn btn-info">Send survey</a>
+
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal_add_survey">
-            <i class="fa fa-plus" aria-hidden="true"></i> Add New Survey
+            <i class="fa fa-plus" aria-hidden="true"></i> <span>Add New Survey</span></button>
+
+            <button  style="color: #FFF;" type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal_re_use_survey">
+            <i class="fa fa-plus" aria-hidden="true"></i><span> Re-Use old Survey</span></button>
         </div>
     </div>
 
@@ -25,16 +29,60 @@
                <div class="table-responsive"> 
                 <table class="nowrap table table-bordered table-striped" id="survey_data_table">
                     <thead>
+                        <th>#</th>
                         <th>Survey Name</th>
-                        <th>Description</th>
-                        <th class="text-center">Send Date</th>
                         <th class="text-center">Add Question</th>
-                        <!-- <th class="text-center">Send Now</th> -->
-                        <th class="text-center">Outbox</th>
-                        <th class="text-center">Questions</th>
+                        <th class="text-center">No. of Questions</th> 
+                        <th class="text-center">SMS sent out</th>                        
+                        <th>Group Name</th>                       
+                        <th class="text-center">Send Date</th>
+                                        
+                        <th>Description</th>
                     </thead>
                 </table>
             </div>
+            </div>
+        </div>
+    </div>
+
+
+     <div class="modal fade" id="modal_re_use_survey" tabindex="-1" role="dialog" aria-labelledby="modal_add_surveyTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_add_surveyLongTitle">Re-Use an old Survey</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            <div class="text-center"><b><span id="error_message" class="text-danger"></span></b></div>
+                <div class="modal-body">                 
+
+                    <div id="group_id_error" class="form-group  has-danger">
+                        <label>Choose an Old Survey <span class="text-warning" style="font-size: 13px;">(Required)</span></label>
+                        <select class="form-control" id="surveyid" name="group_id">
+                            <option></option>
+                            @foreach(App\Models\Survey::all() as $surveys)
+                               <option value="{{$surveys->id}}">{{$surveys->name}} ({{$surveys->groups->name}})</option>
+                            @endforeach
+                        </select>
+                    </div>                  
+
+
+                    <div id="group_id_error" class="form-group  has-danger">
+                        <label>Choose a group that will respond to this survey <span class="text-warning" style="font-size: 13px;">(Required)</span></label>
+                        <select class="form-control" id="groupid" name="group_id">
+                            <option></option>
+                            @foreach($group as $groups)
+                              <option value="{{$groups->id}}">{{$groups->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div id="group_id_error" class="form-group  has-danger">
+                       <button id="save_re_usable_survey" class="btn btn-warning">Save</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -227,7 +275,7 @@
                 data: { survey_id: survey_id, _token: '{{csrf_token()}}' },
                 dataType: 'json',
                 success: function(msg){
-                        console.log(result);
+                        console.log(msg);
                         surveyTable.ajax.reload(null,false);
                     },
                 error: function(xhr){
@@ -237,4 +285,28 @@
         });
 
     </script>
-@endpush
+ 
+    <script type="text/javascript">
+        $('#save_re_usable_survey').on("click", function(e){
+            e.preventDefault();                         
+            $.ajax({                                         
+                url: "{{url('/reuse_survey')}}",
+                method: "POST",
+                    data: { 
+                        group_id: $("#groupid").val(),
+                        survey_id: $("#surveyid").val(),
+                        _token: '{{csrf_token()}}' 
+                     },
+                dataType: 'json',
+                success: function(msg){
+                    $("#save_re_usable_survey").modal('hide');
+                    alert(msg);
+                    surveyTable.ajax.reload(null,false);
+                },
+                error: function(xhr){
+                
+                }
+            });
+        });
+    </script>
+  @endpush

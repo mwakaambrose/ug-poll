@@ -28,13 +28,14 @@ class RespondentsController extends Controller
 
     public function fetchRespondents()
     {   
-        $respondents = Respondent::with('groups')->get();
+        $respondents = Respondent::with('groups')->orderBy('id','DESC')->get();
         $districts = District::all();
         $groups = Group::where('user_id', Auth::user()->id)->get();
         
         $data = [];
         foreach($respondents as $respondent){
             $result   = [];
+            $result[] = $respondent->id;
             $result[] = $respondent->name;
             $result[] = $respondent->phone_number;
             $result[] = isset($respondent->language) ? $respondent->language : 'N/A';
