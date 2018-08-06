@@ -32,10 +32,8 @@ class OutboxController extends Controller
      */
     public function create()
     {
-        $send_sms = new Communication();
-
+       $send_sms = new Communication();
        echo "Count: ".count($send_sms->fetch_SMS())."<br>";
-
         foreach ($send_sms->fetch_SMS() as $inbox_content) { 
            echo "Last Id: ". $inbox_content->id."<br>";           
             // 34 YES  [expected response format  34 is the question id]

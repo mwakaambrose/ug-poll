@@ -1,5 +1,5 @@
 <?php
- $dtmfDigits  = $_POST['dtmfDigits'];
+$dtmfDigits  = $_POST['dtmfDigits'];
 switch($dtmfDigits){
     case 0:
         // Talk to sales... Compose the response
