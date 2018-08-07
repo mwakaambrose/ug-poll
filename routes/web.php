@@ -44,4 +44,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/notification','NotificationController@sendNotification');
     Route::get('/survey_sender','SurveyController@survey_sender');
     Route::post('/reuse_survey','SurveyController@reuse_survey');
+    Route::get('/call_back_path','IvrController@call_back_path');
+    Route::resource('/ivr','IvrController');
 });

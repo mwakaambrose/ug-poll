@@ -1,54 +1,96 @@
 <?php
 namespace App\includes;
+use App\Survey;
+use App\Inbox;
+use App\Reward;
+use App\Communication;
 
-class Voice{
-
-   protected $sessionId = $_POST['sessionId'];
-   protected $isActive  = $_POST['isActive'];
-   
+class Voice{ 
+    
     //$currentCallState = 'None'; // for testing purposes
-    public function voiceFunction($sessionID,$isActive,$question,$currentCallState="None"){
+    public function voice_function(){
 
-      if ($isActive == 1)  {
-        if ($currentCallState == 'None') {
-          $response  = '<?xml version="1.0" encoding="UTF-8"?>';
-          $response .= '<Response voice="man" timeOut="60">';
-          $response .= '<GetDigits finishOnKey="#">';
-          $response .= '<Say>'.$question.'</Say>'; //speak questions to respondent
-          $response .= '</GetDigits>';
-          $response .= '</Response>';
-          extract($_POST);
-          // Read the dtmf digits [user Inputs]
-          $userInput = $_POST['dtmfDigits'];
-          if(isset($userInput)) {
-          /**
-            -store answer into database [answering format is the same as SMS =>qtnNumber Answer]
-          */
+      $send_sms = new Communication();
+ 
+      if ($_POST['isActive'] == 1)  {
 
-          // Say Result to Respondent
-          $response  = '<?xml version="1.0" encoding="UTF-8"?>';
-          $response .= '<Response voice = "man">';
-          $response .= '<Say>Thank you for </Say>';///At end send congguratory message to user for taking the survey
-          $response .= '</Response>'; 
+        $currentCallState = 'None';
+        
+        //read the first qn in this survey
+        $survey = Survey::all()->last();
+        $all_question = $survey->questions()->get();
 
+        start_survey:
 
-          }//end if[accountNumber]   
-        }//end if [currentState]
-        $currentCallState = 'Done';
+        foreach ($all_question as $question_value) {
+          if ($currentCallState == 'None') {           
+            $options = '';
+            foreach ($question_value->responses as $response) {
+                $options .= $response->answer.", or, ";
+            }
+          
+            $question  =  $question_value->description ."Answer options are, {$options}";
+            $response  = '<?xml version="1.0" encoding="UTF-8"?>';
+            $response .= '<Response voice="man" timeOut="60">';
+            $response .= '<GetDigits finishOnKey="#">';
+            $response .= '<Say>'.$question.'</Say>';
+            $response .= '</GetDigits>';
+            $response .= '</Response>';
+            header('Content-type: text/plain');
+            
+            echo $response;
+            // extract($_POST);         
+            $currentCallState = 'PromptSent'
 
-        $this->saveCurrentCallState($sessionID, $currentCallState); // Implement this locally!
+            $answer = $_POST['dtmfDigits'];
 
-        header('Content-type: text/plain');
-      }else {
+            $outbox_id = NULL;
 
-        $callerNumber = $_POST['callerNumber'];
-        $duration     = $_POST['durationInSeconds'];
-        $currencyCode = $_POST['currencyCode'];
-        $amount       = $_POST['amount'];
-        //record error problem in DB
+            if(isset($answer)) {                
+              $this->store_user_response($answer,$_POST['callerNumber'],$outbox_id,$question_value->id);
+            }
+            else{
+              $currentCallState = 'None';
+              goto start_survey;//if user does not answer, repaet the survey
+
+            }
+           } 
+          $currentCallState = 'None';           
+        } 
       }
-      }//end function 
-    public function saveCurrentCallState($sessionId, $currentCallState){
-      
+
+      $response  = '<?xml version="1.0" encoding="UTF-8"?>';
+      $response .= '<Response voice="man" timeOut="60">';            
+      $response .= '<Say>Thank you for conduting this survey with us.</Say>';           
+      $response .= '</Response>';
+      header('Content-type: text/plain');      
+      echo $response;
+
+      $recipients = array(array("phoneNumber" => $_POST['callerNumber'], "amount" => "UGX 100"));
+
+      $send_sms->plain_SMS($_POST['callerNumber'], "Thank you for conducting a survey with us"); 
+      $recipientStringFormat = json_encode($recipients);
+      $gateway = new AfricasTalkingGateway(env("API_USERNAME"), env("API_KEY"));
+      $results = $gateway->sendAirtime($recipientStringFormat);
+      foreach($results as $result) {
+          $save_reward = new Reward();
+          $save_reward->phone_number = $result->phoneNumber;
+          $save_reward->survey_id = $survey->id;
+          $save_reward->amount = $result->amount;
+          $save_reward->error_message = $result->errorMessage;
+          $save_reward->requestId = $result->requestId;
+          $save_reward->save();                                      
+      }
+      $currentCallState = 'Done';
+    }    
+  
+    public store_user_response($answer,$phone_number,$outbox_id,$question_id)
+    {
+        $save_inbox = new Inbox();
+        $save_inbox->answer = ucwords(strtolower($answer));
+        $save_inbox->phone_number = $phone_number;
+        $save_inbox->outbox_id = $outbox_id;
+        $save_inbox->question_id = $question_id;                    
+        $save_inbox->save(); 
     }
 }
